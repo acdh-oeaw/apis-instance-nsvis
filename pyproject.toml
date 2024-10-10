@@ -1,0 +1,15 @@
+[tool.poetry]
+name = "apis-instance-nsvis"
+version = "0.1.0"
+description = ""
+authors = ["Birger Schacht <birger.schacht@oeaw.ac.at>", "Matthias Schlögl <matthias.schloegl@oeaw.ac.at>"]
+license = "MIT"
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.11"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
