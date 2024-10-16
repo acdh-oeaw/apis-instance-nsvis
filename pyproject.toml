@@ -12,6 +12,13 @@ apis-core-rdf = "0.29.0"
 apis-acdhch-default-settings = "1.2.2"
 psycopg2 = "^2.9"
 django-auditlog = "^3.0.0"
+opentelemetry-instrumentation-asgi = "*"
+opentelemetry-instrumentation-wsgi = "*"
+opentelemetry-instrumentation-django = "*"
+opentelemetry-instrumentation-logging = "*"
+opentelemetry-instrumentation-psycopg2 = "*"
+opentelemetry-exporter-otlp = "*"
+opentelemetry-distro = "*"
 
 
 [build-system]
