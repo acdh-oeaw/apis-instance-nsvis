@@ -1,19 +1,14 @@
-[tool.poetry]
+[project]
 name = "apis-instance-nsvis"
 version = "0.1.0"
-description = ""
+description = "Add your description here"
 authors = ["Birger Schacht <birger.schacht@oeaw.ac.at>", "Matthias Schlögl <matthias.schloegl@oeaw.ac.at>"]
-license = "MIT"
 readme = "README.md"
-
-[tool.poetry.dependencies]
-python = "^3.11"
-apis-core-rdf = "0.29.0"
-apis-acdhch-default-settings = "1.2.2"
-psycopg2 = "^2.9"
-django-auditlog = "^3.0.0"
-
-
-[build-system]
-requires = ["poetry-core"]
-build-backend = "poetry.core.masonry.api"
+license = "MIT"
+requires-python = ">=3.11"
+dependencies = [
+    "apis-acdhch-default-settings>=1.2.2",
+    "apis-core-rdf>=0.29.0",
+    "django-auditlog>=3.0.0",
+    "psycopg2>=2.9.9",
+]
