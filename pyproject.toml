@@ -9,7 +9,7 @@ readme = "README.md"
 [tool.poetry.dependencies]
 python = "^3.11"
 apis-core-rdf = "0.29.0"
-apis-acdhch-default-settings = "1.3.0"
+apis-acdhch-default-settings = "1.4.0"
 psycopg2 = "^2.9"
 django-auditlog = "^3.0.0"
 
