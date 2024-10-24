@@ -38,6 +38,9 @@ class Institution(AbstractEntity, VersionMixin, MongoDbDataMixin):
     """ Zeitschriften, Verlage, Agenturen, Partei + Vorfeldorganisation """
     label = models.CharField(blank=True, default="", max_length=4096, verbose_name=_("Label"))
 
+    def __str__(self):
+        return self.label
+
 
 class AddressData(AbstractEntity, VersionMixin):
     postal = models.TextField(blank=True, max_length=32, verbose_name=_("Postal"))
