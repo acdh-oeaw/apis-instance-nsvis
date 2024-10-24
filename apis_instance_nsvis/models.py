@@ -1,6 +1,6 @@
 from apis_core.apis_entities.abc import E53_Place, E21_Person
-from apis_core.generic.abc import GenericModel
 from apis_core.history.models import VersionMixin
+from apis_core.apis_entities.models import AbstractEntity
 
 from auditlog.registry import auditlog
 
@@ -9,15 +9,15 @@ class NsvisMixin:
     pass
 
 
-class Person(E21_Person, GenericModel, VersionMixin):
+class Person(E21_Person, AbstractEntity, VersionMixin):
     pass
 
 
-class Place(E53_Place, GenericModel, VersionMixin):
+class Place(E53_Place, AbstractEntity, VersionMixin):
     pass
 
 
-class Institution(GenericModel, VersionMixin):
+class Institution(AbstractEntity, VersionMixin):
     pass
 
 
