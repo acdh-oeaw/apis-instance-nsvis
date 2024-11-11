@@ -22,8 +22,11 @@ class MongoDbModel(models.Model):
     content_object = GenericForeignKey("content_type", "object_id")
 
 
-class MongoDbDataMixin:
+class MongoDbDataMixin(models.Model):
     mongodbdata = GenericRelation(MongoDbModel)
+
+    class Meta:
+        abstract = True
 
 
 class Person(E21_Person, AbstractEntity, VersionMixin, MongoDbDataMixin):
