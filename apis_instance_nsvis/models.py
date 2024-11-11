@@ -17,8 +17,8 @@ class NsvisMixin:
 class MongoDbModel(models.Model):
     data = models.JSONField()
     filename = models.TextField(blank=False, max_length=32)
-    content_type = models.ForeignKey(ContentType, on_delete=models.CASCADE)
-    object_id = models.PositiveIntegerField()
+    content_type = models.ForeignKey(ContentType, on_delete=models.CASCADE, null=True)
+    object_id = models.PositiveIntegerField(null=True)
     content_object = GenericForeignKey("content_type", "object_id")
 
 
