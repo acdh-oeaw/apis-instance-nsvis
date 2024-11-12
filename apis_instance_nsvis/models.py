@@ -65,6 +65,14 @@ class IsMemberOf(Relation):
     subj_model = Person
     obj_model = Institution
 
+    @classmethod
+    def name(self) -> str:
+        return "is member of"
+
+    @classmethod
+    def reverse_name(self) -> str:
+        return "has as member"
+
 
 class LivesIn(Relation):
     subj_model = Person
