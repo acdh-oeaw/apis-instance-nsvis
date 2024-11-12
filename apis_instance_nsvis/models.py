@@ -74,6 +74,19 @@ class IsMemberOf(Relation):
         return "has as member"
 
 
+class IsInventoriedIn(Relation):
+    subj_model = Person
+    obj_model = Institution
+
+    @classmethod
+    def name(self) -> str:
+        return "is inventoried in"
+
+    @classmethod
+    def reverse_name(self) -> str:
+        return "inventories"
+
+
 class LivesIn(Relation):
     subj_model = Person
     obj_model = Place
