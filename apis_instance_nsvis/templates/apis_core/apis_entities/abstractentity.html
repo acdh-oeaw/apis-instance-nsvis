@@ -1,0 +1,25 @@
+{% extends "apis_core/apis_entities/abstractentity.html" %}
+{% load nsvis %}
+{% load static %}
+
+{% block styles %}
+{{ block.super }}
+<link rel="stylesheet" href="{% static 'css/nsvis.css' %}">
+{% endblock styles %}
+
+
+
+{% block object-actions %}
+{{ block.super }}
+{% for mdbd in object.mongodbdata.all %}
+<span class="h6" onclick="window.mongodbdata.showModal();">
+{{ mdbd.filename }}
+</span>
+<dialog id="mongodbdata">
+<pre>
+{{ mdbd.data|pretty_json }}
+</pre>
+<button onclick="window.mongodbdata.close();">close</button>
+</dialog>
+{% endfor %}
+{% endblock object-actions %}
