@@ -87,6 +87,11 @@ class IsInventoriedIn(Relation):
         return "inventories"
 
 
+class IsLearningAt(Relation):
+    subj_model = Person
+    obj_model = Institution
+
+
 class LivesIn(Relation):
     subj_model = Person
     obj_model = Place
@@ -105,6 +110,7 @@ class AddressInPlace(Relation):
 auditlog.register(CollaboratesWith)
 auditlog.register(IsMemberOf)
 auditlog.register(IsInventoriedIn)
+auditlog.register(IsLearningAt)
 auditlog.register(LivesIn)
 auditlog.register(WorksIn)
 auditlog.register(AddressInPlace)
