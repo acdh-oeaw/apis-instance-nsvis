@@ -56,12 +56,12 @@ auditlog.register(Institution, serialize_data=True)
 auditlog.register(AddressData, serialize_data=True)
 
 
-class Collaboration(Relation):
+class CollaboratesWith(Relation):
     subj_model = Person
     obj_model = Person
 
 
-class Membership(Relation):
+class IsMemberOf(Relation):
     subj_model = Person
     obj_model = Institution
 
@@ -81,8 +81,8 @@ class AddressInPlace(Relation):
     obj_model = Place
 
 
-auditlog.register(Collaboration)
-auditlog.register(Membership)
+auditlog.register(CollaboratesWith)
+auditlog.register(IsMemberOf)
 auditlog.register(LivesIn)
 auditlog.register(WorksIn)
 auditlog.register(AddressInPlace)
