@@ -104,6 +104,7 @@ class AddressInPlace(Relation):
 
 auditlog.register(CollaboratesWith)
 auditlog.register(IsMemberOf)
+auditlog.register(IsInventoriedIn)
 auditlog.register(LivesIn)
 auditlog.register(WorksIn)
 auditlog.register(AddressInPlace)
