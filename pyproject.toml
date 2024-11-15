@@ -12,6 +12,7 @@ apis-core-rdf = "0.31.1"
 apis-acdhch-default-settings = "1.5.0"
 psycopg2 = "^2.9"
 django-auditlog = "^3.0.0"
+httpx = "^0.27.2"
 
 
 [build-system]
