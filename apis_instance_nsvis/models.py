@@ -50,6 +50,23 @@ class AddressData(AbstractEntity, VersionMixin):
     address = models.TextField(blank=True, max_length=64, verbose_name=_("Address"))
 
 
+class Annotation(AbstractEntity):
+    data = models.JSONField(null=True, editable=False)
+    image = models.TextField(max_length=512, editable=False)
+    issue = models.TextField(max_length=256, editable=False)
+    lst_task_id = models.IntegerField(editable=False)
+    lst_annotation_id = models.IntegerField(editable=False)
+    lst_result_id = models.TextField(max_length=128, editable=False)
+
+    class Meta:
+        unique_together = (('lst_task_id', 'lst_annotation_id', "lst_result_id"),)
+
+    def __str__(self):
+        if label := self.data.get("iiif_label"):
+            return f"{self.issue} ({label})"
+        return self.issue
+
+
 auditlog.register(Person, serialize_data=True)
 auditlog.register(Place, serialize_data=True)
 auditlog.register(Institution, serialize_data=True)
