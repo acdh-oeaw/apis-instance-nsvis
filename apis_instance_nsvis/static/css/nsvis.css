@@ -2,3 +2,21 @@
   font-size: 0.5em;
   text-align: left;
 }
+.overlay {
+  opacity:0.2;
+  z-index: 2;
+  padding: 5px;
+}
+.annotated-img {
+  width: 25vw;
+}
+/* we have to override the .card
+ * position that is set by bootstrap
+ * otherwise the absolute position of
+ * the overlay is off
+ * there is a better way for sure, but
+ * for now this works
+ */
+.card {
+  position: static !important;
+}
