@@ -63,7 +63,7 @@ class Annotation(AbstractEntity):
 
     def __str__(self):
         if label := self.data.get("iiif_label"):
-            return f"{self.issue} ({label})"
+            return f"{self.issue} ({label}) [{self.lst_result_id}]"
         return self.issue
 
 
