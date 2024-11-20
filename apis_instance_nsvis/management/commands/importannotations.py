@@ -28,6 +28,8 @@ class Command(BaseCommand):
                             match result["type"]:
                                 case "rectangle":
                                     annotations[result["id"]] |= result["value"]
+                                    annotations[result["id"]]["original_width"] = result["original_width"]
+                                    annotations[result["id"]]["original_height"] = result["original_height"]
                                 case "taxonomy":
                                     annotations[result["id"]][result["from_name"]] = result["value"]["taxonomy"]
                                 case "textarea":
