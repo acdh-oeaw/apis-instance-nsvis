@@ -114,7 +114,7 @@ class IsLearningAt(Relation):
 
 class LivesIn(Relation):
     subj_model = Person
-    obj_model = Place
+    obj_model = [Place, AddressData]
 
 
 class WorksIn(Relation):
