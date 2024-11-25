@@ -49,6 +49,9 @@ class AddressData(AbstractEntity, VersionMixin):
     postal = models.TextField(blank=True, max_length=32, verbose_name=_("Postal"))
     address = models.TextField(blank=True, max_length=64, verbose_name=_("Address"))
 
+    def __str__(self):
+        return f"{self.address} ({self.postal})"
+
 
 class Annotation(AbstractEntity):
     data = models.JSONField(null=True, editable=False)
