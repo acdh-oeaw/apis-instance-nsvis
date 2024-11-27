@@ -42,3 +42,17 @@ class Command(BaseCommand):
                         annotation.image = task["data"]["image"]
                         annotation.issue = task["data"]["issue"]
                         annotation.save()
+        for ann in Annotation.objects.all():
+            ann.author = next(iter(ann.data.get("Author", [])), None)
+            ann.caption = next(iter(ann.data.get("Caption", [])), None)
+            ann.title = next(iter(ann.data.get("Title", [])), None)
+
+            dargestelltes = ann.data.get("Dargestelltes", [])
+            ann.depicted = "\n".join(x for xs in dargestelltes for x in xs)
+            ann.location = next(iter(ann.data.get("OrtInput", [])), None)
+
+            thema = ann.data.get("Thema", [])
+            ann.topic = "\n".join(x for xs in thema for x in xs)
+            ann.other = next(iter(ann.data.get("Sonstiges", [])), None)
+
+            ann.save()
