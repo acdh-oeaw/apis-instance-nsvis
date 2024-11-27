@@ -14,7 +14,7 @@ class Command(BaseCommand):
     help = "Import data from LabelStudio Export"
 
     def handle(self, *args, **options):
-        projects = [45]
+        projects = [45, 48, 49, 50, 51, 52, 55, 56, 58, 63, 64, 65, 66, 69, 70, 71, 77, 78, 79, 80, 81, 82, 83]
         if labelstudio_token:
             headers = {"Authorization": f"Token {labelstudio_token}"}
             for project in projects:
