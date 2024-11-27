@@ -61,6 +61,14 @@ class Annotation(AbstractEntity):
     lst_annotation_id = models.IntegerField(editable=False)
     lst_result_id = models.TextField(max_length=128, editable=False)
 
+    author = models.TextField(blank=True, null=True)
+    caption = models.TextField(blank=True, null=True)
+    title = models.TextField(blank=True, null=True)
+    depicted = models.TextField(blank=True, null=True)
+    location = models.TextField(blank=True, null=True)
+    topic = models.TextField(blank=True, null=True)
+    other = models.TextField(blank=True, null=True)
+
     class Meta:
         unique_together = (('lst_task_id', 'lst_annotation_id', "lst_result_id"),)
 
