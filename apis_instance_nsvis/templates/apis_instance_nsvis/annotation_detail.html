@@ -13,30 +13,7 @@
     <img id="image" class="annotated-img" src="{{ object.image }}" referrerpolicy="origin">
   </div>
   <div class="ml-4">
-    <table class="table">
-      <tbody>
-        <tr>
-          <th scope="row">Titel</th>
-          <td>{{ object.data.Title }}</td>
-        </tr>
-        <tr>
-          <th scope="row">Dargestelltes</th>
-          <td>{{ object.data.Dargestelltes }}</td>
-        </tr>
-        <tr>
-          <th scope="row">Thema</th>
-          <td>{{ object.data.Thema }}</td>
-        </tr>
-        <tr>
-          <th scope="row">OrtInput</th>
-          <td>{{ object.data.OrtInput }}</td>
-        </tr>
-        <tr>
-          <th scope="row">Sonstiges</th>
-          <td>{{ object.data.Sonstiges }}</td>
-        </tr>
-      </tbody>
-    </table>
+    {% include "generic/partials/object_table.html" %}
   </div>
 </div>
 {% endblock card-body %}
