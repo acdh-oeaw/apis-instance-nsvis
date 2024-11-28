@@ -1,1 +1,1 @@
-APIS Instance for the Project [Visuelle Öffentlichkeit im Nationalsozialismus](https://zeitgeschichte.univie.ac.at/forschung/drittmittelprojekte/visuelle-oeffentlichkeit-im-nationalsozialismus/)
+[APIS](https://github.com/acdh-oeaw/apis-core-rdf/) Instance for the Project [Visuelle Öffentlichkeit im Nationalsozialismus](https://zeitgeschichte.univie.ac.at/forschung/drittmittelprojekte/visuelle-oeffentlichkeit-im-nationalsozialismus/)
