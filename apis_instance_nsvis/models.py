@@ -6,6 +6,7 @@ from apis_core.apis_entities.abc import E53_Place, E21_Person
 from apis_core.history.models import VersionMixin
 from apis_core.apis_entities.models import AbstractEntity
 from apis_core.relations.models import Relation
+from django.contrib.postgres.fields import ArrayField
 
 from auditlog.registry import auditlog
 
@@ -61,12 +62,12 @@ class Annotation(AbstractEntity):
     lst_annotation_id = models.IntegerField(editable=False)
     lst_result_id = models.TextField(max_length=128, editable=False)
 
-    author = models.TextField(blank=True, null=True)
+    author = ArrayField(models.CharField(), null=True)
     caption = models.TextField(blank=True, null=True)
     title = models.TextField(blank=True, null=True)
-    depicted = models.TextField(blank=True, null=True)
+    depicted = ArrayField(models.CharField(), null=True)
     location = models.TextField(blank=True, null=True)
-    topic = models.TextField(blank=True, null=True)
+    topic = ArrayField(models.CharField(), null=True)
     other = models.TextField(blank=True, null=True)
 
     class Meta:
