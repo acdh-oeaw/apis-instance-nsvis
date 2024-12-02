@@ -13,6 +13,7 @@ apis-acdhch-default-settings = "1.6.1"
 psycopg2 = "^2.9"
 django-auditlog = "^3.0.0"
 httpx = "^0.28.0"
+apis-acdhch-django-invite = "^0.1.0"
 
 
 [build-system]
