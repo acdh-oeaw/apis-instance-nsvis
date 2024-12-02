@@ -15,6 +15,7 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         projects = [45, 48, 49, 50, 51, 52, 55, 56, 58, 63, 64, 65, 66, 69, 70, 71, 77, 78, 79, 80, 81, 82, 83]
+        ann_ids = []
         if labelstudio_token:
             headers = {"Authorization": f"Token {labelstudio_token}"}
             for project in projects:
@@ -38,10 +39,12 @@ class Command(BaseCommand):
                             annotations[result["id"]]["iiif_label"] = task["data"]["label"]
                     for ann in annotations:
                         annotation, created = Annotation.objects.get_or_create(lst_task_id=task_id, lst_annotation_id=annotations[ann]["annotation"], lst_result_id=ann)
+                        ann_ids.append(annotation.id)
                         annotation.data = annotations[ann]
                         annotation.image = task["data"]["image"]
                         annotation.issue = task["data"]["issue"]
                         annotation.save()
+        Annotation.objects.exclude(id__in=ann_ids).delete()
         for ann in Annotation.objects.all():
             ann.author = next(iter(ann.data.get("Author", [])), "").splitlines()
             ann.caption = next(iter(ann.data.get("Caption", [])), None)
