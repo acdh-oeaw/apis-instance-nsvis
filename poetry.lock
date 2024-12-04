@@ -48,17 +48,17 @@ whitenoise = ">=5.2.0,<6.0.0"
 
 [[package]]
 name = "apis-acdhch-django-invite"
-version = "0.1.0"
+version = "0.2.0"
 description = "Invite Links for APIS Instances"
 optional = false
 python-versions = "<4.0,>=3.11"
 files = [
-    {file = "apis_acdhch_django_invite-0.1.0-py3-none-any.whl", hash = "sha256:88e43f84dea996efd89aacb1d1265e4d38f17c82433290296d5ae4e8adc93d3f"},
-    {file = "apis_acdhch_django_invite-0.1.0.tar.gz", hash = "sha256:00c28a83aaa8e4897e1553529aa270660e45f0147b64ca16df99d8716af141c7"},
+    {file = "apis_acdhch_django_invite-0.2.0-py3-none-any.whl", hash = "sha256:b6f3aa3a51567ac47f1b314d209f371dcfa374c4d211d27ea09017b1c26bbf43"},
+    {file = "apis_acdhch_django_invite-0.2.0.tar.gz", hash = "sha256:c09260c22f34a5a56cc1341fc063f23419f86d804236caabd22c649c44acb0e8"},
 ]
 
 [package.dependencies]
-apis-core-rdf = ">=0.33.0,<0.34.0"
+apis-core-rdf = ">=0.33.0"
 
 [[package]]
 name = "apis-core-rdf"
@@ -1687,4 +1687,4 @@ type = ["pytest-mypy"]
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.11"
-content-hash = "87fea72f7e3d26f52bdb8921778f79b20dca0eaa4c4a30213621b98211cf2026"
+content-hash = "532be04c38ed2cb8fcef0ace9b51c33781acc0a5856d060530fe5910deae6dba"
