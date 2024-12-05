@@ -13,8 +13,9 @@ class CustomMultipleChoiceFilter(MultipleChoiceFilter):
         choices = set()
         for value in Annotation.objects.exclude(Q(**{f"{self.field_name}__isnull": True})).values_list(self.field_name, flat=True):
             for val in value:
-                choices.add((val, val))
-        return choices
+                choices.add(val)
+        choices = sorted(choices)
+        return zip(choices, choices)
 
     def filter(self, qs, value):
         q = Q()
