@@ -10,6 +10,14 @@ labelstudio_uri = "https://label-studio.acdh-dev.oeaw.ac.at"
 labelstudio_token = os.getenv("LABELSTUDIO_TOKEN", None)
 
 
+def override(project, attribute):
+    match project:
+        case 69:
+            if attribute == "issue":
+                return "Wiener Illustrierte vom 23.11.1944"
+    return None
+
+
 class Command(BaseCommand):
     help = "Import data from LabelStudio Export"
 
@@ -42,7 +50,7 @@ class Command(BaseCommand):
                         ann_ids.append(annotation.id)
                         annotation.data = annotations[ann]
                         annotation.image = task["data"]["image"]
-                        annotation.issue = task["data"]["issue"]
+                        annotation.issue = override(project, "issue") or task["data"]["issue"]
                         annotation.save()
         Annotation.objects.exclude(id__in=ann_ids).delete()
         for ann in Annotation.objects.all():
