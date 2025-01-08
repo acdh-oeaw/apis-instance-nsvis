@@ -69,6 +69,7 @@ class Annotation(AbstractEntity):
     location = models.TextField(blank=True, null=True)
     topic = ArrayField(models.CharField(), null=True)
     other = models.TextField(blank=True, null=True)
+    internal_comment = models.TextField(blank=True, null=True)
 
     class Meta:
         unique_together = (('lst_task_id', 'lst_annotation_id', "lst_result_id"),)
