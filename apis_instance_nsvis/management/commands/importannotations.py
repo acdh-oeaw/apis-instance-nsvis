@@ -65,5 +65,6 @@ class Command(BaseCommand):
             thema = ann.data.get("Thema", [])
             ann.topic = list(set([x for xs in thema for x in xs]))
             ann.other = next(iter(ann.data.get("Sonstiges", [])), None)
+            ann.internal_comment = next(iter(ann.data.get("InternalComment", [])), None)
 
             ann.save()
