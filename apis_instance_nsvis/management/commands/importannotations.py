@@ -45,6 +45,7 @@ class Command(BaseCommand):
                                     annotations[result["id"]][result["from_name"]] = result["value"]["text"]
                             annotations[result["id"]]["annotation"] = annotation["id"]
                             annotations[result["id"]]["iiif_label"] = task["data"]["label"]
+                            annotations[result["id"]]["project_id"] = project
                     for ann in annotations:
                         annotation, created = Annotation.objects.get_or_create(lst_task_id=task_id, lst_annotation_id=annotations[ann]["annotation"], lst_result_id=ann)
                         ann_ids.append(annotation.id)
