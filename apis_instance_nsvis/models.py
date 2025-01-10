@@ -2,7 +2,7 @@ from django.contrib.contenttypes.fields import GenericForeignKey, GenericRelatio
 from django.contrib.contenttypes.models import ContentType
 from django.db import models
 from django.utils.translation import gettext_lazy as _
-from apis_core.apis_entities.abc import E53_Place, E21_Person
+from apis_core.apis_entities.abc import E53_Place
 from apis_core.history.models import VersionMixin
 from apis_core.apis_entities.models import AbstractEntity
 from apis_core.relations.models import Relation
@@ -30,7 +30,10 @@ class MongoDbDataMixin(models.Model):
         abstract = True
 
 
-class Person(E21_Person, AbstractEntity, VersionMixin, MongoDbDataMixin):
+class Person(AbstractEntity, VersionMixin, MongoDbDataMixin):
+    forename = models.CharField(blank=True, default="", max_length=4096)
+    surname = models.CharField(blank=True, default="", max_length=4096)
+    gender = models.CharField(blank=True, default="", max_length=4096)
     biography = models.TextField(blank=True, verbose_name=_("Biography"))
 
 
