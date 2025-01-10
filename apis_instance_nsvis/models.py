@@ -7,6 +7,7 @@ from apis_core.history.models import VersionMixin
 from apis_core.apis_entities.models import AbstractEntity
 from apis_core.relations.models import Relation
 from django.contrib.postgres.fields import ArrayField
+from django_interval.fields import FuzzyDateParserField
 
 from auditlog.registry import auditlog
 
@@ -34,6 +35,8 @@ class Person(AbstractEntity, VersionMixin, MongoDbDataMixin):
     forename = models.CharField(blank=True, default="", max_length=4096)
     surname = models.CharField(blank=True, default="", max_length=4096)
     gender = models.CharField(blank=True, default="", max_length=4096)
+    date_of_birth = FuzzyDateParserField(blank=True, null=True)
+    date_of_death = FuzzyDateParserField(blank=True, null=True)
     biography = models.TextField(blank=True, verbose_name=_("Biography"))
 
 
@@ -89,12 +92,17 @@ auditlog.register(Institution, serialize_data=True)
 auditlog.register(AddressData, serialize_data=True)
 
 
+class TimespanMixin:
+    from_date = FuzzyDateParserField(blank=True, null=True)
+    to_date = FuzzyDateParserField(blank=True, null=True)
+
+
 class CollaboratesWith(Relation):
     subj_model = Person
     obj_model = Person
 
 
-class IsMemberOf(Relation):
+class IsMemberOf(TimespanMixin, Relation):
     subj_model = Person
     obj_model = Institution
 
@@ -120,12 +128,12 @@ class IsInventoriedIn(Relation):
         return "inventories"
 
 
-class IsLearningAt(Relation):
+class IsLearningAt(TimespanMixin, Relation):
     subj_model = Person
     obj_model = Institution
 
 
-class LivesIn(Relation):
+class LivesIn(TimespanMixin, Relation):
     subj_model = Person
     obj_model = [Place, AddressData]
 
