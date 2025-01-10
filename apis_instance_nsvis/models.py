@@ -92,9 +92,12 @@ auditlog.register(Institution, serialize_data=True)
 auditlog.register(AddressData, serialize_data=True)
 
 
-class TimespanMixin:
+class TimespanMixin(models.Model):
     from_date = FuzzyDateParserField(blank=True, null=True)
     to_date = FuzzyDateParserField(blank=True, null=True)
+
+    class Meta:
+        abstract = True
 
 
 class CollaboratesWith(Relation):
