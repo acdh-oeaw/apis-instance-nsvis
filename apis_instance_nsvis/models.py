@@ -39,6 +39,9 @@ class Person(AbstractEntity, VersionMixin, MongoDbDataMixin):
     date_of_death = FuzzyDateParserField(blank=True, null=True)
     biography = models.TextField(blank=True, verbose_name=_("Biography"))
 
+    def __str__(self):
+        return f"{self.forename} {self.surname}"
+
 
 class Place(E53_Place, AbstractEntity, VersionMixin, MongoDbDataMixin):
     pass
