@@ -54,6 +54,11 @@ class InternalCommentExistsFilter(BooleanFilter):
         return qs.filter(internal_comment__isnull=not value)
 
 
+class MultipleAuthors(BooleanFilter):
+    def filter(self, qs, value):
+        return qs.filter(author__len__gt=1)
+
+
 class AnnotationFilterSet(FilterSet):
     class Meta(AbstractEntityFilterSet.Meta):
         unknown_field_behavior = UnknownFieldBehavior.IGNORE
@@ -67,3 +72,4 @@ class AnnotationFilterSet(FilterSet):
         self.filters["topic"] = CustomMultipleChoiceFilter(field_name="topic")
         self.filters["depicted"] = CustomMultipleChoiceFilter(field_name="depicted")
         self.filters["internal_comment"] = InternalCommentExistsFilter(widget=CheckboxInput)
+        self.filters["multiple_authors"] = MultipleAuthors(widget=CheckboxInput)
