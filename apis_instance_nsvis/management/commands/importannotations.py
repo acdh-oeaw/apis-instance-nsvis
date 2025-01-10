@@ -55,7 +55,8 @@ class Command(BaseCommand):
                         annotation.save()
         Annotation.objects.exclude(id__in=ann_ids).delete()
         for ann in Annotation.objects.all():
-            ann.author = next(iter(ann.data.get("Author", [])), "").splitlines()
+            authors = next(iter(ann.data.get("Author", [])), "").splitlines()
+            ann.author = [author.strip() for author in authors]
             ann.caption = next(iter(ann.data.get("Caption", [])), None)
             ann.title = next(iter(ann.data.get("Title", [])), None)
 
