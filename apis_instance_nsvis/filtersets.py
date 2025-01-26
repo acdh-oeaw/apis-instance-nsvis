@@ -56,7 +56,9 @@ class InternalCommentExistsFilter(BooleanFilter):
 
 class MultipleAuthors(BooleanFilter):
     def filter(self, qs, value):
-        return qs.filter(author__len__gt=1)
+        if value:
+            return qs.filter(author__len__gt=1)
+        return qs
 
 
 class AnnotationFilterSet(FilterSet):
