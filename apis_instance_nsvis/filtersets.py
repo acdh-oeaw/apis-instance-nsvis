@@ -51,7 +51,9 @@ class MagazineFilter(IssueFilter):
 
 class InternalCommentExistsFilter(BooleanFilter):
     def filter(self, qs, value):
-        return qs.filter(internal_comment__isnull=not value)
+        if value:
+            return qs.filter(internal_comment__isnull=not value)
+        return qs
 
 
 class MultipleAuthors(BooleanFilter):
