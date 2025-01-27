@@ -469,13 +469,13 @@ Django = ">=4.2"
 
 [[package]]
 name = "django-interval"
-version = "0.2.3"
+version = "0.2.5"
 description = "A Django field for storing fuzzy date information"
 optional = false
 python-versions = ">=3.11"
 files = [
-    {file = "django_interval-0.2.3-py3-none-any.whl", hash = "sha256:5f693d2d04c81baacc7e4958b7172ff425743a61ddda9bb4f6d73e8b6928be4e"},
-    {file = "django_interval-0.2.3.tar.gz", hash = "sha256:5f84a9b7983a6897712fda157b5e714e25bb18375e2884c0b3811c8ae3df347b"},
+    {file = "django_interval-0.2.5-py3-none-any.whl", hash = "sha256:95de7f7f7e1eb3d18078e091fa28bac4ad93564af87ca2140c5b578840ea1348"},
+    {file = "django_interval-0.2.5.tar.gz", hash = "sha256:facc9e52ba0d3d84ff7931020b81d90ae8e7a974a00242aa05fc657523f6a53d"},
 ]
 
 [package.dependencies]
@@ -1754,4 +1754,4 @@ type = ["pytest-mypy"]
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.11"
-content-hash = "2faa7485fb76fe0c7efa5a8bffb7dfd074a92875e50561ae59ab8e2d55d98703"
+content-hash = "84218cfaf32ef98840f41f2269ac552ec1fc483132309b10c128c467f451688d"
