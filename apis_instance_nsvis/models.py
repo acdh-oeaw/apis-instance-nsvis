@@ -37,6 +37,7 @@ class Person(AbstractEntity, VersionMixin, MongoDbDataMixin):
     gender = models.CharField(blank=True, default="", max_length=4096)
     date_of_birth = FuzzyDateParserField(blank=True, null=True)
     date_of_death = FuzzyDateParserField(blank=True, null=True)
+    citizenship = models.CharField(blank=True, default="", max_length=4096)
 
     def __str__(self):
         return f"{self.forename} {self.surname}"
