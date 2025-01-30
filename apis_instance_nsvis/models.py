@@ -158,6 +158,16 @@ class AddressInPlace(Relation):
     obj_model = Place
 
 
+class BornIn(Relation):
+    subj_model = Person
+    obj_model = Place
+
+
+class DiedIn(Relation):
+    subj_model = Person
+    obj_model = Place
+
+
 auditlog.register(CollaboratesWith)
 auditlog.register(IsMemberOf)
 auditlog.register(IsInventoriedIn)
