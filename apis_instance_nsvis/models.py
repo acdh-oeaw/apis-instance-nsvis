@@ -143,6 +143,11 @@ class LivesIn(TimespanMixin, Relation):
     obj_model = [Place, AddressData]
 
 
+class HasStudioIn(TimespanMixin, Relation):
+    subj_model = Person
+    obj_model = [Place, AddressData]
+
+
 class WorksIn(Relation):
     subj_model = Person
     obj_model = Place
