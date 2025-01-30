@@ -23,3 +23,10 @@ class PersonAddressDataRelationsTable(TimespanTable):
 class PersonInstitutionRelationsTable(TimespanTable):
     class Meta(TimespanTable.Meta):
         ...
+
+
+class PersonEducationTypeRelationsTable(TimespanTable):
+    details = tables.Column()
+
+    class Meta(TimespanTable.Meta):
+        sequence = (list(TimespanTable.Meta.sequence)[:-5] + ["details"] + list(TimespanTable.Meta.sequence)[-5:])
