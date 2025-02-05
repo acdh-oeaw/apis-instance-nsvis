@@ -62,6 +62,13 @@ class EducationType(AbstractEntity, VersionMixin, MongoDbDataMixin):
         return self.label
 
 
+class ProfessionType(AbstractEntity, VersionMixin, MongoDbDataMixin):
+    label = models.CharField(blank=True, default="", max_length=4096, verbose_name=_("Label"))
+
+    def __str__(self):
+        return self.label
+
+
 class AddressData(AbstractEntity, VersionMixin):
     postal = models.TextField(blank=True, max_length=32, verbose_name=_("Postal"))
     address = models.TextField(blank=True, max_length=64, verbose_name=_("Address"))
@@ -144,6 +151,13 @@ class IsInventoriedIn(Relation):
 class IsLearningAt(TimespanMixin, Relation):
     subj_model = Person
     obj_model = EducationType
+
+    details = models.CharField(blank=True, default="", max_length=4096, verbose_name=_("Details"))
+
+
+class WorksAs(TimespanMixin, Relation):
+    subj_model = Person
+    obj_model = ProfessionType
 
     details = models.CharField(blank=True, default="", max_length=4096, verbose_name=_("Details"))
 
