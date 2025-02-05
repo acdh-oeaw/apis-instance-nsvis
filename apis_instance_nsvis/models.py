@@ -97,6 +97,16 @@ class Person(AbstractEntity, VersionMixin, MongoDbDataMixin):
         "prompt_before_delete": False,
     }
     inheritance = JSONEditorField(schema=schema, options=options, null=True)
+    sources_schema = {
+            "title": "Sources",
+            "type": "array",
+            "format": "table",
+            "items": {
+                "type": "string",
+            }
+        }
+    research_sources = JSONEditorField(schema=sources_schema, options=options, null=True)
+    other_sources = JSONEditorField(schema=sources_schema, options=options, null=True)
 
     def __str__(self):
         return f"{self.forename} {self.surname}"
