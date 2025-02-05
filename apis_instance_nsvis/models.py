@@ -9,6 +9,7 @@ from apis_core.relations.models import Relation
 from apis_core.generic.abc import GenericModel
 from django.contrib.postgres.fields import ArrayField
 from django_interval.fields import FuzzyDateParserField
+from django_json_editor_field.fields import JSONEditorField
 
 from auditlog.registry import auditlog
 
@@ -51,6 +52,51 @@ class Person(AbstractEntity, VersionMixin, MongoDbDataMixin):
     special_areas = models.ManyToManyField(SpecialArea, blank=True)
     party_comment = models.TextField(blank=True, default="")
     exile_comment = models.TextField(blank=True, default="")
+    schema = {
+            "title": "Inheritance",
+            "type": "array",
+            "format": "table",
+            "items": {
+                "type": "object",
+                "properties": {
+                    "contact": {
+                        "type": "string",
+                        "options": {
+                            "inputAttributes": {
+                                "placeholder": "contact",
+                            }
+                        }
+                    },
+                    "extent": {
+                        "type": "string",
+                        "options": {
+                            "inputAttributes": {
+                                "placeholder": "extent",
+                            }
+                        }
+                    },
+                    "comment": {
+                        "type": "string",
+                        "options": {
+                            "inputAttributes": {
+                                "placeholder": "comment",
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    options = {
+        "theme": "bootstrap5",
+        "disable_collapse": True,
+        "disable_edit_json": True,
+        "disable_properties": True,
+        "disable_array_reorder": True,
+        "disable_array_delete_last_row": True,
+        "disable_array_delete_all_rows": True,
+        "prompt_before_delete": False,
+    }
+    inheritance = JSONEditorField(schema=schema, options=options, null=True)
 
     def __str__(self):
         return f"{self.forename} {self.surname}"
