@@ -6,6 +6,7 @@ from apis_core.apis_entities.abc import E53_Place
 from apis_core.history.models import VersionMixin
 from apis_core.apis_entities.models import AbstractEntity
 from apis_core.relations.models import Relation
+from apis_core.generic.abc import GenericModel
 from django.contrib.postgres.fields import ArrayField
 from django_interval.fields import FuzzyDateParserField
 
@@ -31,6 +32,13 @@ class MongoDbDataMixin(models.Model):
         abstract = True
 
 
+class SpecialArea(GenericModel, VersionMixin, MongoDbDataMixin):
+    label = models.CharField(blank=True, default="", max_length=4096, verbose_name=_("Label"))
+
+    def __str__(self):
+        return self.label
+
+
 class Person(AbstractEntity, VersionMixin, MongoDbDataMixin):
     forename = models.CharField(blank=True, default="", max_length=4096)
     surname = models.CharField(blank=True, default="", max_length=4096)
@@ -39,6 +47,7 @@ class Person(AbstractEntity, VersionMixin, MongoDbDataMixin):
     date_of_death = FuzzyDateParserField(blank=True, null=True)
     citizenship = models.CharField(blank=True, default="", max_length=4096)
     membership_comment = models.TextField(blank=True, default="")
+    special_areas = models.ManyToManyField(SpecialArea, blank=True)
 
     def __str__(self):
         return f"{self.forename} {self.surname}"
