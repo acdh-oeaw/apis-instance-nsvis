@@ -207,6 +207,8 @@ class IsMemberOf(TimespanMixin, Relation):
 class IsInventoriedIn(Relation):
     subj_model = Person
     obj_model = Institution
+    contact = models.CharField(blank=True, default="", max_length=4096)
+    extent = models.CharField(blank=True, default="", max_length=4096)
 
     @classmethod
     def name(self) -> str:
