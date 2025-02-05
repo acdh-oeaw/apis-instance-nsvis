@@ -30,3 +30,11 @@ class PersonEducationTypeRelationsTable(TimespanTable):
 
     class Meta(TimespanTable.Meta):
         sequence = (list(TimespanTable.Meta.sequence)[:-5] + ["details"] + list(TimespanTable.Meta.sequence)[-5:])
+
+
+class PersonProfessionTypeRelationsTable(TimespanTable):
+    details = tables.Column()
+
+    class Meta(TimespanTable.Meta):
+        sequence = (list(TimespanTable.Meta.sequence)[:-5] + ["details"] + list(TimespanTable.Meta.sequence)[-5:])
+
