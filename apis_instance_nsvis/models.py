@@ -118,6 +118,14 @@ class Person(AbstractEntity, VersionMixin, MongoDbDataMixin):
     other_sources = JSONEditorField(schema=sources_schema, options=options, null=True, verbose_name=_("Other sources"))
     literature = JSONEditorField(schema=sources_schema, options=options, null=True, verbose_name=_("Literature"))
 
+    class Choices(models.TextChoices):
+        YES = "YES", _("Yes")
+        NO = "NO", _("No")
+        UNK = "UNK", _("Unknown")
+    work_ban = models.CharField(max_length=8, choices=Choices, default=Choices.UNK, verbose_name="Work ban during NS")
+    work_ns = models.CharField(max_length=9, choices=Choices, default=Choices.UNK, verbose_name="Worked during NS")
+    propaganda_membership = models.CharField(max_length=9, choices=Choices, default=Choices.UNK, verbose_name="Member in a propaganda company")
+
     def __str__(self):
         return f"{self.forename} {self.surname}"
 
