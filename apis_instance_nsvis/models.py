@@ -243,11 +243,6 @@ class HasStudioIn(TimespanMixin, Relation):
     obj_model = [Place, AddressData]
 
 
-class WorksIn(Relation):
-    subj_model = Person
-    obj_model = Place
-
-
 class AddressInPlace(Relation):
     subj_model = AddressData
     obj_model = Place
@@ -268,5 +263,4 @@ auditlog.register(IsMemberOf)
 auditlog.register(IsInventoriedIn)
 auditlog.register(IsLearningAt)
 auditlog.register(LivesIn)
-auditlog.register(WorksIn)
 auditlog.register(AddressInPlace)
