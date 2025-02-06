@@ -116,6 +116,7 @@ class Person(AbstractEntity, VersionMixin, MongoDbDataMixin):
         }
     research_sources = JSONEditorField(schema=sources_schema, options=options, null=True, verbose_name=_("Research sources"))
     other_sources = JSONEditorField(schema=sources_schema, options=options, null=True, verbose_name=_("Other sources"))
+    literature = JSONEditorField(schema=sources_schema, options=options, null=True, verbose_name=_("Literature"))
 
     def __str__(self):
         return f"{self.forename} {self.surname}"
