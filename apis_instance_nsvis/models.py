@@ -41,8 +41,8 @@ class SpecialArea(GenericModel, VersionMixin, MongoDbDataMixin):
 
 
 class Person(AbstractEntity, VersionMixin, MongoDbDataMixin):
-    forename = models.CharField(blank=True, default="", max_length=4096, verbose_name=_("Vorname"))
-    surname = models.CharField(blank=True, default="", max_length=4096, verbose_name=_("Name"))
+    forename = models.CharField(blank=True, default="", max_length=4096, verbose_name=_("Forname"))
+    surname = models.CharField(blank=True, default="", max_length=4096, verbose_name=_("Surname"))
     gender = models.CharField(blank=True, default="", max_length=4096, verbose_name=_("Gender"))
     date_of_birth = FuzzyDateParserField(blank=True, null=True, verbose_name=_("Date of birth"))
     date_of_death = FuzzyDateParserField(blank=True, null=True, verbose_name=_("Date of death"))

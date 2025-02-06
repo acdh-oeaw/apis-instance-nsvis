@@ -1,0 +1,152 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-02-06 09:30+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: apis_instance_nsvis/models.py:37 apis_instance_nsvis/models.py:121
+#: apis_instance_nsvis/models.py:128 apis_instance_nsvis/models.py:135
+msgid "Label"
+msgstr "Bezeichnung"
+
+#: apis_instance_nsvis/models.py:44
+msgid "Forname"
+msgstr "Vorname"
+
+#: apis_instance_nsvis/models.py:45
+msgid "Surname"
+msgstr "Name"
+
+#: apis_instance_nsvis/models.py:46
+msgid "Gender"
+msgstr "Geschlecht"
+
+#: apis_instance_nsvis/models.py:47
+msgid "Date of birth"
+msgstr "Geburtsdatum"
+
+#: apis_instance_nsvis/models.py:48
+msgid "Date of death"
+msgstr "Sterbedatum"
+
+#: apis_instance_nsvis/models.py:49
+msgid "Citizenship"
+msgstr "Staatsbürgerschaft"
+
+#: apis_instance_nsvis/models.py:50
+msgid "Comment"
+msgstr "Kommentar"
+
+#: apis_instance_nsvis/models.py:51
+msgid "Membership comment"
+msgstr "Kommentar zu Mitgliedschaften"
+
+#: apis_instance_nsvis/models.py:53
+msgid "Party comment"
+msgstr "Kommentar zu Parteizugehörigkeit"
+
+#: apis_instance_nsvis/models.py:54
+msgid "Exile comment"
+msgstr "Kommentar zu Exil"
+
+#: apis_instance_nsvis/models.py:99
+msgid "Inheritance"
+msgstr "Nachlass"
+
+#: apis_instance_nsvis/models.py:108
+msgid "Research sources"
+msgstr "Forschungsquellen"
+
+#: apis_instance_nsvis/models.py:109
+msgid "Other sources"
+msgstr "Andere Quellen"
+
+#: apis_instance_nsvis/models.py:142
+msgid "Postal"
+msgstr "Postleitzahl"
+
+#: apis_instance_nsvis/models.py:143
+msgid "Address"
+msgstr "Adresse"
+
+#: apis_instance_nsvis/models.py:200
+msgid "is member of"
+msgstr "ist Mitglied von"
+
+#: apis_instance_nsvis/models.py:204
+msgid "has as member"
+msgstr "hat als Mitglied"
+
+#: apis_instance_nsvis/models.py:215
+msgid "is inventoried in"
+msgstr "ist Bestand bei"
+
+#: apis_instance_nsvis/models.py:219
+msgid "inventories"
+msgstr "hat als Bestand"
+
+#: apis_instance_nsvis/models.py:226 apis_instance_nsvis/models.py:241
+msgid "Details"
+msgstr "Details"
+
+#: apis_instance_nsvis/models.py:230
+msgid "is learning at"
+msgstr "lernt bei"
+
+#: apis_instance_nsvis/models.py:234
+msgid "has as student"
+msgstr "hat als Lernende:n"
+
+#: apis_instance_nsvis/models.py:245
+msgid "is working as"
+msgstr "ist tätig als"
+
+#: apis_instance_nsvis/models.py:249
+msgid "practiced by"
+msgstr "wird ausgeübt von"
+
+#: apis_instance_nsvis/models.py:258
+msgid "lives in"
+msgstr "lebt in"
+
+#: apis_instance_nsvis/models.py:262
+msgid "has habitant"
+msgstr "hat als Bewohner"
+
+#: apis_instance_nsvis/models.py:271
+msgid "is studio in"
+msgstr "hat Studio in"
+
+#: apis_instance_nsvis/models.py:275
+msgid "is address for studio of"
+msgstr "ist Adresse eines Studios von"
+
+#: apis_instance_nsvis/models.py:289
+msgid "born in"
+msgstr "ist gebohren in"
+
+#: apis_instance_nsvis/models.py:293
+msgid "is birth place of"
+msgstr "ist Geburtsort von"
+
+#: apis_instance_nsvis/models.py:302
+msgid "died in"
+msgstr "ist gestorben in"
+
+#: apis_instance_nsvis/models.py:306
+msgid "is place of death of"
+msgstr "ist Sterbeort von"
