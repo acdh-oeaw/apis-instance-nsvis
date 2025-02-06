@@ -295,7 +295,7 @@ class HasStudioIn(TimespanMixin, Relation):
 
     @classmethod
     def name(self) -> str:
-        return _("is studio in")
+        return _("has studio in")
 
     @classmethod
     def reverse_name(self) -> str:
