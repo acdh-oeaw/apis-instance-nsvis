@@ -34,6 +34,10 @@ class MongoDbDataMixin(models.Model):
 
 
 class SpecialArea(GenericModel, VersionMixin, MongoDbDataMixin):
+    class Meta:
+        verbose_name = _("Special Area")
+        verbose_name_plural = _("Special Areas")
+
     label = models.CharField(blank=True, default="", max_length=4096, verbose_name=_("Label"))
 
     def __str__(self):
@@ -41,6 +45,10 @@ class SpecialArea(GenericModel, VersionMixin, MongoDbDataMixin):
 
 
 class Person(AbstractEntity, VersionMixin, MongoDbDataMixin):
+    class Meta:
+        verbose_name = _("Person")
+        verbose_name_plural = _("Persons")
+
     forename = models.CharField(blank=True, default="", max_length=4096, verbose_name=_("Forname"))
     surname = models.CharField(blank=True, default="", max_length=4096, verbose_name=_("Surname"))
     gender = models.CharField(blank=True, default="", max_length=4096, verbose_name=_("Gender"))
@@ -49,7 +57,7 @@ class Person(AbstractEntity, VersionMixin, MongoDbDataMixin):
     citizenship = models.CharField(blank=True, default="", max_length=4096, verbose_name=_("Citizenship"))
     comment = models.TextField(blank=True, default="", verbose_name=_("Comment"))
     membership_comment = models.TextField(blank=True, default="", verbose_name=_("Membership comment"))
-    special_areas = models.ManyToManyField(SpecialArea, blank=True, verbose_name=("Special areas"))
+    special_areas = models.ManyToManyField(SpecialArea, blank=True, verbose_name=_("Special areas"))
     party_comment = models.TextField(blank=True, default="", verbose_name=_("Party comment"))
     exile_comment = models.TextField(blank=True, default="", verbose_name=_("Exile comment"))
     profession_comment = models.TextField(blank=True, default="", verbose_name=_("Profession comment"))
@@ -114,11 +122,17 @@ class Person(AbstractEntity, VersionMixin, MongoDbDataMixin):
 
 
 class Place(E53_Place, AbstractEntity, VersionMixin, MongoDbDataMixin):
-    pass
+    class Meta:
+        verbose_name = _("Place")
+        verbose_name_plural = _("Places")
 
 
 class Institution(AbstractEntity, VersionMixin, MongoDbDataMixin):
     """ Zeitschriften, Verlage, Agenturen, Partei + Vorfeldorganisation """
+    class Meta:
+        verbose_name = _("Institution")
+        verbose_name_plural = _("Institutions")
+
     label = models.CharField(blank=True, default="", max_length=4096, verbose_name=_("Label"))
 
     def __str__(self):
@@ -126,6 +140,10 @@ class Institution(AbstractEntity, VersionMixin, MongoDbDataMixin):
 
 
 class EducationType(AbstractEntity, VersionMixin, MongoDbDataMixin):
+    class Meta:
+        verbose_name = _("Education Type")
+        verbose_name_plural = _("Education Types")
+
     label = models.CharField(blank=True, default="", max_length=4096, verbose_name=_("Label"))
 
     def __str__(self):
@@ -133,6 +151,10 @@ class EducationType(AbstractEntity, VersionMixin, MongoDbDataMixin):
 
 
 class ProfessionType(AbstractEntity, VersionMixin, MongoDbDataMixin):
+    class Meta:
+        verbose_name = _("Profession Type")
+        verbose_name_plural = _("Profession Types")
+
     label = models.CharField(blank=True, default="", max_length=4096, verbose_name=_("Label"))
 
     def __str__(self):
@@ -140,6 +162,10 @@ class ProfessionType(AbstractEntity, VersionMixin, MongoDbDataMixin):
 
 
 class AddressData(AbstractEntity, VersionMixin):
+    class Meta:
+        verbose_name = _("Address Data")
+        verbose_name_plural = _("Address Datas")
+
     postal = models.TextField(blank=True, max_length=32, verbose_name=_("Postal"))
     address = models.TextField(blank=True, max_length=64, verbose_name=_("Address"))
 
