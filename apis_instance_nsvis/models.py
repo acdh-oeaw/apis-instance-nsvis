@@ -41,17 +41,17 @@ class SpecialArea(GenericModel, VersionMixin, MongoDbDataMixin):
 
 
 class Person(AbstractEntity, VersionMixin, MongoDbDataMixin):
-    forename = models.CharField(blank=True, default="", max_length=4096)
-    surname = models.CharField(blank=True, default="", max_length=4096)
-    gender = models.CharField(blank=True, default="", max_length=4096)
-    date_of_birth = FuzzyDateParserField(blank=True, null=True)
-    date_of_death = FuzzyDateParserField(blank=True, null=True)
-    citizenship = models.CharField(blank=True, default="", max_length=4096)
-    comment = models.TextField(blank=True, default="")
-    membership_comment = models.TextField(blank=True, default="")
-    special_areas = models.ManyToManyField(SpecialArea, blank=True)
-    party_comment = models.TextField(blank=True, default="")
-    exile_comment = models.TextField(blank=True, default="")
+    forename = models.CharField(blank=True, default="", max_length=4096, verbose_name=_("Vorname"))
+    surname = models.CharField(blank=True, default="", max_length=4096, verbose_name=_("Name"))
+    gender = models.CharField(blank=True, default="", max_length=4096, verbose_name=_("Gender"))
+    date_of_birth = FuzzyDateParserField(blank=True, null=True, verbose_name=_("Date of birth"))
+    date_of_death = FuzzyDateParserField(blank=True, null=True, verbose_name=_("Date of death"))
+    citizenship = models.CharField(blank=True, default="", max_length=4096, verbose_name=_("Citizenship"))
+    comment = models.TextField(blank=True, default="", verbose_name=_("Comment"))
+    membership_comment = models.TextField(blank=True, default="", verbose_name=_("Membership comment"))
+    special_areas = models.ManyToManyField(SpecialArea, blank=True, verbose_name=("Special areas"))
+    party_comment = models.TextField(blank=True, default="", verbose_name=_("Party comment"))
+    exile_comment = models.TextField(blank=True, default="", verbose_name=_("Exile comment"))
     schema = {
             "title": "Inheritance",
             "type": "array",
@@ -96,7 +96,7 @@ class Person(AbstractEntity, VersionMixin, MongoDbDataMixin):
         "disable_array_delete_all_rows": True,
         "prompt_before_delete": False,
     }
-    inheritance = JSONEditorField(schema=schema, options=options, null=True)
+    inheritance = JSONEditorField(schema=schema, options=options, null=True, verbose_name=_("Inheritance"))
     sources_schema = {
             "title": "Sources",
             "type": "array",
@@ -105,8 +105,8 @@ class Person(AbstractEntity, VersionMixin, MongoDbDataMixin):
                 "type": "string",
             }
         }
-    research_sources = JSONEditorField(schema=sources_schema, options=options, null=True)
-    other_sources = JSONEditorField(schema=sources_schema, options=options, null=True)
+    research_sources = JSONEditorField(schema=sources_schema, options=options, null=True, verbose_name=_("Research sources"))
+    other_sources = JSONEditorField(schema=sources_schema, options=options, null=True, verbose_name=_("Other sources"))
 
     def __str__(self):
         return f"{self.forename} {self.surname}"
@@ -197,11 +197,11 @@ class IsMemberOf(TimespanMixin, Relation):
 
     @classmethod
     def name(self) -> str:
-        return "is member of"
+        return _("is member of")
 
     @classmethod
     def reverse_name(self) -> str:
-        return "has as member"
+        return _("has as member")
 
 
 class IsInventoriedIn(Relation):
@@ -212,11 +212,11 @@ class IsInventoriedIn(Relation):
 
     @classmethod
     def name(self) -> str:
-        return "is inventoried in"
+        return _("is inventoried in")
 
     @classmethod
     def reverse_name(self) -> str:
-        return "inventories"
+        return _("inventories")
 
 
 class IsLearningAt(TimespanMixin, Relation):
@@ -225,6 +225,14 @@ class IsLearningAt(TimespanMixin, Relation):
 
     details = models.CharField(blank=True, default="", max_length=4096, verbose_name=_("Details"))
 
+    @classmethod
+    def name(self) -> str:
+        return _("is learning at")
+
+    @classmethod
+    def reverse_name(self) -> str:
+        return _("has as student")
+
 
 class WorksAs(TimespanMixin, Relation):
     subj_model = Person
@@ -232,15 +240,39 @@ class WorksAs(TimespanMixin, Relation):
 
     details = models.CharField(blank=True, default="", max_length=4096, verbose_name=_("Details"))
 
+    @classmethod
+    def name(self) -> str:
+        return _("is working as")
+
+    @classmethod
+    def reverse_name(self) -> str:
+        return _("practiced by")
+
 
 class LivesIn(TimespanMixin, Relation):
     subj_model = Person
     obj_model = [Place, AddressData]
 
+    @classmethod
+    def name(self) -> str:
+        return _("lives in")
+
+    @classmethod
+    def reverse_name(self) -> str:
+        return _("has habitant")
+
 
 class HasStudioIn(TimespanMixin, Relation):
     subj_model = Person
     obj_model = [Place, AddressData]
+
+    @classmethod
+    def name(self) -> str:
+        return _("is studio in")
+
+    @classmethod
+    def reverse_name(self) -> str:
+        return _("is address for studio of")
 
 
 class AddressInPlace(Relation):
@@ -252,10 +284,26 @@ class BornIn(Relation):
     subj_model = Person
     obj_model = Place
 
+    @classmethod
+    def name(self) -> str:
+        return _("born in")
+
+    @classmethod
+    def reverse_name(self) -> str:
+        return _("is birth place of")
+
 
 class DiedIn(Relation):
     subj_model = Person
     obj_model = Place
+
+    @classmethod
+    def name(self) -> str:
+        return _("died in")
+
+    @classmethod
+    def reverse_name(self) -> str:
+        return _("is place of death of")
 
 
 auditlog.register(CollaboratesWith)
