@@ -52,6 +52,7 @@ class Person(AbstractEntity, VersionMixin, MongoDbDataMixin):
     special_areas = models.ManyToManyField(SpecialArea, blank=True, verbose_name=("Special areas"))
     party_comment = models.TextField(blank=True, default="", verbose_name=_("Party comment"))
     exile_comment = models.TextField(blank=True, default="", verbose_name=_("Exile comment"))
+    profession_comment = models.TextField(blank=True, default="", verbose_name=_("Profession comment"))
     schema = {
             "title": "Inheritance",
             "type": "array",

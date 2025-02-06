@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-02-06 09:30+0000\n"
+"POT-Creation-Date: 2025-02-06 09:45+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,8 +18,8 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: apis_instance_nsvis/models.py:37 apis_instance_nsvis/models.py:121
-#: apis_instance_nsvis/models.py:128 apis_instance_nsvis/models.py:135
+#: apis_instance_nsvis/models.py:37 apis_instance_nsvis/models.py:122
+#: apis_instance_nsvis/models.py:129 apis_instance_nsvis/models.py:136
 msgid "Label"
 msgstr "Bezeichnung"
 
@@ -63,90 +63,94 @@ msgstr "Kommentar zu Parteizugehörigkeit"
 msgid "Exile comment"
 msgstr "Kommentar zu Exil"
 
-#: apis_instance_nsvis/models.py:99
+#: apis_instance_nsvis/models.py:55
+msgid "Profession comment"
+msgstr "Kommentar zu Beruf"
+
+#: apis_instance_nsvis/models.py:100
 msgid "Inheritance"
 msgstr "Nachlass"
 
-#: apis_instance_nsvis/models.py:108
+#: apis_instance_nsvis/models.py:109
 msgid "Research sources"
 msgstr "Forschungsquellen"
 
-#: apis_instance_nsvis/models.py:109
+#: apis_instance_nsvis/models.py:110
 msgid "Other sources"
 msgstr "Andere Quellen"
 
-#: apis_instance_nsvis/models.py:142
+#: apis_instance_nsvis/models.py:143
 msgid "Postal"
 msgstr "Postleitzahl"
 
-#: apis_instance_nsvis/models.py:143
+#: apis_instance_nsvis/models.py:144
 msgid "Address"
 msgstr "Adresse"
 
-#: apis_instance_nsvis/models.py:200
+#: apis_instance_nsvis/models.py:201
 msgid "is member of"
 msgstr "ist Mitglied von"
 
-#: apis_instance_nsvis/models.py:204
+#: apis_instance_nsvis/models.py:205
 msgid "has as member"
 msgstr "hat als Mitglied"
 
-#: apis_instance_nsvis/models.py:215
+#: apis_instance_nsvis/models.py:216
 msgid "is inventoried in"
 msgstr "ist Bestand bei"
 
-#: apis_instance_nsvis/models.py:219
+#: apis_instance_nsvis/models.py:220
 msgid "inventories"
 msgstr "hat als Bestand"
 
-#: apis_instance_nsvis/models.py:226 apis_instance_nsvis/models.py:241
+#: apis_instance_nsvis/models.py:227 apis_instance_nsvis/models.py:242
 msgid "Details"
 msgstr "Details"
 
-#: apis_instance_nsvis/models.py:230
+#: apis_instance_nsvis/models.py:231
 msgid "is learning at"
 msgstr "lernt bei"
 
-#: apis_instance_nsvis/models.py:234
+#: apis_instance_nsvis/models.py:235
 msgid "has as student"
 msgstr "hat als Lernende:n"
 
-#: apis_instance_nsvis/models.py:245
+#: apis_instance_nsvis/models.py:246
 msgid "is working as"
 msgstr "ist tätig als"
 
-#: apis_instance_nsvis/models.py:249
+#: apis_instance_nsvis/models.py:250
 msgid "practiced by"
 msgstr "wird ausgeübt von"
 
-#: apis_instance_nsvis/models.py:258
+#: apis_instance_nsvis/models.py:259
 msgid "lives in"
 msgstr "lebt in"
 
-#: apis_instance_nsvis/models.py:262
+#: apis_instance_nsvis/models.py:263
 msgid "has habitant"
 msgstr "hat als Bewohner"
 
-#: apis_instance_nsvis/models.py:271
+#: apis_instance_nsvis/models.py:272
 msgid "is studio in"
 msgstr "hat Studio in"
 
-#: apis_instance_nsvis/models.py:275
+#: apis_instance_nsvis/models.py:276
 msgid "is address for studio of"
 msgstr "ist Adresse eines Studios von"
 
-#: apis_instance_nsvis/models.py:289
+#: apis_instance_nsvis/models.py:290
 msgid "born in"
 msgstr "ist gebohren in"
 
-#: apis_instance_nsvis/models.py:293
+#: apis_instance_nsvis/models.py:294
 msgid "is birth place of"
 msgstr "ist Geburtsort von"
 
-#: apis_instance_nsvis/models.py:302
+#: apis_instance_nsvis/models.py:303
 msgid "died in"
 msgstr "ist gestorben in"
 
-#: apis_instance_nsvis/models.py:306
+#: apis_instance_nsvis/models.py:307
 msgid "is place of death of"
 msgstr "ist Sterbeort von"
