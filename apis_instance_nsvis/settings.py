@@ -10,3 +10,5 @@ INSTALLED_APPS += ["apis_acdhch_django_invite"]
 INSTALLED_APPS += ["django_json_editor_field"]
 
 ROOT_URLCONF = "apis_instance_nsvis.urls"
+
+LANGUAGE_CODE = "de"
