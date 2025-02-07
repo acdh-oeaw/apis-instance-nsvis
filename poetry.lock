@@ -503,13 +503,13 @@ django = ">=4"
 
 [[package]]
 name = "django-json-editor-field"
-version = "0.4.1"
+version = "0.4.2"
 description = "JSON Editor support for Django JSON Fields"
 optional = false
 python-versions = ">=3.11"
 files = [
-    {file = "django_json_editor_field-0.4.1-py3-none-any.whl", hash = "sha256:8d3eaaa786e7aa06c46001d352d859b13e26fd6edbc9cf99240f190047986626"},
-    {file = "django_json_editor_field-0.4.1.tar.gz", hash = "sha256:48064ea331f7d62449f16247c901c2986ee264e933e1a11cf667b77cc8fd3168"},
+    {file = "django_json_editor_field-0.4.2-py3-none-any.whl", hash = "sha256:d6b4c39b682338baaf0c7cec6fb661b049a82bef195d30745677045606d9226d"},
+    {file = "django_json_editor_field-0.4.2.tar.gz", hash = "sha256:5fc03d649fc652b81a461ba84486113373e4a79b9cec7897e42c4ba0d23cadc3"},
 ]
 
 [package.dependencies]
@@ -1809,4 +1809,4 @@ type = ["pytest-mypy"]
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.11"
-content-hash = "dca61422de180ae9b0677a85d66fefee9e5bc0158620ae4227e85c77d81d7d83"
+content-hash = "a07a1ea18f09ea123214392298548a51e64b946371d6a2d3828bcd911868c27e"
