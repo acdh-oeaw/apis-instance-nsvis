@@ -342,6 +342,19 @@ class DiedIn(Relation):
         return _("is place of death of")
 
 
+class ExileIn(TimespanMixin, Relation):
+    subj_model = Person
+    obj_model = Place
+
+    @classmethod
+    def name(self) -> str:
+        return _("was in exile in")
+
+    @classmethod
+    def reverse_name(self) -> str:
+        return _("was place of exile for")
+
+
 auditlog.register(CollaboratesWith)
 auditlog.register(IsMemberOf)
 auditlog.register(IsInventoriedIn)
