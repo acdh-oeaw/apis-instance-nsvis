@@ -222,12 +222,16 @@ class TimespanMixin(models.Model):
         abstract = True
 
 
-class CollaboratesWith(Relation):
+class NsvisRelationMixin:
+    pass
+
+
+class CollaboratesWith(NsvisRelationMixin, Relation):
     subj_model = Person
     obj_model = Person
 
 
-class IsMemberOf(TimespanMixin, Relation):
+class IsMemberOf(TimespanMixin, NsvisRelationMixin, Relation):
     subj_model = Person
     obj_model = Institution
 
@@ -240,7 +244,7 @@ class IsMemberOf(TimespanMixin, Relation):
         return _("has as member")
 
 
-class IsInventoriedIn(Relation):
+class IsInventoriedIn(NsvisRelationMixin, Relation):
     subj_model = Person
     obj_model = Institution
     contact = models.CharField(blank=True, default="", max_length=4096)
@@ -255,7 +259,7 @@ class IsInventoriedIn(Relation):
         return _("inventories")
 
 
-class IsLearningAt(TimespanMixin, Relation):
+class IsLearningAt(TimespanMixin, NsvisRelationMixin, Relation):
     subj_model = Person
     obj_model = EducationType
 
@@ -270,7 +274,7 @@ class IsLearningAt(TimespanMixin, Relation):
         return _("has as student")
 
 
-class WorksAs(TimespanMixin, Relation):
+class WorksAs(TimespanMixin, NsvisRelationMixin, Relation):
     subj_model = Person
     obj_model = ProfessionType
 
@@ -285,7 +289,7 @@ class WorksAs(TimespanMixin, Relation):
         return _("practiced by")
 
 
-class LivesIn(TimespanMixin, Relation):
+class LivesIn(TimespanMixin, NsvisRelationMixin, Relation):
     subj_model = Person
     obj_model = [Place, AddressData]
 
@@ -298,7 +302,7 @@ class LivesIn(TimespanMixin, Relation):
         return _("has habitant")
 
 
-class HasStudioIn(TimespanMixin, Relation):
+class HasStudioIn(TimespanMixin, NsvisRelationMixin, Relation):
     subj_model = Person
     obj_model = [Place, AddressData]
 
@@ -311,7 +315,7 @@ class HasStudioIn(TimespanMixin, Relation):
         return _("is address for studio of")
 
 
-class AddressInPlace(Relation):
+class AddressInPlace(NsvisRelationMixin, Relation):
     subj_model = AddressData
     obj_model = Place
 
@@ -329,7 +333,7 @@ class BornIn(Relation):
         return _("is birth place of")
 
 
-class DiedIn(Relation):
+class DiedIn(NsvisRelationMixin, Relation):
     subj_model = Person
     obj_model = Place
 
@@ -342,7 +346,7 @@ class DiedIn(Relation):
         return _("is place of death of")
 
 
-class ExileIn(TimespanMixin, Relation):
+class ExileIn(TimespanMixin, NsvisRelationMixin, Relation):
     subj_model = Person
     obj_model = Place
 
