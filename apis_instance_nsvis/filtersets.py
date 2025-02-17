@@ -21,7 +21,7 @@ class CustomMultipleChoiceFilter(MultipleChoiceFilter):
             for val in value:
                 choices.add(val)
         choices = sorted(choices)
-        return zip(choices, choices)
+        return list(zip(choices, choices))
 
     def filter(self, qs, value):
         q = Q()
