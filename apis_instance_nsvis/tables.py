@@ -5,6 +5,11 @@ from apis_core.relations.tables import RelationsListTable
 
 class AnnotationTable(AbstractEntityTable):
     labelstudio = tables.TemplateColumn(template_name="columns/labelstudio_link.html")
+    topic = tables.TemplateColumn(template_code="{{ record.topic|join:', ' }}")
+    depicted = tables.TemplateColumn(template_code="{{ record.depicted|join:', ' }}")
+
+    class Meta(AbstractEntityTable.Meta):
+        fields = ["caption"]
 
 
 class TimespanTable(RelationsListTable):
