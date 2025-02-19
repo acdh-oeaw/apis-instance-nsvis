@@ -14,6 +14,4 @@ ROOT_URLCONF = "apis_instance_nsvis.urls"
 
 LANGUAGE_CODE = "de"
 
-MEDIA_ROOT = "/images"
-
-STATICFILES_DIRS = ["/images"]
+STATIC_ROOT = "/images"
