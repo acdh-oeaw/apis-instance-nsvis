@@ -52,3 +52,17 @@ cronjobs:
       repository: $repository
       tag: "$tag"
       pullPolicy: IfNotPresent
+
+persistence:
+  enabled: true
+  volumes:
+    images:
+      name: "images"
+      mount:
+        path: "/images"
+      claim:
+        size: "20Gi"
+        accessMode: "ReadWriteOnce"
+
+securityContext:
+  fsGroup: 1000
