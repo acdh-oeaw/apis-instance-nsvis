@@ -2,13 +2,6 @@
 {% load nsvis %}
 {% load static %}
 
-{% block styles %}
-{{ block.super }}
-<link rel="stylesheet" href="{% static 'css/nsvis.css' %}">
-{% endblock styles %}
-
-
-
 {% block object-actions %}
 {{ block.super }}
 {% for mdbd in object.mongodbdata.all %}
