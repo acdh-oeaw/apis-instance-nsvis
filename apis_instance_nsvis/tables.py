@@ -4,12 +4,14 @@ from apis_core.relations.tables import RelationsListTable
 
 
 class AnnotationTable(AbstractEntityTable):
+    issue = tables.TemplateColumn(template_code="<a href={{ record.get_absolute_url }}>{{ record.issue }}</a>")
     labelstudio = tables.TemplateColumn(template_name="columns/labelstudio_link.html")
     topic = tables.TemplateColumn(template_code="{{ record.topic|join:', ' }}")
     depicted = tables.TemplateColumn(template_code="{{ record.depicted|join:', ' }}")
     clip = tables.TemplateColumn(template_code="{% load static %}<img class='thumbnail' src={% static record.clip %}>")
 
     class Meta(AbstractEntityTable.Meta):
+        exclude = ["desc"]
         fields = ["caption"]
 
 
