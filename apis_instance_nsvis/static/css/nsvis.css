@@ -20,3 +20,7 @@
 .card {
   position: static !important;
 }
+
+.thumbnail {
+	width: 150px;
+}

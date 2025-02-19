@@ -7,6 +7,7 @@ class AnnotationTable(AbstractEntityTable):
     labelstudio = tables.TemplateColumn(template_name="columns/labelstudio_link.html")
     topic = tables.TemplateColumn(template_code="{{ record.topic|join:', ' }}")
     depicted = tables.TemplateColumn(template_code="{{ record.depicted|join:', ' }}")
+    clip = tables.TemplateColumn(template_code="{% load static %}<img class='thumbnail' src={% static record.clip %}>")
 
     class Meta(AbstractEntityTable.Meta):
         fields = ["caption"]
