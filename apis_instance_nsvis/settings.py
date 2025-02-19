@@ -1,3 +1,4 @@
+from pathlib import Path
 from apis_acdhch_default_settings.settings import *
 
 INSTALLED_APPS[INSTALLED_APPS.index("apis_ontology")] = "apis_instance_nsvis"
@@ -12,3 +13,7 @@ INSTALLED_APPS += ["django_json_editor_field"]
 ROOT_URLCONF = "apis_instance_nsvis.urls"
 
 LANGUAGE_CODE = "de"
+
+MEDIA_ROOT = "/images"
+
+STATICFILES_DIRS = ["/images"]
