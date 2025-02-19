@@ -1,7 +1,14 @@
+from urllib.parse import urlparse
+from pathlib import Path
+import cv2
+import httpx
+
 from django.contrib.contenttypes.fields import GenericForeignKey, GenericRelation
 from django.contrib.contenttypes.models import ContentType
+from django.conf import settings
 from django.db import models
 from django.utils.translation import gettext_lazy as _
+from django.template.defaultfilters import slugify
 from apis_core.apis_entities.abc import E53_Place
 from apis_core.history.models import VersionMixin
 from apis_core.apis_entities.models import AbstractEntity
@@ -206,6 +213,42 @@ class Annotation(AbstractEntity):
         if label := self.data.get("iiif_label"):
             return f"{self.issue} ({label}) [{self.lst_result_id}]"
         return self.issue
+
+    def local_image(self):
+        headers = {'Origin': "https://label-studio.acdh-dev.oeaw.ac.at"}
+        suffix = Path(urlparse(self.image).path).suffix
+        issueslug = slugify(self.issue)
+        imagepath = Path(settings.MEDIA_ROOT) / issueslug / f"{self.lst_result_id}{suffix}"
+        if not imagepath.exists():
+            imagepath.parent.mkdir(parents=True, exist_ok=True)
+            with httpx.stream("GET", self.image, headers=headers) as r:
+                if r.status_code == httpx.codes.OK:
+                    for data in r.iter_bytes():
+                        with imagepath.open("ab") as f:
+                            f.write(data)
+        return imagepath.relative_to(settings.MEDIA_ROOT)
+
+    @property
+    def clip(self):
+        imagepath = Path(settings.MEDIA_ROOT) / f"cropped/{self.lst_result_id}.jpg"
+        imagepath.parent.mkdir(parents=True, exist_ok=True)
+        if not imagepath.exists():
+            image = cv2.imread(settings.MEDIA_ROOT / self.local_image())
+            # calculate coordinates and dimensions of annotated area:
+            height, width = image.shape[:2]
+            x = int(self.data["x"]/100 * width)
+            y = int(self.data["y"]/100 * height)
+            crop_width = int(self.data["width"]/100 * width)
+            crop_height = int(self.data["height"]/100 * height)
+            # store the area in crop
+            crop = image[y:y+crop_height, x:x+crop_width]
+            # get the shape of crop to scale the image to width 800
+            w, h = crop.shape[:2]
+            aspect_ratio = w / h
+            new_width = 800
+            crop = cv2.resize(crop, (new_width, int(new_width*aspect_ratio)))
+            cv2.imwrite(imagepath, crop)
+        return imagepath.relative_to(settings.MEDIA_ROOT)
 
 
 auditlog.register(Person, serialize_data=True)
