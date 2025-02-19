@@ -1,6 +1,6 @@
 from urllib.parse import urlparse
 from pathlib import Path
-import cv2
+from PIL import Image
 import httpx
 
 from django.contrib.contenttypes.fields import GenericForeignKey, GenericRelation
@@ -233,21 +233,18 @@ class Annotation(AbstractEntity):
         imagepath = Path(settings.MEDIA_ROOT) / f"cropped/{self.lst_result_id}.jpg"
         imagepath.parent.mkdir(parents=True, exist_ok=True)
         if not imagepath.exists():
-            image = cv2.imread(settings.MEDIA_ROOT / self.local_image())
+            image = Image.open(settings.MEDIA_ROOT / self.local_image())
             # calculate coordinates and dimensions of annotated area:
-            height, width = image.shape[:2]
-            x = int(self.data["x"]/100 * width)
-            y = int(self.data["y"]/100 * height)
-            crop_width = int(self.data["width"]/100 * width)
-            crop_height = int(self.data["height"]/100 * height)
-            # store the area in crop
-            crop = image[y:y+crop_height, x:x+crop_width]
-            # get the shape of crop to scale the image to width 800
-            w, h = crop.shape[:2]
-            aspect_ratio = w / h
-            new_width = 800
-            crop = cv2.resize(crop, (new_width, int(new_width*aspect_ratio)))
-            cv2.imwrite(imagepath, crop)
+            height, width = image.size
+            left = int(self.data["x"]/100 * height)
+            upper = int(self.data["y"]/100 * width)
+            crop_width = int(self.data["width"]/100 * height)
+            crop_height = int(self.data["height"]/100 * width)
+            # store the area in crop and make a thumbnail out of it
+            dims = (left, upper, left+crop_width, upper+crop_height)
+            crop = image.crop(dims)
+            crop.thumbnail((800, 800))
+            crop.save(imagepath)
         return imagepath.relative_to(settings.MEDIA_ROOT)
 
 
