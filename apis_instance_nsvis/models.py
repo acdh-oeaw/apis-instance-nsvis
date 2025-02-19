@@ -218,7 +218,7 @@ class Annotation(AbstractEntity):
         headers = {'Origin': "https://label-studio.acdh-dev.oeaw.ac.at"}
         suffix = Path(urlparse(self.image).path).suffix
         issueslug = slugify(self.issue)
-        imagepath = Path(settings.MEDIA_ROOT) / issueslug / f"{self.lst_result_id}{suffix}"
+        imagepath = Path(settings.STATIC_ROOT) / issueslug / f"{self.lst_result_id}{suffix}"
         if not imagepath.exists():
             imagepath.parent.mkdir(parents=True, exist_ok=True)
             with httpx.stream("GET", self.image, headers=headers) as r:
@@ -226,14 +226,14 @@ class Annotation(AbstractEntity):
                     for data in r.iter_bytes():
                         with imagepath.open("ab") as f:
                             f.write(data)
-        return imagepath.relative_to(settings.MEDIA_ROOT)
+        return imagepath.relative_to(settings.STATIC_ROOT)
 
     @property
     def clip(self):
-        imagepath = Path(settings.MEDIA_ROOT) / f"cropped/{self.lst_result_id}.jpg"
+        imagepath = Path(settings.STATIC_ROOT) / f"cropped/{self.lst_result_id}.jpg"
         imagepath.parent.mkdir(parents=True, exist_ok=True)
         if not imagepath.exists():
-            image = Image.open(settings.MEDIA_ROOT / self.local_image())
+            image = Image.open(settings.STATIC_ROOT / self.local_image())
             # calculate coordinates and dimensions of annotated area:
             height, width = image.size
             left = int(self.data["x"]/100 * height)
@@ -245,7 +245,7 @@ class Annotation(AbstractEntity):
             crop = image.crop(dims)
             crop.thumbnail((800, 800))
             crop.save(imagepath)
-        return imagepath.relative_to(settings.MEDIA_ROOT)
+        return imagepath.relative_to(settings.STATIC_ROOT)
 
 
 auditlog.register(Person, serialize_data=True)
