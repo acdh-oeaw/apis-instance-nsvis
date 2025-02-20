@@ -36,18 +36,18 @@ trio = ["trio (>=0.26.1)"]
 
 [[package]]
 name = "apis-acdhch-default-settings"
-version = "2.1.0"
+version = "2.2.2"
 description = "Default settings for APIS instances at the ACDH-CH"
 optional = false
 python-versions = "<4.0,>=3.11"
 files = [
-    {file = "apis_acdhch_default_settings-2.1.0-py3-none-any.whl", hash = "sha256:31e4fa81c6cfaa15de8f18665c03cd996170fb44b25ac8f61a7c8ce10f1e79b7"},
-    {file = "apis_acdhch_default_settings-2.1.0.tar.gz", hash = "sha256:8026c3cc82d6a8623ebfc9c75ebf2860c1ecaa845bc0887a32d668aeac1c1fbb"},
+    {file = "apis_acdhch_default_settings-2.2.2-py3-none-any.whl", hash = "sha256:5ce2bebd30193c4b7c88c2a00e140c961d12b32075947b46156a0ece98d4db49"},
+    {file = "apis_acdhch_default_settings-2.2.2.tar.gz", hash = "sha256:4c2e2dee7ee8de26e47f3bc67f75589bee7ca5f20aaade443c660cc00d988d1e"},
 ]
 
 [package.dependencies]
 dj-database-url = ">=2.0.0,<3.0.0"
-django-allow-cidr = ">=0.6.0,<0.7.0"
+django-allow-cidr = ">=0.6,<0.8"
 django-auth-ldap = ">=4.6.0,<5.0.0"
 django-csp = ">=3.7,<4.0"
 django-removals = ">=1.0.5,<2.0.0"
@@ -59,7 +59,7 @@ opentelemetry-instrumentation-logging = "*"
 opentelemetry-instrumentation-psycopg2 = "*"
 opentelemetry-instrumentation-wsgi = "*"
 sentry-sdk = ">=1.26.0,<2.0.0"
-whitenoise = ">=5.2.0,<6.0.0"
+whitenoise = ">=5.2,<7.0"
 
 [[package]]
 name = "apis-acdhch-django-invite"
@@ -1882,4 +1882,4 @@ type = ["pytest-mypy"]
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.11"
-content-hash = "3dd9e1fbbd724e38d2c86f1d0374a123ddca003a5a9172fd5daeec75948b5be1"
+content-hash = "ef8dcef6da50aace5f77f66d8b8b2575674e4e45ddd808086c188eabd926f7a6"
