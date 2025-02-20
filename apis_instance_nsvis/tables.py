@@ -16,11 +16,12 @@ class AnnotationTable(AbstractEntityTable):
 
 
 class TimespanTable(RelationsListTable):
-    from_date = tables.Column(order_by="from_date_sort")
+    from_date = tables.TemplateColumn(order_by="from_date_date_sort", template_code="<abbr title='{{ record.from_date_date_sort }}'>{{ record.from_date }}</abbr>")
     to_date = tables.Column(order_by="to_date_sort")
 
     class Meta(RelationsListTable.Meta):
         sequence = (list(RelationsListTable.Meta.sequence)[:-3] + ["from_date", "to_date"] + list(RelationsListTable.Meta.sequence)[-3:])
+        order_by = ("from_date",)
 
 
 class PersonAddressDataRelationsTable(TimespanTable):
