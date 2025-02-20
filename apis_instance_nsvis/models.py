@@ -55,6 +55,7 @@ class Person(AbstractEntity, VersionMixin, MongoDbDataMixin):
     class Meta:
         verbose_name = _("Person")
         verbose_name_plural = _("Persons")
+        ordering = ["surname", "forename"]
 
     forename = models.CharField(blank=True, default="", max_length=4096, verbose_name=_("Forname"))
     surname = models.CharField(blank=True, default="", max_length=4096, verbose_name=_("Surname"))
