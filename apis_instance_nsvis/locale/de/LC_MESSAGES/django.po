@@ -217,7 +217,7 @@ msgstr "ist Adresse eines Studios von"
 
 #: apis_instance_nsvis/models.py:325
 msgid "born in"
-msgstr "ist gebohren in"
+msgstr "ist geboren in"
 
 #: apis_instance_nsvis/models.py:329
 msgid "is birth place of"
