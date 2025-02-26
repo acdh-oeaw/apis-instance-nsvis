@@ -1,0 +1,22 @@
+{% load nsvis %}
+{% load django_tables2 %}
+{% load i18n %}
+{% load relations %}
+{% load generic %}
+
+<fieldset class="border rounded border-2 p-3">
+  <legend class="float-none w-auto px-3 small"><span class="badge bg-primary">{% translate title %}</span>
+  {% content_types_by_natural_keys relations|split:"," as relation_types %}
+  {% with object.id|stringformat:"i" as object_id %}
+  {% with "rel_"|add:object_id|add:"_"|add:title|slugify as replace_id %}
+  {% for relation_type in relation_types %}
+  {% include "relations/partials/create_relation_link.html" with relation_types=relations %}
+  {% endfor %}
+  </legend>
+  {% relations_instances_from_relation_types relation_types as relations %}
+  {% with title|slugify|title as table_suffix %}
+  {% include "relations/partials/list_relations.html" %}
+  {% endwith %}
+  {% endwith %}
+  {% endwith %}
+</fieldset>

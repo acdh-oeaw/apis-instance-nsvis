@@ -1,0 +1,21 @@
+{% extends "apis_core/apis_entities/abstractentity_form.html" %}
+{% load i18n %}
+{% load static %}
+
+{% block relations-include %}
+
+{% include "partials/relation_listing.html" with linkify=True %}
+
+{% endblock relations-include %}
+
+{% block content %}
+  {{ block.super }}
+  <dialog id="relationdialog">
+    <div id="relation-dialog-content"></div>
+  </dialog>
+{% endblock content %}
+
+{% block scripts %}
+  {{ block.super }}
+  <script src="{% static "js/relation_dialog.js" %}"></script>
+{% endblock scripts %}
