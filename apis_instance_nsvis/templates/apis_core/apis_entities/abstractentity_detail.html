@@ -1,0 +1,22 @@
+{% extends "apis_core/apis_entities/abstractentity_detail.html" %}
+{% load i18n %}
+
+{% block relations-include %}
+
+<div class="mb-3">
+{% include "partials/relation_fieldset.html" with title="inventory" relations="apis_instance_nsvis.isinventoriedin" %}
+</div>
+<div class="mb-3">
+{% include "partials/relation_fieldset.html" with title="organization" relations="apis_instance_nsvis.ismemberof" %}
+</div>
+
+<div class="mb-3">
+{% include "partials/relation_fieldset.html" with title="career" relations="apis_instance_nsvis.collaborateswith, apis_instance_nsvis.worksas, apis_instance_nsvis.islearningat" %}
+</div>
+
+
+<div class="mb-3">
+{% include "partials/relation_fieldset.html" with title="places" relations="apis_instance_nsvis.livesin, apis_instance_nsvis.hasstudioin, apis_instance_nsvis.bornin, apis_instance_nsvis.diedin, apis_instance_nsvis.exilein, apis_instance_nsvis.imprisonedin" %}
+</div>
+
+{% endblock relations-include %}

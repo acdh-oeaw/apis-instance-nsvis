@@ -51,3 +51,8 @@ class PersonProfessionTypeRelationsTable(TimespanTable):
 class PersonPlaceRelationsTable(TimespanTable):
     class Meta(TimespanTable.Meta):
         ...
+
+
+#class PersonRelationsTable(TimespanTable):
+#    class Meta(TimespanTable.Meta):
+#        ...
