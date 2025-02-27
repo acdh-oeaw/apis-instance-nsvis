@@ -271,6 +271,14 @@ class CollaboratesWith(NsvisRelationMixin, Relation):
     subj_model = Person
     obj_model = Person
 
+    @classmethod
+    def name(self) -> str:
+        return _("collaborates with")
+
+    @classmethod
+    def reverse_name(self) -> str:
+        return _("collaborates with")
+
 
 class IsMemberOf(TimespanMixin, NsvisRelationMixin, Relation):
     subj_model = Person
