@@ -267,7 +267,7 @@ class NsvisRelationMixin:
     pass
 
 
-class CollaboratesWith(NsvisRelationMixin, Relation):
+class CollaboratesWith(TimespanMixin, NsvisRelationMixin, Relation):
     subj_model = Person
     obj_model = Person
 
