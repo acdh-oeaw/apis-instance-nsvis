@@ -365,7 +365,7 @@ class HasStudioIn(TimespanMixin, NsvisRelationMixin, Relation):
 
 
 class AddressInPlace(NsvisRelationMixin, Relation):
-    subj_model = AddressData
+    subj_model = [AddressData, Place]
     obj_model = Place
 
 
