@@ -1,0 +1,18 @@
+{% load nsvis %}
+{% load django_tables2 %}
+{% load i18n %}
+{% load relations %}
+
+<fieldset class="border rounded border-2 p-3">
+  <legend class="float-none w-auto px-3 small"><span class="badge bg-primary">{% translate title %}</span>
+  {% relation_types_by_string_list relations as relation_types %}
+  {% for relation_type in relation_types %}
+  <span class="badge bg-secondary">{{ relation_type.name }}</span>
+  {% endfor %}
+  </legend>
+  {% relations_from_by_label relation_types as rels %}
+  {% custom_relations_list_table rels suffix as table %}
+  {% if table.data %}
+  {% render_table table %}
+  {% endif %}
+</fieldset>
