@@ -57,9 +57,13 @@ class Person(AbstractEntity, VersionMixin, MongoDbDataMixin):
         verbose_name_plural = _("Persons")
         ordering = ["surname", "forename"]
 
+    class GenderChoices(models.TextChoices):
+        MALE = "male", _("male")
+        FEMALE = "female", _("female")
+
     forename = models.CharField(blank=True, default="", max_length=4096, verbose_name=_("Forname"))
     surname = models.CharField(blank=True, default="", max_length=4096, verbose_name=_("Surname"))
-    gender = models.CharField(blank=True, default="", max_length=4096, verbose_name=_("Gender"))
+    gender = models.CharField(blank=True, choices=GenderChoices, default="", max_length=4096, verbose_name=_("Gender"))
     date_of_birth = FuzzyDateParserField(blank=True, null=True, verbose_name=_("Date of birth"))
     date_of_death = FuzzyDateParserField(blank=True, null=True, verbose_name=_("Date of death"))
     citizenship = models.CharField(blank=True, default="", max_length=4096, verbose_name=_("Citizenship"))
