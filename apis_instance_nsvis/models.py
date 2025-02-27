@@ -344,7 +344,7 @@ class WorksAs(TimespanMixin, NsvisRelationMixin, Relation):
 
 class LivesIn(TimespanMixin, NsvisRelationMixin, Relation):
     subj_model = Person
-    obj_model = [Place, AddressData]
+    obj_model = Place
 
     @classmethod
     def name(self) -> str:
@@ -357,7 +357,7 @@ class LivesIn(TimespanMixin, NsvisRelationMixin, Relation):
 
 class HasStudioIn(TimespanMixin, NsvisRelationMixin, Relation):
     subj_model = Person
-    obj_model = [Place, AddressData]
+    obj_model = Place
 
     @classmethod
     def name(self) -> str:
@@ -369,7 +369,7 @@ class HasStudioIn(TimespanMixin, NsvisRelationMixin, Relation):
 
 
 class AddressInPlace(NsvisRelationMixin, Relation):
-    subj_model = [AddressData, Place]
+    subj_model = Place
     obj_model = Place
 
 
