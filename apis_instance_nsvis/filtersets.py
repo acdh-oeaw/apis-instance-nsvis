@@ -1,8 +1,41 @@
 from django.db.models import Q
 from django.forms.widgets import CheckboxInput
 from django_filters import UnknownFieldBehavior, FilterSet, MultipleChoiceFilter, BooleanFilter
+from apis_core.relations.filtersets import RelationFilterSet
 from apis_core.apis_entities.filtersets import AbstractEntityFilterSet
 from apis_instance_nsvis.models import Annotation
+from django_interval.fields import FuzzyDateParserField
+from django_interval.filters import YearIntervalRangeFilter
+
+
+class TimespanMixinFilterSet(RelationFilterSet):
+    class Meta(RelationFilterSet.Meta):
+        unknown_field_behavior = UnknownFieldBehavior.IGNORE
+        filter_overrides = {
+                FuzzyDateParserField: {
+                    'filter_class': YearIntervalRangeFilter
+                }
+        }
+
+
+class BornInFilterSet(RelationFilterSet):
+    class Meta(RelationFilterSet.Meta):
+        unknown_field_behavior = UnknownFieldBehavior.IGNORE
+        filter_overrides = {
+                FuzzyDateParserField: {
+                    'filter_class': YearIntervalRangeFilter
+                }
+        }
+
+
+class DiedInFilterSet(RelationFilterSet):
+    class Meta(RelationFilterSet.Meta):
+        unknown_field_behavior = UnknownFieldBehavior.IGNORE
+        filter_overrides = {
+                FuzzyDateParserField: {
+                    'filter_class': YearIntervalRangeFilter
+                }
+        }
 
 
 class PersonFilterSet(AbstractEntityFilterSet):
