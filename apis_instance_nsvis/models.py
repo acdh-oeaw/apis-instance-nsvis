@@ -52,6 +52,8 @@ class SpecialArea(GenericModel, VersionMixin, MongoDbDataMixin):
 
 
 class Person(AbstractEntity, VersionMixin, MongoDbDataMixin):
+    _default_search_fields = ["forename", "surname"]
+
     class Meta:
         verbose_name = _("Person")
         verbose_name_plural = _("Persons")
