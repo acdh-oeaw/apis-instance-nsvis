@@ -418,9 +418,23 @@ class ExileIn(TimespanMixin, NsvisRelationMixin, Relation):
         return _("was place of exile for")
 
 
+class ImprisonedIn(TimespanMixin, NsvisRelationMixin, Relation):
+    subj_model = Person
+    obj_model = Place
+
+    @classmethod
+    def name(self) -> str:
+        return _("is imprisoned in")
+
+    @classmethod
+    def reverse_name(self) -> str:
+        return _("is place of imprisonment for")
+
+
 auditlog.register(CollaboratesWith)
 auditlog.register(IsMemberOf)
 auditlog.register(IsInventoriedIn)
 auditlog.register(IsLearningAt)
 auditlog.register(LivesIn)
 auditlog.register(AddressInPlace)
+auditlog.register(ImprisonedIn)
