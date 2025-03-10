@@ -377,7 +377,7 @@ class HasStudioIn(TimespanMixin, NsvisRelationMixin, Relation):
         return _("is address for studio of")
 
 
-class AddressInPlace(NsvisRelationMixin, Relation):
+class LocatedIn(NsvisRelationMixin, Relation):
     subj_model = Place
     obj_model = Place
 
@@ -454,7 +454,7 @@ auditlog.register(IsLearningAt)
 auditlog.register(WorksAs)
 auditlog.register(LivesIn)
 auditlog.register(HasStudioIn)
-auditlog.register(AddressInPlace)
+auditlog.register(LocatedIn)
 auditlog.register(BornIn)
 auditlog.register(DiedIn)
 auditlog.register(ExileIn)
