@@ -381,6 +381,14 @@ class LocatedIn(NsvisRelationMixin, Relation):
     subj_model = Place
     obj_model = Place
 
+    @classmethod
+    def name(self) -> str:
+        return _("located in")
+
+    @classmethod
+    def reverse_name(self) -> str:
+        return _("is location of")
+
 
 class BornIn(Relation):
     subj_model = Person
