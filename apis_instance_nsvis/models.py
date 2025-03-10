@@ -66,8 +66,6 @@ class Person(AbstractEntity, VersionMixin, MongoDbDataMixin):
     forename = models.CharField(blank=True, default="", max_length=4096, verbose_name=_("Forname"))
     surname = models.CharField(blank=True, default="", max_length=4096, verbose_name=_("Surname"))
     gender = models.CharField(blank=True, choices=GenderChoices, default="", max_length=4096, verbose_name=_("Gender"))
-    date_of_birth = FuzzyDateParserField(blank=True, null=True, verbose_name=_("Date of birth"))
-    date_of_death = FuzzyDateParserField(blank=True, null=True, verbose_name=_("Date of death"))
     citizenship = models.CharField(blank=True, default="", max_length=4096, verbose_name=_("Citizenship"))
     address_comment = models.TextField(blank=True, default="", verbose_name=_("Address Comment"))
     membership_comment = models.TextField(blank=True, default="", verbose_name=_("Membership comment"))
