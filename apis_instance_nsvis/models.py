@@ -431,6 +431,19 @@ class ImprisonedIn(TimespanMixin, NsvisRelationMixin, Relation):
         return _("is place of imprisonment for")
 
 
+class IsInheritanceIn(Relation):
+    subj_model = Person
+    obj_model = Institution
+
+    @classmethod
+    def name(self) -> str:
+        return _("is inheritance in")
+
+    @classmethod
+    def reverse_name(self) -> str:
+        return _("contains inheritance of")
+
+
 auditlog.register(CollaboratesWith)
 auditlog.register(IsMemberOf)
 auditlog.register(IsInventoriedIn)
@@ -438,3 +451,4 @@ auditlog.register(IsLearningAt)
 auditlog.register(LivesIn)
 auditlog.register(AddressInPlace)
 auditlog.register(ImprisonedIn)
+auditlog.register(IsInheritanceIn)

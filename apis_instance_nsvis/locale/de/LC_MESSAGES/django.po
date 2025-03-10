@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-03-05 06:10+0000\n"
+"POT-Creation-Date: 2025-03-10 10:39+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -270,3 +270,11 @@ msgstr "ist inhaftiert in"
 #: apis_instance_nsvis/models.py:431
 msgid "is place of imprisonment for"
 msgstr "ist Ort der Inhaftierung für"
+
+#: apis_instance_nsvis/models.py:440
+msgid "is inheritance in"
+msgstr "ist im Nachlass bei"
+
+#: apis_instance_nsvis/models.py:444
+msgid "contains inheritance of"
+msgstr "hat als Nachlass"
