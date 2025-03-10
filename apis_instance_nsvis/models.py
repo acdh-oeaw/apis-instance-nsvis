@@ -393,6 +393,7 @@ class LocatedIn(NsvisRelationMixin, Relation):
 class BornIn(Relation):
     subj_model = Person
     obj_model = Place
+    date = FuzzyDateParserField(blank=True, null=True)
 
     @classmethod
     def name(self) -> str:
@@ -406,6 +407,7 @@ class BornIn(Relation):
 class DiedIn(NsvisRelationMixin, Relation):
     subj_model = Person
     obj_model = Place
+    date = FuzzyDateParserField(blank=True, null=True)
 
     @classmethod
     def name(self) -> str:
