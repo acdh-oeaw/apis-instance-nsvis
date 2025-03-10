@@ -49,5 +49,7 @@ class PersonProfessionTypeRelationsTable(TimespanTable):
 
 
 class PersonPlaceRelationsTable(TimespanTable):
+    date = tables.Column(order_by="date")
+
     class Meta(TimespanTable.Meta):
-        ...
+        sequence = (list(RelationsListTable.Meta.sequence)[:-3] + ["date", "from_date", "to_date"] + list(RelationsListTable.Meta.sequence)[-3:])
