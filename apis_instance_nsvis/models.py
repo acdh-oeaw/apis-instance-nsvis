@@ -259,9 +259,12 @@ class Annotation(AbstractEntity):
         return imagepath.relative_to(settings.STATIC_ROOT)
 
 
+auditlog.register(SpecialArea, serialize_data=True)
 auditlog.register(Person, serialize_data=True)
 auditlog.register(Place, serialize_data=True)
 auditlog.register(Institution, serialize_data=True)
+auditlog.register(EducationType, serialize_data=True)
+auditlog.register(ProfessionType, serialize_data=True)
 auditlog.register(AddressData, serialize_data=True)
 
 
