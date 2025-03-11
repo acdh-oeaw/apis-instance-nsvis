@@ -16,7 +16,7 @@ class AnnotationTable(AbstractEntityTable):
 
 
 class TimespanTable(RelationsListTable):
-    from_date = tables.TemplateColumn(order_by="from_date_date_sort", template_code="<abbr title='{{ record.from_date_date_sort }}'>{{ record.from_date }}</abbr>")
+    from_date = tables.TemplateColumn(order_by="from_date_date_sort", template_code="{% if record.from_date %}<abbr title='{{ record.from_date_date_sort }}'>{{ record.from_date }}</abbr>{% endif %}")
     to_date = tables.Column(order_by="to_date_sort")
 
     class Meta(RelationsListTable.Meta):
@@ -45,4 +45,4 @@ class PersonPlacesRelationsTable(TimespanTable):
     date = tables.Column(order_by="date")
 
     class Meta(TimespanTable.Meta):
-        sequence = (list(RelationsListTable.Meta.sequence)[:-3] + ["date", "from_date", "to_date"] + list(RelationsListTable.Meta.sequence)[-3:])
+        sequence = (list(TimespanTable.Meta.sequence)[:-5] + ["date"] + list(TimespanTable.Meta.sequence)[-5:])
