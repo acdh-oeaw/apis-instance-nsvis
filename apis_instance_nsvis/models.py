@@ -17,7 +17,7 @@ from apis_core.generic.abc import GenericModel
 from django.contrib.postgres.fields import ArrayField
 from django_interval.fields import FuzzyDateParserField
 from django_json_editor_field.fields import JSONEditorField
-from apis_instance_nsvis.utils import S3, MyImgProxy
+from apis_instance_nsvis.utils import S3, MyImgProxy, customdateparser
 
 from auditlog.registry import auditlog
 
@@ -288,8 +288,8 @@ auditlog.register(AddressData, serialize_data=True)
 
 
 class TimespanMixin(models.Model):
-    from_date = FuzzyDateParserField(blank=True, null=True)
-    to_date = FuzzyDateParserField(blank=True, null=True)
+    from_date = FuzzyDateParserField(blank=True, null=True, parser=customdateparser)
+    to_date = FuzzyDateParserField(blank=True, null=True, parser=customdateparser)
 
     class Meta:
         abstract = True
@@ -412,7 +412,7 @@ class LocatedIn(NsvisRelationMixin, Relation):
 class BornIn(Relation):
     subj_model = Person
     obj_model = Place
-    date = FuzzyDateParserField(blank=True, null=True)
+    date = FuzzyDateParserField(blank=True, null=True, parser=customdateparser)
 
     @classmethod
     def name(self) -> str:
@@ -426,7 +426,7 @@ class BornIn(Relation):
 class DiedIn(NsvisRelationMixin, Relation):
     subj_model = Person
     obj_model = Place
-    date = FuzzyDateParserField(blank=True, null=True)
+    date = FuzzyDateParserField(blank=True, null=True, parser=customdateparser)
 
     @classmethod
     def name(self) -> str:

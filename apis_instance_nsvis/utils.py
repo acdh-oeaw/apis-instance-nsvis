@@ -1,4 +1,3 @@
-import functools
 import logging
 import os
 import pathlib
@@ -6,6 +5,9 @@ import boto3
 from imgproxy import ImgProxy
 from botocore.exceptions import ClientError
 from botocore.config import Config
+from datetime import datetime
+import re
+from django_interval.utils import defaultdateparser
 
 logger = logging.getLogger(__name__)
 
@@ -60,3 +62,16 @@ class MyImgProxy:
                         key=self.key,
                         salt=self.salt)
         return img_url()
+
+
+re_abseit = r"^(vor|ab|seit|um) (?P<year>\d{1,4})"
+re_nach = r"^nach (?P<year>\d{1,4})"
+
+
+def customdateparser(date_string: str) -> tuple[datetime, datetime, datetime]:
+    date_string = date_string.lower()
+    if match := re.match(re_abseit, date_string):
+        date_string = f"1.1.{match['year']}"
+    if match := re.match(re_nach, date_string):
+        date_string = f"31.12.{match['year']}"
+    return defaultdateparser(date_string)
