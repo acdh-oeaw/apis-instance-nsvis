@@ -24,31 +24,24 @@ class TimespanTable(RelationsListTable):
         order_by = ("from_date",)
 
 
-class PersonAddressDataRelationsTable(TimespanTable):
+class PersonInventoryRelationsTable(TimespanTable):
     class Meta(TimespanTable.Meta):
         ...
 
 
-class PersonInstitutionRelationsTable(TimespanTable):
+class PersonOrganizationRelationsTable(TimespanTable):
     class Meta(TimespanTable.Meta):
         ...
 
 
-class PersonEducationTypeRelationsTable(TimespanTable):
+class PersonCareerRelationsTable(TimespanTable):
     details = tables.Column()
 
     class Meta(TimespanTable.Meta):
         sequence = (list(TimespanTable.Meta.sequence)[:-5] + ["details"] + list(TimespanTable.Meta.sequence)[-5:])
 
 
-class PersonProfessionTypeRelationsTable(TimespanTable):
-    details = tables.Column()
-
-    class Meta(TimespanTable.Meta):
-        sequence = (list(TimespanTable.Meta.sequence)[:-5] + ["details"] + list(TimespanTable.Meta.sequence)[-5:])
-
-
-class PersonPlaceRelationsTable(TimespanTable):
+class PersonPlacesRelationsTable(TimespanTable):
     date = tables.Column(order_by="date")
 
     class Meta(TimespanTable.Meta):
