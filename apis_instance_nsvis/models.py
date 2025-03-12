@@ -1,3 +1,4 @@
+import logging
 from urllib.parse import urlparse
 from pathlib import Path
 from PIL import Image
@@ -5,7 +6,6 @@ import httpx
 
 from django.contrib.contenttypes.fields import GenericForeignKey, GenericRelation
 from django.contrib.contenttypes.models import ContentType
-from django.conf import settings
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 from django.template.defaultfilters import slugify
@@ -17,8 +17,13 @@ from apis_core.generic.abc import GenericModel
 from django.contrib.postgres.fields import ArrayField
 from django_interval.fields import FuzzyDateParserField
 from django_json_editor_field.fields import JSONEditorField
+from apis_instance_nsvis.utils import S3, MyImgProxy
 
 from auditlog.registry import auditlog
+
+logger = logging.getLogger(__name__)
+
+s3 = S3()
 
 
 class NsvisMixin:
@@ -223,26 +228,40 @@ class Annotation(AbstractEntity):
             return f"{self.issue} ({label}) [{self.lst_result_id}]"
         return self.issue
 
-    def local_image(self):
-        headers = {'Origin': "https://label-studio.acdh-dev.oeaw.ac.at"}
+    @property
+    def pagepath(self):
         suffix = Path(urlparse(self.image).path).suffix
         issueslug = slugify(self.issue)
-        imagepath = Path(settings.STATIC_ROOT) / issueslug / f"{self.lst_result_id}{suffix}"
-        if not imagepath.exists():
-            imagepath.parent.mkdir(parents=True, exist_ok=True)
+        imagepath = f"23503/{issueslug}/{self.lst_result_id}{suffix}"
+        return imagepath
+
+    @property
+    def page(self):
+        headers = {'Origin': "https://label-studio.acdh-dev.oeaw.ac.at"}
+        tmp = Path("/tmp") / self.pagepath
+        if not tmp.exists():
+            tmp.parent.mkdir(parents=True, exist_ok=True)
             with httpx.stream("GET", self.image, headers=headers) as r:
                 if r.status_code == httpx.codes.OK:
                     for data in r.iter_bytes():
-                        with imagepath.open("ab") as f:
+                        with tmp.open("ab") as f:
                             f.write(data)
-        return imagepath.relative_to(settings.STATIC_ROOT)
+        return tmp
+
+    def local_image(self):
+        if not s3.file_exists(self.pagepath):
+            logger.info("Downloading and uploading file to s3: %s", self.page)
+            s3.upload_file(self.page, self.pagepath)
+        myimgproxy = MyImgProxy()
+        return myimgproxy.calc(self.pagepath)
 
     @property
     def clip(self):
-        imagepath = Path(settings.STATIC_ROOT) / f"cropped/{self.lst_result_id}.jpg"
-        imagepath.parent.mkdir(parents=True, exist_ok=True)
-        if not imagepath.exists():
-            image = Image.open(settings.STATIC_ROOT / self.local_image())
+        imagepath = f"23503/cropped/{self.lst_result_id}.jpg"
+        if not s3.file_exists(imagepath):
+            tmp = Path("/tmp") / imagepath
+            tmp.parent.mkdir(parents=True, exist_ok=True)
+            image = Image.open(self.page)
             # calculate coordinates and dimensions of annotated area:
             height, width = image.size
             left = int(self.data["x"]/100 * height)
@@ -253,8 +272,10 @@ class Annotation(AbstractEntity):
             dims = (left, upper, left+crop_width, upper+crop_height)
             crop = image.crop(dims)
             crop.thumbnail((800, 800))
-            crop.save(imagepath)
-        return imagepath.relative_to(settings.STATIC_ROOT)
+            crop.save(tmp)
+            s3.upload_file(tmp, imagepath)
+        myimgproxy = MyImgProxy()
+        return myimgproxy.calc(imagepath)
 
 
 auditlog.register(SpecialArea, serialize_data=True)
