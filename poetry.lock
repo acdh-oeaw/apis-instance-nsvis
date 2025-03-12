@@ -807,6 +807,21 @@ files = [
 all = ["flake8 (>=7.1.1)", "mypy (>=1.11.2)", "pytest (>=8.3.2)", "ruff (>=0.6.2)"]
 
 [[package]]
+name = "imgproxy"
+version = "1.0.0"
+description = "Python support for ImgProxy"
+optional = false
+python-versions = ">=3.7"
+files = [
+    {file = "imgproxy-1.0.0-py3-none-any.whl", hash = "sha256:18d3686c1b8f976906192e7bbdcd44dca305600e3e338fab68c30ee9a4102ded"},
+    {file = "imgproxy-1.0.0.tar.gz", hash = "sha256:f2e34b0da688284ad3a1e7ccd907b1038285001832362fb64cd2bd39c6c952e3"},
+]
+
+[package.extras]
+build = ["bump2version", "twine", "wheel"]
+tests = ["pytest", "pytest-mypy"]
+
+[[package]]
 name = "importlib-metadata"
 version = "8.4.0"
 description = "Read metadata from Python packages"
@@ -1961,4 +1976,4 @@ type = ["pytest-mypy"]
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.11"
-content-hash = "26fa8522728323ad6c9f02b2cf5b1c124ca82d851ab8d6a6f3c07578e29ef7b8"
+content-hash = "30d66a2900eda9bf5e4b1a807e1054dbda3c3eb95df73f53dd83fedd42e12cc9"
