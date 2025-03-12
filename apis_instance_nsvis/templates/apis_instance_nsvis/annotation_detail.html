@@ -10,7 +10,7 @@
 <div class="overlay" data-x={{ object.data.x }} data-y={{ object.data.y }} data-height={{ object.data.height }} data-width={{ object.data.width }} data-target="image"></div>
 <div class="d-flex flex-row">
   <div>
-    <img id="image" class="annotated-img" src="{% static object.local_image %}" referrerpolicy="origin">
+	  <img id="image" class="annotated-img" src="{{ object.local_image }}" referrerpolicy="origin">
   </div>
   <div class="ml-4">
     {% include "apis_core/generic/genericmodel_card_table.html" %}
