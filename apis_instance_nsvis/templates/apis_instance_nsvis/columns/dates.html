@@ -1,0 +1,13 @@
+{% load django_interval %}
+{% if record.date %}
+<abbr title="{% date_interval record.date_date_to record.date_date_from record.date_date_sort %}">{{ record.date }}</abbr>
+{% endif %}
+{% if record.from_date or record.to_date %}
+{% if record.from_date %}
+<abbr title="{% date_interval record.from_date_date_to record.from_date_date_from record.from_date_date_sort %}">{{ record.from_date }}</abbr>
+{% endif %}
+-
+{% if record.to_date %}
+<abbr title="{% date_interval record.to_date_date_to record.to_date_date_from record.to_date_date_sort %}">{{ record.to_date }}</abbr>
+{% endif %}
+{% endif %}
