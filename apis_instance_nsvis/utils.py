@@ -56,11 +56,13 @@ class MyImgProxy:
         self.salt = os.getenv("IMGPROXY_SALT")
         self.proxy_host = "https://imgproxy.acdh.oeaw.ac.at"
 
-    def calc(self, path):
+    def calc(self, path, options=None):
         img_url = ImgProxy(f"s3://for-imgproxy/{path}",
                         proxy_host=self.proxy_host,
                         key=self.key,
                         salt=self.salt)
+        if options:
+            return img_url(options)
         return img_url()
 
 

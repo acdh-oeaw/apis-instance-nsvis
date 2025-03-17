@@ -230,7 +230,7 @@ class Annotation(AbstractEntity):
 
     @property
     def pagepath(self):
-        suffix = Path(urlparse(self.image).path).suffix
+        suffix = Path(urlparse(self.image).path).suffix or ".jpg"
         issueslug = slugify(self.issue)
         imagepath = f"23503/{issueslug}/{self.lst_result_id}{suffix}"
         return imagepath
@@ -257,25 +257,16 @@ class Annotation(AbstractEntity):
 
     @property
     def clip(self):
-        imagepath = f"23503/cropped/{self.lst_result_id}.jpg"
-        if not s3.file_exists(imagepath):
-            tmp = Path("/tmp") / imagepath
-            tmp.parent.mkdir(parents=True, exist_ok=True)
-            image = Image.open(self.page)
-            # calculate coordinates and dimensions of annotated area:
-            height, width = image.size
-            left = int(self.data["x"]/100 * height)
-            upper = int(self.data["y"]/100 * width)
-            crop_width = int(self.data["width"]/100 * height)
-            crop_height = int(self.data["height"]/100 * width)
-            # store the area in crop and make a thumbnail out of it
-            dims = (left, upper, left+crop_width, upper+crop_height)
-            crop = image.crop(dims)
-            crop.thumbnail((800, 800))
-            crop.save(tmp)
-            s3.upload_file(tmp, imagepath)
+        if not s3.file_exists(self.pagepath):
+            logger.info("Downloading and uploading file to s3: %s", self.page)
+            s3.upload_file(self.page, self.pagepath)
         myimgproxy = MyImgProxy()
-        return myimgproxy.calc(imagepath)
+        width = self.data['width']/100
+        height = self.data['height']/100
+        x = self.data['x']/100
+        y = self.data['y']/100
+
+        return myimgproxy.calc(self.pagepath, options=f"crop:{width}:{height}:nowe:{x}:{y}")
 
 
 auditlog.register(SpecialArea, serialize_data=True)
