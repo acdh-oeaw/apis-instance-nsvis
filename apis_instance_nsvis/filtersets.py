@@ -3,11 +3,18 @@ from django.forms.widgets import CheckboxInput
 from django_filters import UnknownFieldBehavior, FilterSet, MultipleChoiceFilter, BooleanFilter
 from apis_core.apis_entities.filtersets import AbstractEntityFilterSet
 from apis_instance_nsvis.models import Annotation
+from django_interval.fields import FuzzyDateParserField
+from django_interval.filters import IntervalRangeFilter
 
 
 class PersonFilterSet(AbstractEntityFilterSet):
     class Meta(AbstractEntityFilterSet.Meta):
         unknown_field_behavior = UnknownFieldBehavior.IGNORE
+        filter_overrides = {
+                FuzzyDateParserField: {
+                    'filter_class': IntervalRangeFilter
+                }
+        }
 
 
 class CustomMultipleChoiceFilter(MultipleChoiceFilter):
