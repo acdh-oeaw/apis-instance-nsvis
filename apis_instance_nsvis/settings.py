@@ -21,3 +21,5 @@ MIDDLEWARE += [  # noqa: F405
     "auditlog.middleware.AuditlogMiddleware",
     "simple_history.middleware.HistoryRequestMiddleware",
 ]
+
+ADDITIONAL_MODULE_LOOKUP_PATHS = ["apis_instance_nsvis"]
