@@ -55,6 +55,10 @@ class SpecialArea(GenericModel, VersionMixin, MongoDbDataMixin):
     def __str__(self):
         return self.label
 
+    @classmethod
+    def create_from_string(cls, string):
+        return cls.objects.create(label=string)
+
 
 class Person(AbstractEntity, VersionMixin, MongoDbDataMixin):
     _default_search_fields = ["forename", "surname"]
@@ -168,6 +172,10 @@ class Institution(AbstractEntity, VersionMixin, MongoDbDataMixin):
     def __str__(self):
         return self.label
 
+    @classmethod
+    def create_from_string(cls, string):
+        return cls.objects.create(label=string)
+
 
 class EducationType(AbstractEntity, VersionMixin, MongoDbDataMixin):
     class Meta:
@@ -179,6 +187,10 @@ class EducationType(AbstractEntity, VersionMixin, MongoDbDataMixin):
     def __str__(self):
         return self.label
 
+    @classmethod
+    def create_from_string(cls, string):
+        return cls.objects.create(label=string)
+
 
 class ProfessionType(AbstractEntity, VersionMixin, MongoDbDataMixin):
     class Meta:
@@ -189,6 +201,10 @@ class ProfessionType(AbstractEntity, VersionMixin, MongoDbDataMixin):
 
     def __str__(self):
         return self.label
+
+    @classmethod
+    def create_from_string(cls, string):
+        return cls.objects.create(label=string)
 
 
 class AddressData(AbstractEntity, VersionMixin):
