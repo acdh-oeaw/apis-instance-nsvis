@@ -207,18 +207,6 @@ class ProfessionType(AbstractEntity, VersionMixin, MongoDbDataMixin):
         return cls.objects.create(label=string)
 
 
-class AddressData(AbstractEntity, VersionMixin):
-    class Meta:
-        verbose_name = _("Address Data")
-        verbose_name_plural = _("Address Datas")
-
-    postal = models.TextField(blank=True, max_length=32, verbose_name=_("Postal"))
-    address = models.TextField(blank=True, max_length=64, verbose_name=_("Address"))
-
-    def __str__(self):
-        return f"{self.address} ({self.postal})"
-
-
 class Annotation(AbstractEntity):
     data = models.JSONField(null=True, editable=False)
     image = models.TextField(max_length=512, editable=False)
@@ -300,7 +288,6 @@ auditlog.register(Place, serialize_data=True)
 auditlog.register(Institution, serialize_data=True)
 auditlog.register(EducationType, serialize_data=True)
 auditlog.register(ProfessionType, serialize_data=True)
-auditlog.register(AddressData, serialize_data=True)
 
 
 class TimespanMixin(models.Model):
