@@ -56,6 +56,8 @@ class Command(BaseCommand):
         Annotation.objects.exclude(id__in=ann_ids).delete()
         for ann in Annotation.objects.all():
             authors = next(iter(ann.data.get("Author", [])), "").splitlines()
+            if not authors:
+                authors = ["unbekannt"]
             ann.author = [author.strip() for author in authors]
             ann.caption = next(iter(ann.data.get("Caption", [])), None)
             ann.title = next(iter(ann.data.get("Title", [])), None)
