@@ -38,11 +38,6 @@ class DiedInFilterSet(RelationFilterSet):
         }
 
 
-class PersonFilterSet(AbstractEntityFilterSet):
-    class Meta(AbstractEntityFilterSet.Meta):
-        unknown_field_behavior = UnknownFieldBehavior.IGNORE
-
-
 class CustomMultipleChoiceFilter(MultipleChoiceFilter):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
