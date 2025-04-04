@@ -226,6 +226,8 @@ class Annotation(AbstractEntity):
 
     class Meta:
         unique_together = (('lst_task_id', 'lst_annotation_id', "lst_result_id"),)
+        verbose_name = _("annotation")
+        verbose_name_plural = _("annotations")
 
     def __str__(self):
         if label := self.data.get("iiif_label"):
