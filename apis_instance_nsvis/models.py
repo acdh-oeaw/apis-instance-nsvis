@@ -9,7 +9,7 @@ from django.contrib.contenttypes.models import ContentType
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 from django.template.defaultfilters import slugify
-from apis_core.apis_entities.abc import E53_Place, SimpleLabelModel
+from apis_core.apis_entities.abc import E53_Place, SimpleLabelModel, E21_Person
 from apis_core.history.models import VersionMixin
 from apis_core.apis_entities.models import AbstractEntity
 from apis_core.relations.models import Relation
@@ -51,21 +51,22 @@ class SpecialArea(GenericModel, VersionMixin, MongoDbDataMixin, SimpleLabelModel
         verbose_name_plural = _("Special Areas")
 
 
-class Person(AbstractEntity, VersionMixin, MongoDbDataMixin):
+class Person(AbstractEntity, VersionMixin, MongoDbDataMixin, E21_Person):
     _default_search_fields = ["forename", "surname"]
 
-    class Meta:
-        verbose_name = _("Person")
-        verbose_name_plural = _("Persons")
-        ordering = ["surname", "forename"]
+    class Meta(E21_Person.Meta):
+        ...
 
     class GenderChoices(models.TextChoices):
         MALE = "male", _("male")
         FEMALE = "female", _("female")
 
-    forename = models.CharField(blank=True, default="", max_length=4096, verbose_name=_("Forname"))
-    surname = models.CharField(blank=True, default="", max_length=4096, verbose_name=_("Surname"))
+    # we override inherited fields to either disable or adapt them
     gender = models.CharField(blank=True, choices=GenderChoices, default="", max_length=4096, verbose_name=_("Gender"))
+    date_of_birth = None
+    date_of_death = None
+
+    # custom fields:
     citizenship = models.CharField(blank=True, default="", max_length=4096, verbose_name=_("Citizenship"))
     address_comment = models.TextField(blank=True, default="", verbose_name=_("Address Comment"))
     membership_comment = models.TextField(blank=True, default="", verbose_name=_("Membership comment"))
