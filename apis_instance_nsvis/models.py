@@ -9,7 +9,7 @@ from django.contrib.contenttypes.models import ContentType
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 from django.template.defaultfilters import slugify
-from apis_core.apis_entities.abc import E53_Place
+from apis_core.apis_entities.abc import E53_Place, SimpleLabelModel
 from apis_core.history.models import VersionMixin
 from apis_core.apis_entities.models import AbstractEntity
 from apis_core.relations.models import Relation
@@ -45,19 +45,10 @@ class MongoDbDataMixin(models.Model):
         abstract = True
 
 
-class SpecialArea(GenericModel, VersionMixin, MongoDbDataMixin):
-    class Meta:
+class SpecialArea(GenericModel, VersionMixin, MongoDbDataMixin, SimpleLabelModel):
+    class Meta(SimpleLabelModel.Meta):
         verbose_name = _("Special Area")
         verbose_name_plural = _("Special Areas")
-
-    label = models.CharField(blank=True, default="", max_length=4096, verbose_name=_("Label"))
-
-    def __str__(self):
-        return self.label
-
-    @classmethod
-    def create_from_string(cls, string):
-        return cls.objects.create(label=string)
 
 
 class Person(AbstractEntity, VersionMixin, MongoDbDataMixin):
@@ -177,34 +168,16 @@ class Institution(AbstractEntity, VersionMixin, MongoDbDataMixin):
         return cls.objects.create(label=string)
 
 
-class EducationType(AbstractEntity, VersionMixin, MongoDbDataMixin):
-    class Meta:
+class EducationType(AbstractEntity, VersionMixin, MongoDbDataMixin, SimpleLabelModel):
+    class Meta(SimpleLabelModel.Meta):
         verbose_name = _("Education Type")
         verbose_name_plural = _("Education Types")
 
-    label = models.CharField(blank=True, default="", max_length=4096, verbose_name=_("Label"))
 
-    def __str__(self):
-        return self.label
-
-    @classmethod
-    def create_from_string(cls, string):
-        return cls.objects.create(label=string)
-
-
-class ProfessionType(AbstractEntity, VersionMixin, MongoDbDataMixin):
-    class Meta:
+class ProfessionType(AbstractEntity, VersionMixin, MongoDbDataMixin, SimpleLabelModel):
+    class Meta(SimpleLabelModel.Meta):
         verbose_name = _("Profession Type")
         verbose_name_plural = _("Profession Types")
-
-    label = models.CharField(blank=True, default="", max_length=4096, verbose_name=_("Label"))
-
-    def __str__(self):
-        return self.label
-
-    @classmethod
-    def create_from_string(cls, string):
-        return cls.objects.create(label=string)
 
 
 class Annotation(AbstractEntity):
