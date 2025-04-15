@@ -1,0 +1,7 @@
+{% if value %}
+<ul>
+{% for val in value %}
+<li>{{ val|urlize }}</li>
+{% endfor %}
+</ul>
+{% endif %}
