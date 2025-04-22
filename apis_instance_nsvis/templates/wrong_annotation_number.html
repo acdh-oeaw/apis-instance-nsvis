@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container">
+
+{% if data %}
+{{ data|length }} Results
+<table class="table">
+  <thead>
+    <tr>
+      <th>Issue</th>
+      <th>Title</th>
+      <th>nr annotation in with this title</th>
+      <th>nr of authors in annotation</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for entry in data %}
+    <tr>
+      <td><a href="https://label-studio.acdh-dev.oeaw.ac.at/projects/{{ entry.annotation.data.project_id }}/data?task={{ entry.annotation.lst_task_id }}">{{ entry.annotation.issue }}</a></td>
+      <td>{{ entry.annotation.title|truncatechars:30 }}</td>
+      <td>{{ entry.nr_anns }}</td>
+      <td>{{ entry.annotation.author|length }}<td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% endif %}
+
+</div>
+{% endblock content %}
