@@ -6,10 +6,10 @@ from apis_core.relations.tables import RelationsListTable
 
 class AnnotationTable(AbstractEntityTable):
     issue = tables.TemplateColumn(template_code="<a href={{ record.get_absolute_url }}>{{ record.issue }}</a>")
-    labelstudio = tables.TemplateColumn(template_name="columns/labelstudio_link.html")
+    labelstudio = tables.TemplateColumn(template_name="columns/labelstudio_link.html", exclude_from_export=True)
     topic = tables.TemplateColumn(template_code="{{ record.topic|join:', ' }}")
     depicted = tables.TemplateColumn(template_code="{{ record.depicted|join:', ' }}")
-    clip = tables.TemplateColumn(template_code="<img class='thumbnail' src={{ record.clip }}>")
+    clip = tables.TemplateColumn(template_code="<img class='thumbnail' src={{ record.clip }}>", exclude_from_export=True)
 
     class Meta(AbstractEntityTable.Meta):
         exclude = ["desc"]
