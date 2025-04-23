@@ -68,3 +68,8 @@ class PersonCareerRelationsTable(TimespanTable):
 class PersonPlacesRelationsTable(TimespanTable):
     class Meta(TimespanTable.Meta):
         ...
+
+
+class AnnotationAuthorsTable(tables.Table):
+    author = tables.Column()
+    count = tables.Column()
