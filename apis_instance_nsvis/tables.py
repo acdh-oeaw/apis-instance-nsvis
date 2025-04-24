@@ -73,3 +73,8 @@ class PersonPlacesRelationsTable(TimespanTable):
 class AnnotationAuthorsTable(tables.Table):
     author = tables.Column()
     count = tables.Column()
+
+
+class AnnotationReportsTable(tables.Table):
+    title = tables.TemplateColumn(template_code='<a href="{% url "apis_core:generic:list" "apis_instance_nsvis.annotation" %}?title={{ record.title }}">{{ record.title }}</a>')
+    count = tables.Column()
