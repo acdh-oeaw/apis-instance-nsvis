@@ -71,7 +71,7 @@ class PersonPlacesRelationsTable(TimespanTable):
 
 
 class AnnotationAuthorsTable(tables.Table):
-    author = tables.Column()
+    author = tables.TemplateColumn(template_code='<a href="{% url "apis_core:generic:list" "apis_instance_nsvis.annotation" %}?author={{ record.author|urlencode }}">{{ record.author }}</a>')
     count = tables.Column()
 
 
