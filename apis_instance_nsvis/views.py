@@ -1,5 +1,6 @@
 from collections import defaultdict
 from django.db.models import Count
+from django.contrib.postgres.aggregates import ArrayAgg
 
 from django.views.generic.base import TemplateView
 from apis_instance_nsvis.models import Annotation
@@ -48,4 +49,4 @@ class AnnotationReportsView(List):
         return AnnotationReportsTable
 
     def get_table_data(self, *args, **kwargs):
-        return Annotation.objects.values("title").annotate(count=Count("title")).order_by().filter(count__gt=1)
+        return Annotation.objects.values("title").annotate(count=Count("title"), ids=ArrayAgg("id")).order_by().filter(count__gt=1)
