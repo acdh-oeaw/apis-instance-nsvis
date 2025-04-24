@@ -2,6 +2,7 @@ from datetime import date
 import django_tables2 as tables
 from apis_core.apis_entities.tables import AbstractEntityTable
 from apis_core.relations.tables import RelationsListTable
+from apis_instance_nsvis.models import Annotation
 
 
 class AnnotationTable(AbstractEntityTable):
@@ -81,6 +82,14 @@ class AnnotationAuthorsTable(tables.Table):
 class AnnotationReportsTable(tables.Table):
     title = tables.TemplateColumn(template_code='<a href="{% url "apis_core:generic:list" "apis_instance_nsvis.annotation" %}?title={{ record.title }}">{{ record.title }}</a>')
     count = tables.Column()
+    authors = tables.Column(empty_values=())
 
     def value_title(self, value, record):
         return value
+
+    def render_authors(self, value, record):
+        authors = set()
+        for author_list in Annotation.objects.values_list("author", flat=True).filter(id__in=record.get("ids", [])):
+            for author in author_list:
+                authors.add(author)
+        return ", ".join(authors)
