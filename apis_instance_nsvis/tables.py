@@ -74,7 +74,13 @@ class AnnotationAuthorsTable(tables.Table):
     author = tables.TemplateColumn(template_code='<a href="{% url "apis_core:generic:list" "apis_instance_nsvis.annotation" %}?author={{ record.author|urlencode }}">{{ record.author }}</a>')
     count = tables.Column()
 
+    def value_author(self, value, record):
+        return value
+
 
 class AnnotationReportsTable(tables.Table):
     title = tables.TemplateColumn(template_code='<a href="{% url "apis_core:generic:list" "apis_instance_nsvis.annotation" %}?title={{ record.title }}">{{ record.title }}</a>')
     count = tables.Column()
+
+    def value_title(self, value, record):
+        return value
