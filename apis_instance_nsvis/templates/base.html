@@ -5,3 +5,23 @@
 {{ block.super }}
 <link rel="stylesheet" href="{% static 'css/nsvis.css' %}">
 {% endblock styles %}
+
+{% block main-menu %}
+  {{ block.super }}
+  <li class="nav-item dropdown">
+    <a href="#"
+       class="nav-link dropdown-toggle"
+       data-bs-toggle="dropdown"
+       role="button"
+       aria-haspopup="true"
+       aria-expanded="false">NSVIS
+      <span class="caret" />
+    </a>
+    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+      <a class="dropdown-item"
+         href="{% url "annotationsauthorsview" "apis_instance_nsvis.annotation" %}">Annotations by authors</a>
+      <a class="dropdown-item"
+         href="{% url "annotationsreportsview" "apis_instance_nsvis.annotation" %}">Annotations by reports</a>
+    </div>
+  </li>
+{% endblock main-menu %}
