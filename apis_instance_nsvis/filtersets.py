@@ -1,3 +1,4 @@
+import re
 from django.db.models import Q
 from django.forms.widgets import CheckboxInput
 from django_filters import UnknownFieldBehavior, FilterSet, MultipleChoiceFilter, BooleanFilter
@@ -74,6 +75,26 @@ class IssueFilter(MultipleChoiceFilter):
         return qs.filter(q)
 
 
+class IssueYearFilter(MultipleChoiceFilter):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.extra["choices"] = self.get_choices()
+
+    def get_choices(self):
+        issues = sorted(Annotation.objects.values_list(self.field_name, flat=True).distinct())
+        years = set()
+        for issue in issues:
+            if match := re.search("(?P<year>19\d\d)", issue):
+                years.add(int(match["year"]))
+        return zip(years, years)
+
+    def filter(self, qs, value):
+        q = Q()
+        for val in value:
+            q |= Q(**{f"{self.field_name}__contains": val})
+        return qs.filter(q)
+
+
 class MagazineFilter(IssueFilter):
     def get_choices(self):
         issues = sorted(Annotation.objects.values_list(self.field_name, flat=True).distinct())
@@ -103,6 +124,7 @@ class AnnotationFilterSet(FilterSet):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
+        self.filters["years"] = IssueYearFilter(field_name="issue")
         self.filters["issue"] = IssueFilter(field_name="issue")
         self.filters["magazine"] = MagazineFilter(field_name="issue")
         self.filters["author"] = CustomMultipleChoiceFilter(field_name="author")
