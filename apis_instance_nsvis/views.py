@@ -1,9 +1,9 @@
 from collections import defaultdict
-import django_tables2 as tables
+from django.db.models import Count
 
 from django.views.generic.base import TemplateView
 from apis_instance_nsvis.models import Annotation
-from apis_instance_nsvis.tables import AnnotationAuthorsTable
+from apis_instance_nsvis.tables import AnnotationAuthorsTable, AnnotationReportsTable
 from apis_core.generic.views import List
 
 
@@ -41,3 +41,11 @@ class AnnotationAuthorsView(List):
             for author in ann.author:
                 data[author] += 1
         return [{"author": key, "count": value} for key, value in data.items()]
+
+
+class AnnotationReportsView(List):
+    def get_table_class(self):
+        return AnnotationReportsTable
+
+    def get_table_data(self, *args, **kwargs):
+        return Annotation.objects.values("title").annotate(count=Count("title")).order_by().filter(count__gt=1)
