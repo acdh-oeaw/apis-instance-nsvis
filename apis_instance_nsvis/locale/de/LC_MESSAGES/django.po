@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-04-04 07:01+0000\n"
+"POT-Creation-Date: 2025-05-14 09:56+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,241 +18,238 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: apis_instance_nsvis/models.py:50
+#: apis_instance_nsvis/models.py
 msgid "Special Area"
 msgstr "Spezialgebiet"
 
-#: apis_instance_nsvis/models.py:51
+#: apis_instance_nsvis/models.py
 msgid "Special Areas"
 msgstr "Spezialgebiete"
 
-#: apis_instance_nsvis/models.py:61
+#: apis_instance_nsvis/models.py
 msgid "male"
 msgstr "männlich"
 
-#: apis_instance_nsvis/models.py:62
+#: apis_instance_nsvis/models.py
 msgid "female"
 msgstr "weiblich"
 
-#: apis_instance_nsvis/models.py:65
+#: apis_instance_nsvis/models.py
 msgid "Gender"
 msgstr "Geschlecht"
 
-#: apis_instance_nsvis/models.py:70
+#: apis_instance_nsvis/models.py
 msgid "Citizenship"
 msgstr "Staatsbürgerschaft"
 
-#: apis_instance_nsvis/models.py:71
+#: apis_instance_nsvis/models.py
 msgid "Address Comment"
 msgstr "Kommentar Adresse"
 
-#: apis_instance_nsvis/models.py:72
+#: apis_instance_nsvis/models.py
 msgid "Membership comment"
 msgstr "Kommentar zu Mitgliedschaften"
 
-#: apis_instance_nsvis/models.py:73
+#: apis_instance_nsvis/models.py
 msgid "Special areas"
 msgstr "Spezialgebiete"
 
-#: apis_instance_nsvis/models.py:74
+#: apis_instance_nsvis/models.py
 msgid "Party comment"
 msgstr "Kommentar zu Parteizugehörigkeit"
 
-#: apis_instance_nsvis/models.py:75
+#: apis_instance_nsvis/models.py
 msgid "Exile comment"
 msgstr "Kommentar zu Exil"
 
-#: apis_instance_nsvis/models.py:76
+#: apis_instance_nsvis/models.py
 msgid "Profession comment"
 msgstr "Kommentar zu Beruf"
 
-#: apis_instance_nsvis/models.py:121
+#: apis_instance_nsvis/models.py
 msgid "Inheritance"
 msgstr "Nachlass"
 
-#: apis_instance_nsvis/models.py:130
+#: apis_instance_nsvis/models.py
 msgid "Research sources"
 msgstr "Forschungsquellen"
 
-#: apis_instance_nsvis/models.py:131
+#: apis_instance_nsvis/models.py
 msgid "Other sources"
 msgstr "Andere Quellen"
 
-#: apis_instance_nsvis/models.py:132
+#: apis_instance_nsvis/models.py
 msgid "Literature"
 msgstr "Literatur"
 
-#: apis_instance_nsvis/models.py:135
+#: apis_instance_nsvis/models.py
 msgid "Yes"
 msgstr "Ja"
 
-#: apis_instance_nsvis/models.py:136
+#: apis_instance_nsvis/models.py
 msgid "No"
 msgstr "Nein"
 
-#: apis_instance_nsvis/models.py:137
+#: apis_instance_nsvis/models.py
 msgid "Unknown"
 msgstr "Unbekannt"
 
-#: apis_instance_nsvis/models.py:138
+#: apis_instance_nsvis/models.py
 msgid "Work ban during NS"
 msgstr "Berufsverbot während des NS"
 
-#: apis_instance_nsvis/models.py:139
+#: apis_instance_nsvis/models.py
 msgid "Worked during NS"
 msgstr "Berufstätigkeit während des NS"
 
-#: apis_instance_nsvis/models.py:140
+#: apis_instance_nsvis/models.py
 msgid "Member in a propaganda company"
 msgstr "Mitgliedschaft in einer Propagandakompanie"
 
-#: apis_instance_nsvis/models.py:148
-msgid "Place"
-msgstr "Ort"
-
-#: apis_instance_nsvis/models.py:149
-msgid "Places"
-msgstr "Orte"
-
-#: apis_instance_nsvis/models.py:159
+#: apis_instance_nsvis/models.py
 msgid "Institution"
 msgstr "Institution"
 
-#: apis_instance_nsvis/models.py:160
+#: apis_instance_nsvis/models.py
 msgid "Institutions"
 msgstr "Institutionen"
 
-#: apis_instance_nsvis/models.py:162
-msgid "Label"
-msgstr "Bezeichnung"
-
-#: apis_instance_nsvis/models.py:174
+#: apis_instance_nsvis/models.py
 msgid "Education Type"
 msgstr "Ausbildungstyp"
 
-#: apis_instance_nsvis/models.py:175
+#: apis_instance_nsvis/models.py
 msgid "Education Types"
 msgstr "Ausbildungstypen"
 
-#: apis_instance_nsvis/models.py:180
+#: apis_instance_nsvis/models.py
 msgid "Profession Type"
 msgstr "Berufstyp"
 
-#: apis_instance_nsvis/models.py:181
+#: apis_instance_nsvis/models.py
 msgid "Profession Types"
 msgstr "Berufstypen"
 
-#: apis_instance_nsvis/models.py:203
+#: apis_instance_nsvis/models.py
 msgid "annotation"
 msgstr "Annotation"
 
-#: apis_instance_nsvis/models.py:204
+#: apis_instance_nsvis/models.py
 msgid "annotations"
 msgstr "Annotationen"
 
-#: apis_instance_nsvis/models.py:287 apis_instance_nsvis/models.py:291
+#: apis_instance_nsvis/models.py
 msgid "collaborates with"
 msgstr "arbeitet zusammen mit"
 
-#: apis_instance_nsvis/models.py:300
+#: apis_instance_nsvis/models.py
 msgid "is member of"
 msgstr "ist Mitglied von"
 
-#: apis_instance_nsvis/models.py:304
+#: apis_instance_nsvis/models.py
 msgid "has as member"
 msgstr "hat als Mitglied"
 
-#: apis_instance_nsvis/models.py:315
+#: apis_instance_nsvis/models.py
 msgid "is inventoried in"
 msgstr "ist Bestand bei"
 
-#: apis_instance_nsvis/models.py:319
+#: apis_instance_nsvis/models.py
 msgid "inventories"
 msgstr "hat als Bestand"
 
-#: apis_instance_nsvis/models.py:326 apis_instance_nsvis/models.py:341
+#: apis_instance_nsvis/models.py
 msgid "Details"
 msgstr "Details"
 
-#: apis_instance_nsvis/models.py:330
+#: apis_instance_nsvis/models.py
 msgid "is learning at"
 msgstr "lernt bei"
 
-#: apis_instance_nsvis/models.py:334
+#: apis_instance_nsvis/models.py
 msgid "has as student"
 msgstr "hat als Lernende:n"
 
-#: apis_instance_nsvis/models.py:345
+#: apis_instance_nsvis/models.py
 msgid "is working as"
 msgstr "ist tätig als"
 
-#: apis_instance_nsvis/models.py:349
+#: apis_instance_nsvis/models.py
 msgid "practiced by"
 msgstr "wird ausgeübt von"
 
-#: apis_instance_nsvis/models.py:358
+#: apis_instance_nsvis/models.py
 msgid "lives in"
 msgstr "lebt in"
 
-#: apis_instance_nsvis/models.py:362
+#: apis_instance_nsvis/models.py
 msgid "has habitant"
 msgstr "hat als Bewohner"
 
-#: apis_instance_nsvis/models.py:371
+#: apis_instance_nsvis/models.py
 msgid "has studio in"
 msgstr "hat Studio in"
 
-#: apis_instance_nsvis/models.py:375
+#: apis_instance_nsvis/models.py
 msgid "is address for studio of"
 msgstr "ist Adresse eines Studios von"
 
-#: apis_instance_nsvis/models.py:384
+#: apis_instance_nsvis/models.py
 msgid "located in"
 msgstr "befindet sich in"
 
-#: apis_instance_nsvis/models.py:388
+#: apis_instance_nsvis/models.py
 msgid "is location of"
 msgstr "enthält"
 
-#: apis_instance_nsvis/models.py:398
+#: apis_instance_nsvis/models.py
 msgid "born in"
 msgstr "ist geboren in"
 
-#: apis_instance_nsvis/models.py:402
+#: apis_instance_nsvis/models.py
 msgid "is birth place of"
 msgstr "ist Geburtsort von"
 
-#: apis_instance_nsvis/models.py:412
+#: apis_instance_nsvis/models.py
 msgid "died in"
 msgstr "ist gestorben in"
 
-#: apis_instance_nsvis/models.py:416
+#: apis_instance_nsvis/models.py
 msgid "is place of death of"
 msgstr "ist Sterbeort von"
 
-#: apis_instance_nsvis/models.py:425
+#: apis_instance_nsvis/models.py
 msgid "was in exile in"
 msgstr "war im Exil in"
 
-#: apis_instance_nsvis/models.py:429
+#: apis_instance_nsvis/models.py
 msgid "was place of exile for"
 msgstr "war Ort des Exils von"
 
-#: apis_instance_nsvis/models.py:438
+#: apis_instance_nsvis/models.py
 msgid "is imprisoned in"
 msgstr "ist inhaftiert in"
 
-#: apis_instance_nsvis/models.py:442
+#: apis_instance_nsvis/models.py
 msgid "is place of imprisonment for"
 msgstr "ist Ort der Inhaftierung für"
 
-#: apis_instance_nsvis/models.py:451
+#: apis_instance_nsvis/models.py
 msgid "is inheritance in"
 msgstr "ist im Nachlass bei"
 
-#: apis_instance_nsvis/models.py:455
+#: apis_instance_nsvis/models.py
 msgid "contains inheritance of"
 msgstr "hat als Nachlass"
+
+#~ msgid "Place"
+#~ msgstr "Ort"
+
+#~ msgid "Places"
+#~ msgstr "Orte"
+
+#~ msgid "Label"
+#~ msgstr "Bezeichnung"
 
 #~ msgid "Person"
 #~ msgstr "Person"
