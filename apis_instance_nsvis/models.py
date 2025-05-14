@@ -275,10 +275,11 @@ class TimespanMixin(models.Model):
 
 
 class NsvisRelationMixin:
-    pass
+    class Meta:
+        ordering = ["pk"]
 
 
-class CollaboratesWith(TimespanMixin, NsvisRelationMixin, Relation):
+class CollaboratesWith(NsvisRelationMixin, TimespanMixin, Relation):
     subj_model = Person
     obj_model = Person
 
@@ -291,7 +292,7 @@ class CollaboratesWith(TimespanMixin, NsvisRelationMixin, Relation):
         return _("collaborates with")
 
 
-class IsMemberOf(TimespanMixin, NsvisRelationMixin, Relation):
+class IsMemberOf(NsvisRelationMixin, TimespanMixin, Relation):
     subj_model = Person
     obj_model = Institution
 
@@ -319,7 +320,7 @@ class IsInventoriedIn(NsvisRelationMixin, Relation):
         return _("inventories")
 
 
-class IsLearningAt(TimespanMixin, NsvisRelationMixin, Relation):
+class IsLearningAt(NsvisRelationMixin, TimespanMixin, Relation):
     subj_model = Person
     obj_model = EducationType
 
@@ -334,7 +335,7 @@ class IsLearningAt(TimespanMixin, NsvisRelationMixin, Relation):
         return _("has as student")
 
 
-class WorksAs(TimespanMixin, NsvisRelationMixin, Relation):
+class WorksAs(NsvisRelationMixin, TimespanMixin, Relation):
     subj_model = Person
     obj_model = ProfessionType
 
@@ -349,7 +350,7 @@ class WorksAs(TimespanMixin, NsvisRelationMixin, Relation):
         return _("practiced by")
 
 
-class LivesIn(TimespanMixin, NsvisRelationMixin, Relation):
+class LivesIn(NsvisRelationMixin, TimespanMixin, Relation):
     subj_model = Person
     obj_model = Place
 
@@ -362,7 +363,7 @@ class LivesIn(TimespanMixin, NsvisRelationMixin, Relation):
         return _("has habitant")
 
 
-class HasStudioIn(TimespanMixin, NsvisRelationMixin, Relation):
+class HasStudioIn(NsvisRelationMixin, TimespanMixin, Relation):
     subj_model = Person
     obj_model = Place
 
@@ -388,7 +389,7 @@ class LocatedIn(NsvisRelationMixin, Relation):
         return _("is location of")
 
 
-class BornIn(Relation):
+class BornIn(NsvisRelationMixin, Relation):
     subj_model = Person
     obj_model = Place
     date = FuzzyDateParserField(blank=True, null=True, parser=customdateparser)
@@ -416,7 +417,7 @@ class DiedIn(NsvisRelationMixin, Relation):
         return _("is place of death of")
 
 
-class ExileIn(TimespanMixin, NsvisRelationMixin, Relation):
+class ExileIn(NsvisRelationMixin, TimespanMixin, Relation):
     subj_model = Person
     obj_model = Place
 
@@ -429,7 +430,7 @@ class ExileIn(TimespanMixin, NsvisRelationMixin, Relation):
         return _("was place of exile for")
 
 
-class ImprisonedIn(TimespanMixin, NsvisRelationMixin, Relation):
+class ImprisonedIn(NsvisRelationMixin, TimespanMixin, Relation):
     subj_model = Person
     obj_model = Place
 
@@ -442,7 +443,7 @@ class ImprisonedIn(TimespanMixin, NsvisRelationMixin, Relation):
         return _("is place of imprisonment for")
 
 
-class IsInheritanceIn(Relation):
+class IsInheritanceIn(NsvisRelationMixin, Relation):
     subj_model = Person
     obj_model = Institution
 
