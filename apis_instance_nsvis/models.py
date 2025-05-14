@@ -195,6 +195,7 @@ class Annotation(AbstractEntity):
     internal_comment = models.TextField(blank=True, null=True)
 
     class Meta:
+        ordering = ["pk"]
         unique_together = (('lst_task_id', 'lst_annotation_id', "lst_result_id"),)
         verbose_name = _("annotation")
         verbose_name_plural = _("annotations")
