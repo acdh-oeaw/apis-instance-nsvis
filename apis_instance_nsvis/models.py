@@ -144,10 +144,6 @@ class Person(AbstractEntity, VersionMixin, MongoDbDataMixin, E21_Person):
 
 
 class Place(E53_Place, AbstractEntity, VersionMixin, MongoDbDataMixin):
-    class Meta:
-        verbose_name = _("Place")
-        verbose_name_plural = _("Places")
-
     @classmethod
     def create_from_string(cls, string):
         return cls.objects.create(label=string)
