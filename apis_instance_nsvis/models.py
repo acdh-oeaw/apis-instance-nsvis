@@ -9,7 +9,7 @@ from django.contrib.contenttypes.models import ContentType
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 from django.template.defaultfilters import slugify
-from apis_core.apis_entities.abc import E53_Place, SimpleLabelModel, E21_Person
+from apis_core.apis_entities.abc import E53_Place, SimpleLabelModel, E21_Person, E74_Group
 from apis_core.history.models import VersionMixin
 from apis_core.apis_entities.models import AbstractEntity
 from apis_core.relations.models import Relation
@@ -149,16 +149,11 @@ class Place(E53_Place, AbstractEntity, VersionMixin, MongoDbDataMixin):
         return cls.objects.create(label=string)
 
 
-class Institution(AbstractEntity, VersionMixin, MongoDbDataMixin):
+class Institution(AbstractEntity, VersionMixin, MongoDbDataMixin, E74_Group):
     """ Zeitschriften, Verlage, Agenturen, Partei + Vorfeldorganisation """
-    class Meta:
+    class Meta(E74_Group.Meta):
         verbose_name = _("Institution")
         verbose_name_plural = _("Institutions")
-
-    label = models.CharField(blank=True, default="", max_length=4096, verbose_name=_("Label"))
-
-    def __str__(self):
-        return self.label
 
     @classmethod
     def create_from_string(cls, string):
