@@ -1,3 +1,4 @@
+from datetime import datetime
 import re
 from django.db.models import Q
 from django.forms.widgets import CheckboxInput
@@ -64,8 +65,13 @@ class IssueFilter(MultipleChoiceFilter):
         super().__init__(*args, **kwargs)
         self.extra["choices"] = self.get_choices()
 
+    def _sortissue(self, issue):
+        title, date = issue.split(" vom ")
+        date = datetime.strptime(date, "%d.%m.%Y")
+        return (title, date)
+
     def get_choices(self):
-        issues = sorted(set(Annotation.objects.values_list(self.field_name, flat=True)))
+        issues = sorted(set(Annotation.objects.values_list(self.field_name, flat=True)), key = lambda x: self._sortissue(x))
         return zip(issues, issues)
 
     def filter(self, qs, value):
