@@ -65,7 +65,7 @@ class IssueFilter(MultipleChoiceFilter):
         self.extra["choices"] = self.get_choices()
 
     def get_choices(self):
-        issues = sorted(Annotation.objects.values_list(self.field_name, flat=True).distinct())
+        issues = sorted(set(Annotation.objects.values_list(self.field_name, flat=True)))
         return zip(issues, issues)
 
     def filter(self, qs, value):
@@ -81,7 +81,7 @@ class IssueYearFilter(MultipleChoiceFilter):
         self.extra["choices"] = self.get_choices()
 
     def get_choices(self):
-        issues = sorted(Annotation.objects.values_list(self.field_name, flat=True).distinct())
+        issues = sorted(Annotation.objects.values_list(self.field_name, flat=True))
         years = set()
         for issue in issues:
             if match := re.search("(?P<year>19\d\d)", issue):
