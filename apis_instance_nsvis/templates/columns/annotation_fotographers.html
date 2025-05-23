@@ -1,0 +1,16 @@
+<table class="table table-sm">
+  <thead>
+    <tr>
+    <th>Fotographer</th>
+    <th>Agency</th>
+    </tr>
+  </thead>
+  <tbody>
+  {% for item in record.fotographers %}
+  <tr>
+    <td>{% if item.fotographer %}{{ item.fotographer }}{% endif %}</td>
+    <td>{% if item.agency %}{{ item.agency }}{% endif %}</td>
+  </tr>
+  {% endfor %}
+  </tbody>
+</table>
