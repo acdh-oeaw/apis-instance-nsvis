@@ -1,3 +1,4 @@
+import json
 import logging
 import os
 import pathlib
@@ -13,6 +14,13 @@ logger = logging.getLogger(__name__)
 
 
 class S3:
+    cachefile = pathlib.Path("/tmp/s3_cache.json")
+
+    def __new__(cls):
+        if not hasattr(cls, 'instance'):
+            cls.instance = super().__new__(cls)
+        return cls.instance
+
     def __init__(self, *args, **kwargs):
         aws_secret_access_key = os.getenv("AWS_SECRET_ACCESS_KEY")
         aws_access_key_id = os.getenv("AWS_ACCESS_KEY_ID")
@@ -35,19 +43,28 @@ class S3:
         target = target or pathlib.Path(path).name
         try:
             response = self.client.upload_file(path, self.s3_bucket, target)
+            self.filecache_append(target)
         except ClientError as e:
             logging.error("Could not upload file to s3 bucket %s: %s", s3_bucket, e)
 
     def file_exists(self, path):
-        try:
-            self.client.head_object(Bucket=self.s3_bucket, Key=path)
-        except ClientError as e:
-            if e.response['Error']['Code'] == "404":
-                return False
-            else:
-                raise
-        else:
-            return True
+        return path in self.filecache
+
+    @property
+    def filecache(self):
+        if not self.cachefile.exists():
+            data = []
+            s3_paginator = self.client.get_paginator('list_objects_v2')
+            s3_page_iterator = s3_paginator.paginate(Bucket=self.s3_bucket, Prefix="23503")
+            for page in s3_page_iterator:
+                data.extend([obj["Key"] for obj in page.get("Contents", [])])
+            self.cachefile.write_text(json.dumps(data))
+        return json.loads(self.cachefile.read_text())
+
+    def filecache_append(self, item):
+        data = self.filecache
+        data.append(item)
+        self.cachefile.write_text(json.dumps(data))
 
 
 class MyImgProxy:
