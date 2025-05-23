@@ -11,6 +11,8 @@ class AnnotationTable(AbstractEntityTable):
     topic = tables.TemplateColumn(template_code="{{ record.topic|join:', ' }}")
     depicted = tables.TemplateColumn(template_code="{{ record.depicted|join:', ' }}")
     clip = tables.TemplateColumn(template_code="<img class='thumbnail' src={{ record.clip }}>", exclude_from_export=True)
+    author = tables.TemplateColumn(template_name="columns/annotation_author.html")
+    fotographers = tables.TemplateColumn(template_name="columns/annotation_fotographers.html")
 
     class Meta(AbstractEntityTable.Meta):
         exclude = ["desc"]
