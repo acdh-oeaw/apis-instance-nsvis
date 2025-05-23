@@ -1,6 +1,7 @@
 from collections import defaultdict
 import httpx
 import os
+import polars as pl
 
 from django.core.management.base import BaseCommand
 
@@ -8,6 +9,9 @@ from apis_instance_nsvis.models import Annotation
 
 labelstudio_uri = "https://label-studio.acdh-dev.oeaw.ac.at"
 labelstudio_token = os.getenv("LABELSTUDIO_TOKEN", None)
+author_override_xls = os.getenv("AUTHOR_OVERRIDE_XLS", None)
+
+authors_df = pl.read_excel(author_override_xls)
 
 
 def override(project, attribute):
@@ -16,6 +20,17 @@ def override(project, attribute):
             if attribute == "issue":
                 return "Wiener Illustrierte vom 23.11.1944"
     return None
+
+
+def get_fixed_data(orig_str):
+    agentur = None
+    author, korr_str = orig_str, orig_str
+    row = authors_df.filter(pl.col("Author") == orig_str)
+    if not row.is_empty():
+        korr_str = row.select(pl.nth(1)).item() or orig_str
+        author = row.select(pl.nth(2)).item() or korr_str
+        agentur = row.select(pl.nth(3)).item()
+    return korr_str, author, agentur
 
 
 class Command(BaseCommand):
@@ -58,7 +73,8 @@ class Command(BaseCommand):
             authors = next(iter(ann.data.get("Author", [])), "").splitlines()
             if not authors:
                 authors = ["unbekannt"]
-            ann.author = [author.strip() for author in authors]
+            authors = [get_fixed_data(author.strip()) for author in authors]
+            ann.author = [author[0] for author in authors]
             ann.caption = next(iter(ann.data.get("Caption", [])), None)
             ann.title = next(iter(ann.data.get("Title", [])), None)
 
