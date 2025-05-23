@@ -80,6 +80,16 @@ class MyImgProxy:
                         salt=self.salt)
         return img_url()
 
+    def crop(self, path, width, height, x=0, y=0):
+        gravity = f"nowe:{x}:{y}"
+        crop = f"crop:{width}:{height}:{gravity}"
+        img_url = ImgProxy(f"s3://for-imgproxy/{path}",
+                        proxy_host=self.proxy_host,
+                        key=self.key,
+                        salt=self.salt)
+        return img_url(crop)
+
+
 
 re_abseit = r"^(vor|ab|seit|um) (?P<year>\d{1,4})"
 re_nach = r"^nach (?P<year>\d{1,4})"
