@@ -6,6 +6,7 @@ import polars as pl
 from django.core.management.base import BaseCommand
 
 from apis_instance_nsvis.models import Annotation
+from apis_core.collections.models import SkosCollection
 
 labelstudio_uri = "https://label-studio.acdh-dev.oeaw.ac.at"
 labelstudio_token = os.getenv("LABELSTUDIO_TOKEN", None)
@@ -37,7 +38,8 @@ class Command(BaseCommand):
     help = "Import data from LabelStudio Export"
 
     def handle(self, *args, **options):
-        projects = [45, 48, 49, 50, 51, 52, 55, 56, 58, 63, 64, 65, 66, 69, 70, 71, 77, 78, 79, 80, 81, 82, 83, 99, 100]
+        first_batch_projects = [45, 48, 49, 50, 51, 52, 55, 56, 58, 63, 64, 65, 66, 69, 70, 71, 77, 78, 79, 80, 81, 82, 83, 99, 100]
+        projects = []
         ann_ids = []
         if labelstudio_token:
             headers = {"Authorization": f"Token {labelstudio_token}"}
@@ -68,8 +70,11 @@ class Command(BaseCommand):
                         annotation.image = task["data"]["image"]
                         annotation.issue = override(project, "issue") or task["data"]["issue"]
                         annotation.save()
-        Annotation.objects.exclude(id__in=ann_ids).delete()
+        Annotation.objects.exclude(data__project_id__in=first_batch_projects).exclude(id__in=ann_ids).delete()
+        first_batch_collection, _ = SkosCollection.objects.get_or_create(name="Annotations: first batch")
         for ann in Annotation.objects.all():
+            if ann.data["project_id"] in first_batch_projects:
+                first_batch_collection.add(ann)
             authors = next(iter(ann.data.get("Author", [])), "").splitlines()
             if not authors:
                 authors = ["unbekannt"]
