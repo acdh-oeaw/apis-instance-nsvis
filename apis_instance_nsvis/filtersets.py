@@ -123,7 +123,7 @@ class MultipleAuthors(BooleanFilter):
         return qs
 
 
-class AnnotationFilterSet(FilterSet):
+class AnnotationFilterSet(AbstractEntityFilterSet):
     class Meta(AbstractEntityFilterSet.Meta):
         unknown_field_behavior = UnknownFieldBehavior.IGNORE
         fields = {"caption": ["icontains"], "title": ["icontains", "exact"], "location": ["icontains"], "other": ["icontains"]}
@@ -138,3 +138,5 @@ class AnnotationFilterSet(FilterSet):
         self.filters["depicted"] = CustomMultipleChoiceFilter(field_name="depicted")
         self.filters["internal_comment"] = InternalCommentExistsFilter(widget=CheckboxInput)
         self.filters["multiple_authors"] = MultipleAuthors(widget=CheckboxInput)
+        del self.filters["changed_since"]
+        del self.filters["relation"]
