@@ -17,6 +17,7 @@ class AnnotationTable(AbstractEntityTable):
     class Meta(AbstractEntityTable.Meta):
         exclude = ["desc"]
         fields = ["caption"]
+        attrs = {"class": "table table-sm", "style": "font-size: 14px"}
 
 
 class DatesColumn(tables.TemplateColumn):
