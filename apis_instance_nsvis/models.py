@@ -220,10 +220,13 @@ class Annotation(AbstractEntity):
                             f.write(data)
         return tmp
 
-    def local_image(self):
+    def fetch_and_upload(self):
         if not s3.file_exists(self.pagepath):
             logger.info("Downloading and uploading file to s3: %s", self.page)
             s3.upload_file(self.page, self.pagepath)
+
+    def local_image(self):
+        self.fetch_and_upload()
         myimgproxy = MyImgProxy()
         return myimgproxy.calc(self.pagepath)
 
