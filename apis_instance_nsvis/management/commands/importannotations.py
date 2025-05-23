@@ -24,14 +24,19 @@ def override(project, attribute):
 
 
 def get_fixed_data(orig_str):
-    agentur = None
-    author, korr_str = orig_str, orig_str
+    agency = None
+    fotographer = None
+    korr_str = orig_str
     row = authors_df.filter(pl.col("Author") == orig_str)
-    if not row.is_empty():
+    if row.is_empty():
+        fotographer = orig_str
+    else:
         korr_str = row.select(pl.nth(1)).item() or orig_str
-        author = row.select(pl.nth(2)).item() or korr_str
-        agentur = row.select(pl.nth(3)).item()
-    return korr_str, author, agentur
+        agency = row.select(pl.nth(3)).item()
+        fotographer = row.select(pl.nth(2)).item()
+        if not fotographer and not agency:
+            fotographer = korr_str
+    return korr_str, fotographer, agency
 
 
 class Command(BaseCommand):
@@ -80,6 +85,18 @@ class Command(BaseCommand):
                 authors = ["unbekannt"]
             authors = [get_fixed_data(author.strip()) for author in authors]
             ann.author = [author[0] for author in authors]
+            fotographers = []
+            for orig_author, fotographer, agency in authors:
+                if agency:
+                    if '@' in agency:
+                        for agency in agency.split('@'):
+                            fotographers.append({"fotographer": fotographer, "agency": agency.strip()})
+                    else:
+                        fotographers.append({"fotographer": fotographer, "agency": agency.strip()})
+                else:
+                    fotographers.append({"fotographer": fotographer, "agency": None})
+            ann.fotographers = fotographers
+
             ann.caption = next(iter(ann.data.get("Caption", [])), None)
             ann.title = next(iter(ann.data.get("Title", [])), None)
 
