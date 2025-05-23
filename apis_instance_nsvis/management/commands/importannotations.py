@@ -72,3 +72,4 @@ class Command(BaseCommand):
             ann.internal_comment = next(iter(ann.data.get("InternalComment", [])), None)
 
             ann.save()
+            ann.fetch_and_upload()
