@@ -232,25 +232,13 @@ class Annotation(AbstractEntity):
 
     @property
     def clip(self):
-        imagepath = f"23503/cropped/{self.lst_result_id}.jpg"
-        if not s3.file_exists(imagepath):
-            tmp = Path("/tmp") / imagepath
-            tmp.parent.mkdir(parents=True, exist_ok=True)
-            image = Image.open(self.page)
-            # calculate coordinates and dimensions of annotated area:
-            height, width = image.size
-            left = int(self.data["x"]/100 * height)
-            upper = int(self.data["y"]/100 * width)
-            crop_width = int(self.data["width"]/100 * height)
-            crop_height = int(self.data["height"]/100 * width)
-            # store the area in crop and make a thumbnail out of it
-            dims = (left, upper, left+crop_width, upper+crop_height)
-            crop = image.crop(dims)
-            crop.thumbnail((800, 800))
-            crop.save(tmp)
-            s3.upload_file(tmp, imagepath)
+        self.fetch_and_upload()
         myimgproxy = MyImgProxy()
-        return myimgproxy.calc(imagepath)
+        x = self.data["x"] / 100
+        y = self.data["y"] / 100
+        width = self.data["width"] / 100
+        height = self.data["height"] / 100
+        return myimgproxy.crop(self.pagepath, width, height, x, y)
 
 
 auditlog.register(SpecialArea, serialize_data=True)
