@@ -1,4 +1,5 @@
 from collections import defaultdict
+import itertools
 import httpx
 import os
 import polars as pl
@@ -87,14 +88,16 @@ class Command(BaseCommand):
             ann.author = [author[0] for author in authors]
             fotographers = []
             for orig_author, fotographer, agency in authors:
-                if agency:
-                    if '@' in agency:
-                        for agency in agency.split('@'):
-                            fotographers.append({"fotographer": fotographer, "agency": agency.strip()})
-                    else:
-                        fotographers.append({"fotographer": fotographer, "agency": agency.strip()})
+                if fotographer:
+                    fotographer = fotographer.split("@")
                 else:
-                    fotographers.append({"fotographer": fotographer, "agency": None})
+                    fotographer = [None]
+                if agency:
+                    agency = agency.split("@")
+                else:
+                    agency = [None]
+                for comb in list(itertools.product(fotographer, agency)):
+                    fotographers.append({"fotographer": comb[0], "agency": comb[1]})
             ann.fotographers = fotographers
 
             ann.caption = next(iter(ann.data.get("Caption", [])), None)
