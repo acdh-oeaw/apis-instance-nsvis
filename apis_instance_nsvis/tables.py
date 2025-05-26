@@ -13,7 +13,7 @@ class AnnotationTable(AbstractEntityTable):
     clip = tables.TemplateColumn(template_code="<img class='thumbnail' src={{ record.clip }}>", exclude_from_export=True)
     author = tables.TemplateColumn(template_name="columns/annotation_author.html")
     fotographers = tables.TemplateColumn(template_name="columns/annotation_fotographers.html")
-    ranking = tables.TemplateColumn(template_code="{{ record.ranking|floatformat:-3 }}")
+    ranking = tables.TemplateColumn(template_code='<abbr title="{{ record.ranking }}">{{ record.ranking|floatformat:-3 }}</abbr>')
 
     class Meta(AbstractEntityTable.Meta):
         exclude = ["desc"]
