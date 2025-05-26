@@ -123,6 +123,56 @@ class MultipleAuthors(BooleanFilter):
         return qs
 
 
+class AgencyFilter(MultipleChoiceFilter):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.extra["choices"] = self.get_choices()
+
+    def get_choices(self):
+        fotographers = Annotation.objects.values_list("fotographers", flat=True)
+        agencies = sorted({entry["agency"] for agency in fotographers for entry in agency if entry["agency"]})
+        return zip(agencies, agencies)
+
+    def _json_list_contains_value(self, json_list, value):
+        for item in json_list:
+            for val in value:
+                if item["agency"] == val:
+                    return True
+        return False
+
+    def filter(self, qs, value):
+        if value:
+            annotations = Annotation.objects.values("fotographers", "pk")
+            annotation_ids = [annotation["pk"] for annotation in annotations if self._json_list_contains_value(annotation["fotographers"], value)]
+            return qs.filter(pk__in=annotation_ids)
+        return qs
+
+
+class FotographerFilter(MultipleChoiceFilter):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.extra["choices"] = self.get_choices()
+
+    def get_choices(self):
+        fotographers = Annotation.objects.values_list("fotographers", flat=True)
+        fotographers = sorted({entry["fotographer"] for fotographer in fotographers for entry in fotographer if entry["fotographer"]})
+        return zip(fotographers, fotographers)
+
+    def _json_list_contains_value(self, json_list, value):
+        for item in json_list:
+            for val in value:
+                if item["fotographer"] == val:
+                    return True
+        return False
+
+    def filter(self, qs, value):
+        if value:
+            annotations = Annotation.objects.values("fotographers", "pk")
+            annotation_ids = [annotation["pk"] for annotation in annotations if self._json_list_contains_value(annotation["fotographers"], value)]
+            return qs.filter(pk__in=annotation_ids)
+        return qs
+
+
 class AnnotationFilterSet(AbstractEntityFilterSet):
     class Meta(AbstractEntityFilterSet.Meta):
         unknown_field_behavior = UnknownFieldBehavior.IGNORE
@@ -138,5 +188,7 @@ class AnnotationFilterSet(AbstractEntityFilterSet):
         self.filters["depicted"] = CustomMultipleChoiceFilter(field_name="depicted")
         self.filters["internal_comment"] = InternalCommentExistsFilter(widget=CheckboxInput)
         self.filters["multiple_authors"] = MultipleAuthors(widget=CheckboxInput)
+        self.filters["agency"] = AgencyFilter()
+        self.filters["fotographer"] = FotographerFilter()
         del self.filters["changed_since"]
         del self.filters["relation"]
