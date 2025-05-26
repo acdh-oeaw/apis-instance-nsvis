@@ -87,7 +87,7 @@ class MyImgProxy:
                         proxy_host=self.proxy_host,
                         key=self.key,
                         salt=self.salt)
-        return img_url(crop)
+        return img_url(crop, width=800, height=800, resizing_type="fit")
 
 
 
