@@ -2,7 +2,6 @@ from collections import defaultdict
 import itertools
 import httpx
 import os
-import polars as pl
 
 from django.core.management.base import BaseCommand
 
@@ -11,9 +10,18 @@ from apis_core.collections.models import SkosCollection
 
 labelstudio_uri = "https://label-studio.acdh-dev.oeaw.ac.at"
 labelstudio_token = os.getenv("LABELSTUDIO_TOKEN", None)
-author_override_xls = os.getenv("AUTHOR_OVERRIDE_XLS", None)
+baserow_token = os.getenv("BASEROW_TOKEN", None)
+baserow_db = os.getenv("BASEROW_DB", None)
 
-authors_df = pl.read_excel(author_override_xls)
+author_data = []
+
+
+def get_author_data():
+    _next = f"https://baserow.acdh-dev.oeaw.ac.at/api/database/rows/table/{baserow_db}/?user_field_names=true&size=200"
+    while _next:
+        data = httpx.get(_next, headers={"Authorization": f"Token {baserow_token}"}, follow_redirects=True).json()
+        author_data.extend(data["results"])
+        _next = data["next"]
 
 
 def override(project, attribute):
@@ -28,15 +36,13 @@ def get_fixed_data(orig_str):
     agency = None
     fotographer = None
     korr_str = orig_str
-    row = authors_df.filter(pl.col("Author") == orig_str)
-    if row.is_empty():
-        fotographer = orig_str
-    else:
-        korr_str = row.select(pl.nth(1)).item() or orig_str
-        agency = row.select(pl.nth(3)).item()
-        fotographer = row.select(pl.nth(2)).item()
-        if not fotographer and not agency:
-            fotographer = korr_str
+    for row in author_data:
+        if row["Author"].strip() == orig_str:
+            korr_str = row.get("Korrektur") or orig_str
+            agency = row["Agentur"]
+            fotographer = row["Fotograf:in"]
+    if not fotographer and not agency:
+        fotographer = korr_str
     return korr_str, fotographer, agency
 
 
@@ -44,6 +50,7 @@ class Command(BaseCommand):
     help = "Import data from LabelStudio Export"
 
     def handle(self, *args, **options):
+        get_author_data()
         first_batch_projects = [45, 48, 49, 50, 51, 52, 55, 56, 58, 63, 64, 65, 66, 69, 70, 71, 77, 78, 79, 80, 81, 82, 83, 99, 100]
         projects = []
         ann_ids = []
