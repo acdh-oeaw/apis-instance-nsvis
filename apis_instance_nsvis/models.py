@@ -202,6 +202,11 @@ class Annotation(AbstractEntity):
         return self.issue
 
     @property
+    def ranking(self):
+        rank = 1/len(self.author)
+        return rank
+
+    @property
     def pagepath(self):
         suffix = Path(urlparse(self.image).path).suffix
         issueslug = slugify(self.issue)
