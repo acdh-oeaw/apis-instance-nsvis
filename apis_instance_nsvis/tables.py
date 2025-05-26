@@ -14,10 +14,10 @@ class AnnotationTable(AbstractEntityTable):
     author = tables.TemplateColumn(template_name="columns/annotation_author.html")
     fotographers = tables.TemplateColumn(template_name="columns/annotation_fotographers.html")
     ranking = tables.TemplateColumn(template_code='<abbr title="{{ record.ranking }}">{{ record.ranking|floatformat:-3 }}</abbr>')
+    caption = tables.Column(attrs={"td": {"class": "col-1"}})
 
     class Meta(AbstractEntityTable.Meta):
-        exclude = ["desc"]
-        fields = ["caption"]
+        exclude = ["desc", "id"]
         attrs = {"class": "table table-sm", "style": "font-size: 14px"}
 
 
