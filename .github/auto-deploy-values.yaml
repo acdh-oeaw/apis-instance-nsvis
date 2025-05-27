@@ -52,6 +52,10 @@ cronjobs:
       repository: $repository
       tag: "$tag"
       pullPolicy: IfNotPresent
+    livenessProbe:
+      probeType: "exec"
+      command: ["/bin/ls"]
+
 
 persistence:
   enabled: true
