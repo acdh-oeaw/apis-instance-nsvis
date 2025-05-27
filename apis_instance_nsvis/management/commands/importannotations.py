@@ -103,6 +103,8 @@ class Command(BaseCommand):
                     agency = agency.split("@")
                 else:
                     agency = [None]
+                fotographer = [f.strip() if f else f for f in fotographer]
+                agency = [a.strip() if a else a for a in agency]
                 for comb in list(itertools.product(fotographer, agency)):
                     fotographers.append({"fotographer": comb[0], "agency": comb[1]})
             ann.fotographers = fotographers
