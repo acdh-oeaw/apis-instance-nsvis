@@ -56,9 +56,10 @@ class Command(BaseCommand):
         ann_ids = []
         if labelstudio_token:
             headers = {"Authorization": f"Token {labelstudio_token}"}
+            client = httpx.Client()
             for project in projects + first_batch_projects:
                 endpoint = f"{labelstudio_uri}/api/projects/{project}/export?exportType=JSON"
-                data = httpx.get(endpoint, headers=headers).json()
+                data = client.get(endpoint, headers=headers).json()
                 for task in data:
                     task_id = task["id"]
                     annotations = defaultdict(dict)
@@ -83,6 +84,7 @@ class Command(BaseCommand):
                         annotation.image = task["data"]["image"]
                         annotation.issue = override(project, "issue") or task["data"]["issue"]
                         annotation.save()
+            client.close()
         # Annotation.objects.exclude(data__project_id__in=first_batch_projects).exclude(id__in=ann_ids).delete()
         Annotation.objects.exclude().exclude(id__in=ann_ids).delete()
         first_batch_collection, _ = SkosCollection.objects.get_or_create(name="Annotations: first batch")
