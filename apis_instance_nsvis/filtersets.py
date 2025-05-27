@@ -72,7 +72,7 @@ class IssueFilter(MultipleChoiceFilter):
 
     def get_choices(self):
         issues = sorted(set(Annotation.objects.values_list(self.field_name, flat=True)), key = lambda x: self._sortissue(x))
-        return zip(issues, issues)
+        return list(zip(issues, issues))
 
     def filter(self, qs, value):
         q = Q()
@@ -92,7 +92,7 @@ class IssueYearFilter(MultipleChoiceFilter):
         for issue in issues:
             if match := re.search("(?P<year>19\d\d)", issue):
                 years.add(int(match["year"]))
-        return zip(years, years)
+        return list(zip(years, years))
 
     def filter(self, qs, value):
         q = Q()
@@ -106,7 +106,7 @@ class MagazineFilter(IssueFilter):
         issues = sorted(Annotation.objects.values_list(self.field_name, flat=True).distinct())
         issues = [issue.split(" vom ") for issue in issues]
         issues = {issue[0] for issue in issues}
-        return zip(issues, issues)
+        return list(zip(issues, issues))
 
 
 class InternalCommentExistsFilter(BooleanFilter):
@@ -131,7 +131,7 @@ class AgencyFilter(MultipleChoiceFilter):
     def get_choices(self):
         fotographers = Annotation.objects.values_list("fotographers", flat=True)
         agencies = sorted({entry["agency"] for agency in fotographers for entry in agency if entry["agency"]})
-        return zip(agencies, agencies)
+        return list(zip(agencies, agencies))
 
     def _json_list_contains_value(self, json_list, value):
         for item in json_list:
@@ -156,7 +156,7 @@ class FotographerFilter(MultipleChoiceFilter):
     def get_choices(self):
         fotographers = Annotation.objects.values_list("fotographers", flat=True)
         fotographers = sorted({entry["fotographer"] for fotographer in fotographers for entry in fotographer if entry["fotographer"]})
-        return zip(fotographers, fotographers)
+        return list(zip(fotographers, fotographers))
 
     def _json_list_contains_value(self, json_list, value):
         for item in json_list:
