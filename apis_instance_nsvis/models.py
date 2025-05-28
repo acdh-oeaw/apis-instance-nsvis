@@ -26,6 +26,19 @@ logger = logging.getLogger(__name__)
 s3 = S3()
 
 
+@models.Field.register_lookup
+class ArrayIContains(models.Lookup):
+    lookup_name = "array_icontains"
+
+    def as_sql(self, compiler, connection):
+        lhs, lhs_params = self.process_lhs(compiler, connection)
+        rhs, rhs_params = self.process_rhs(compiler, connection)
+        params = rhs_params + lhs_params
+        lhs = f"ARRAY(SELECT LOWER(UNNEST({lhs})))"
+        rhs = f"ARRAY(SELECT LOWER(UNNEST({rhs})))"
+        return "%s @> %s" % (rhs, lhs), params
+
+
 class NsvisMixin:
     pass
 
