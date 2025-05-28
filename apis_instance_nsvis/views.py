@@ -32,16 +32,27 @@ class WrongAnnotationNumber(TemplateView):
         return ctx
 
 
-class AnnotationAuthorsView(List):
+class AnnotationFilterView(List):
     def get_table_class(self):
-        return AnnotationAuthorsTable
+        return self.table_class
 
     def get_table_data(self, *args, **kwargs):
-        data = defaultdict(lambda: 0)
-        for ann in self.get_queryset():
-            for author in ann.author:
-                data[author] += 1
-        return [{"author": key, "count": value} for key, value in data.items()]
+        filterset_class = self.get_filterset_class()
+        kwargs = self.get_filterset_kwargs(filterset_class)
+        filterset = filterset_class(**kwargs)
+        return filterset.qs
+
+
+class AnnotationAuthorsView(AnnotationFilterView):
+    table_class = AnnotationAuthorsTable
+
+    def get_table_data(self, *args, **kwargs):
+        data = defaultdict(lambda: {"count": 0, "ranking": 0})
+        for ann in super().get_table_data(*args, **kwargs):
+            for author in set(ann.author):
+                data[author]["count"] += 1
+                data[author]["ranking"] += ann.ranking
+        return [{"author": key, **value} for key, value in data.items()]
 
 
 class AnnotationReportsView(List):
