@@ -2,7 +2,7 @@ from datetime import datetime
 import re
 from django.db.models import Q
 from django.forms.widgets import CheckboxInput
-from django_filters import UnknownFieldBehavior, FilterSet, MultipleChoiceFilter, BooleanFilter
+from django_filters import UnknownFieldBehavior, FilterSet, MultipleChoiceFilter, BooleanFilter, CharFilter
 from apis_core.relations.filtersets import RelationFilterSet
 from apis_core.apis_entities.filtersets import AbstractEntityFilterSet
 from apis_instance_nsvis.models import Annotation
@@ -173,7 +173,21 @@ class FotographerFilter(MultipleChoiceFilter):
         return qs
 
 
+class AuthorContainsFilter(CharFilter):
+    def __init__(self, *args, **kwargs):
+        super().__init__(lookup_expr="icontains", *args, **kwargs)
+
+    def filter(self, qs, value):
+        if value:
+            value = value.split()
+            print(value)
+            return qs.filter(author__array_icontains=value)
+        return qs
+
+
 class AnnotationFilterSet(AbstractEntityFilterSet):
+    author = AuthorContainsFilter()
+
     class Meta(AbstractEntityFilterSet.Meta):
         unknown_field_behavior = UnknownFieldBehavior.IGNORE
         fields = {"caption": ["icontains"], "title": ["icontains", "exact"], "location": ["icontains"], "other": ["icontains"]}
@@ -183,7 +197,7 @@ class AnnotationFilterSet(AbstractEntityFilterSet):
         self.filters["years"] = IssueYearFilter(field_name="issue")
         self.filters["issue"] = IssueFilter(field_name="issue")
         self.filters["magazine"] = MagazineFilter(field_name="issue")
-        self.filters["author"] = CustomMultipleChoiceFilter(field_name="author")
+        self.filters["author_choice"] = CustomMultipleChoiceFilter(field_name="author")
         self.filters["topic"] = CustomMultipleChoiceFilter(field_name="topic")
         self.filters["depicted"] = CustomMultipleChoiceFilter(field_name="depicted")
         self.filters["internal_comment"] = InternalCommentExistsFilter(widget=CheckboxInput)
