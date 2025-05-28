@@ -2,7 +2,7 @@ from datetime import datetime
 import re
 from django.db.models import Q
 from django.forms.widgets import CheckboxInput
-from django_filters import UnknownFieldBehavior, FilterSet, MultipleChoiceFilter, BooleanFilter
+from django_filters import UnknownFieldBehavior, FilterSet, MultipleChoiceFilter, BooleanFilter, CharFilter
 from apis_core.relations.filtersets import RelationFilterSet
 from apis_core.apis_entities.filtersets import AbstractEntityFilterSet
 from apis_instance_nsvis.models import Annotation
@@ -173,7 +173,20 @@ class FotographerFilter(MultipleChoiceFilter):
         return qs
 
 
+class AuthorContainsFilter(CharFilter):
+    def __init__(self, *args, **kwargs):
+        super().__init__(lookup_expr="icontains", *args, **kwargs)
+
+    def filter(self, qs, value):
+        q = Q()
+        for val in value.split():
+            q |= Q(**{f"{self.field_name}__icontains": val})
+        return qs.filter(q)
+
+
 class AnnotationFilterSet(AbstractEntityFilterSet):
+    author_contains = AuthorContainsFilter(field_name="author")
+
     class Meta(AbstractEntityFilterSet.Meta):
         unknown_field_behavior = UnknownFieldBehavior.IGNORE
         fields = {"caption": ["icontains"], "title": ["icontains", "exact"], "location": ["icontains"], "other": ["icontains"]}
