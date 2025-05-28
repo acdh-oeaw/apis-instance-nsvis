@@ -88,9 +88,12 @@ class Command(BaseCommand):
         # Annotation.objects.exclude(data__project_id__in=first_batch_projects).exclude(id__in=ann_ids).delete()
         Annotation.objects.exclude().exclude(id__in=ann_ids).delete()
         first_batch_collection, _ = SkosCollection.objects.get_or_create(name="Annotations: first batch")
+        first_analysis_collection, _ = SkosCollection.objects.get_or_create(name="Annotations: Erste Auswertung")
         for ann in Annotation.objects.all():
             if ann.data["project_id"] in first_batch_projects:
                 first_batch_collection.add(ann)
+                if any(title in ann.issue for title in ["Wiener Bilder", "Ostmarkwoche", "Wiener Illustrierte"]):
+                    first_analysis_collection.add(ann)
             authors = next(iter(ann.data.get("Author", [])), "").splitlines()
             if not authors:
                 authors = ["unbekannt"]
