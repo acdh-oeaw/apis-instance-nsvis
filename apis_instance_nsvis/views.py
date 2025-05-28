@@ -4,7 +4,7 @@ from django.contrib.postgres.aggregates import ArrayAgg
 
 from django.views.generic.base import TemplateView
 from apis_instance_nsvis.models import Annotation
-from apis_instance_nsvis.tables import AnnotationAuthorsTable, AnnotationReportsTable
+from apis_instance_nsvis.tables import AnnotationAuthorsTable, AnnotationReportsTable, AnnotationFotographersTable, AnnotationAgenciesTable
 from apis_core.generic.views import List
 
 
@@ -53,6 +53,30 @@ class AnnotationAuthorsView(AnnotationFilterView):
                 data[author]["count"] += 1
                 data[author]["ranking"] += ann.ranking
         return [{"author": key, **value} for key, value in data.items()]
+
+
+class AnnotationFotographersView(AnnotationFilterView):
+    table_class = AnnotationFotographersTable
+
+    def get_table_data(self, *args, **kwargs):
+        data = defaultdict(lambda: {"count": 0, "ranking": 0})
+        for ann in super().get_table_data(*args, **kwargs):
+            for fotographer in set([entry["fotographer"] for entry in ann.fotographers]):
+                data[fotographer]["count"] += 1
+                data[fotographer]["ranking"] += ann.ranking
+        return [{"fotographer": key, **value} for key, value in data.items()]
+
+
+class AnnotationAgenciesView(List):
+    table_class = AnnotationAgenciesTable
+
+    def get_table_data(self, *args, **kwargs):
+        data = defaultdict(lambda: {"count": 0, "ranking": 0})
+        for ann in super().get_table_data(*args, **kwargs):
+            for agency in set([entry["agency"] for entry in ann.fotographers]):
+                data[agency]["count"] += 1
+                data[agency]["ranking"] += ann.ranking
+        return [{"agency": key, **value} for key, value in data.items()]
 
 
 class AnnotationReportsView(List):
