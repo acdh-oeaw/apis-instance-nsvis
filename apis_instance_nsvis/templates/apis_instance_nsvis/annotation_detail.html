@@ -1,5 +1,6 @@
 {% extends "apis_core/apis_entities/abstractentity_detail.html" %}
 {% load static %}
+{% load l10n %}
 
 {% block scriptHeader %}
 {{ block.super }}
@@ -7,7 +8,9 @@
 {% endblock %}
 
 {% block card-body %}
+{% localize off %}
 <div class="overlay" data-x={{ object.data.x }} data-y={{ object.data.y }} data-height={{ object.data.height }} data-width={{ object.data.width }} data-target="image"></div>
+{% endlocalize %}
 <div class="d-flex flex-row">
   <div>
 	  <img id="image" class="annotated-img" src="{{ object.local_image }}" referrerpolicy="origin">
