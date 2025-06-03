@@ -129,8 +129,8 @@ class AgencyFilter(MultipleChoiceFilter):
         self.extra["choices"] = self.get_choices()
 
     def get_choices(self):
-        fotographers = Annotation.objects.values_list("fotographers", flat=True)
-        agencies = sorted({entry["agency"] for agency in fotographers for entry in agency if entry["agency"]})
+        photographers = Annotation.objects.values_list("photographers", flat=True)
+        agencies = sorted({entry["agency"] for agency in photographers for entry in agency if entry["agency"]})
         return list(zip(agencies, agencies))
 
     def _json_list_contains_value(self, json_list, value):
@@ -142,33 +142,33 @@ class AgencyFilter(MultipleChoiceFilter):
 
     def filter(self, qs, value):
         if value:
-            annotations = Annotation.objects.values("fotographers", "pk")
-            annotation_ids = [annotation["pk"] for annotation in annotations if self._json_list_contains_value(annotation["fotographers"], value)]
+            annotations = Annotation.objects.values("photographers", "pk")
+            annotation_ids = [annotation["pk"] for annotation in annotations if self._json_list_contains_value(annotation["photographers"], value)]
             return qs.filter(pk__in=annotation_ids)
         return qs
 
 
-class FotographerFilter(MultipleChoiceFilter):
+class PhotographerFilter(MultipleChoiceFilter):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.extra["choices"] = self.get_choices()
 
     def get_choices(self):
-        fotographers = Annotation.objects.values_list("fotographers", flat=True)
-        fotographers = sorted({entry["fotographer"] for fotographer in fotographers for entry in fotographer if entry["fotographer"]})
-        return list(zip(fotographers, fotographers))
+        photographers = Annotation.objects.values_list("photographers", flat=True)
+        photographers = sorted({entry["photographer"] for photographer in photographers for entry in photographer if entry["photographer"]})
+        return list(zip(photographers, photographers))
 
     def _json_list_contains_value(self, json_list, value):
         for item in json_list:
             for val in value:
-                if item["fotographer"] == val:
+                if item["photographer"] == val:
                     return True
         return False
 
     def filter(self, qs, value):
         if value:
-            annotations = Annotation.objects.values("fotographers", "pk")
-            annotation_ids = [annotation["pk"] for annotation in annotations if self._json_list_contains_value(annotation["fotographers"], value)]
+            annotations = Annotation.objects.values("photographers", "pk")
+            annotation_ids = [annotation["pk"] for annotation in annotations if self._json_list_contains_value(annotation["photographers"], value)]
             return qs.filter(pk__in=annotation_ids)
         return qs
 
@@ -202,6 +202,6 @@ class AnnotationFilterSet(AbstractEntityFilterSet):
         self.filters["internal_comment"] = InternalCommentExistsFilter(widget=CheckboxInput)
         self.filters["multiple_authors"] = MultipleAuthors(widget=CheckboxInput)
         self.filters["agency"] = AgencyFilter()
-        self.filters["fotographer"] = FotographerFilter()
+        self.filters["photographer"] = PhotographerFilter()
         del self.filters["changed_since"]
         del self.filters["relation"]

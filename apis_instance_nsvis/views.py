@@ -4,7 +4,7 @@ from django.contrib.postgres.aggregates import ArrayAgg
 
 from django.views.generic.base import TemplateView
 from apis_instance_nsvis.models import Annotation
-from apis_instance_nsvis.tables import AnnotationAuthorsTable, AnnotationReportsTable, AnnotationFotographersTable, AnnotationAgenciesTable
+from apis_instance_nsvis.tables import AnnotationAuthorsTable, AnnotationReportsTable, AnnotationPhotographersTable, AnnotationAgenciesTable
 from apis_core.generic.views import List
 
 
@@ -55,16 +55,16 @@ class AnnotationAuthorsView(AnnotationFilterView):
         return [{"author": key, **value} for key, value in data.items()]
 
 
-class AnnotationFotographersView(AnnotationFilterView):
-    table_class = AnnotationFotographersTable
+class AnnotationPhotographersView(AnnotationFilterView):
+    table_class = AnnotationPhotographersTable
 
     def get_table_data(self, *args, **kwargs):
         data = defaultdict(lambda: {"count": 0, "ranking": 0})
         for ann in super().get_table_data(*args, **kwargs):
-            for fotographer in set([entry["fotographer"] for entry in ann.fotographers]):
-                data[fotographer]["count"] += 1
-                data[fotographer]["ranking"] += ann.ranking
-        return [{"fotographer": key, **value} for key, value in data.items()]
+            for photographer in set([entry["photographer"] for entry in ann.photographers]):
+                data[photographer]["count"] += 1
+                data[photographer]["ranking"] += ann.ranking
+        return [{"photographer": key, **value} for key, value in data.items()]
 
 
 class AnnotationAgenciesView(AnnotationFilterView):
@@ -73,7 +73,7 @@ class AnnotationAgenciesView(AnnotationFilterView):
     def get_table_data(self, *args, **kwargs):
         data = defaultdict(lambda: {"count": 0, "ranking": 0})
         for ann in super().get_table_data(*args, **kwargs):
-            for agency in set([entry["agency"] for entry in ann.fotographers]):
+            for agency in set([entry["agency"] for entry in ann.photographers]):
                 data[agency]["count"] += 1
                 data[agency]["ranking"] += ann.ranking
         return [{"agency": key, **value} for key, value in data.items()]

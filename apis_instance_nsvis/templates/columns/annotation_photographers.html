@@ -1,14 +1,14 @@
 <table class="table table-sm">
   <thead>
     <tr>
-    <th>Fotographer</th>
+    <th>Photographer</th>
     <th>Agency</th>
     </tr>
   </thead>
   <tbody>
-  {% for item in record.fotographers %}
+  {% for item in record.photographers %}
   <tr>
-    <td>{% if item.fotographer %}{{ item.fotographer }}{% endif %}</td>
+    <td>{% if item.photographer %}{{ item.photographer }}{% endif %}</td>
     <td>{% if item.agency %}{{ item.agency }}{% endif %}</td>
   </tr>
   {% endfor %}
