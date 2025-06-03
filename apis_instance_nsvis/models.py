@@ -187,7 +187,7 @@ class Annotation(AbstractEntity):
     topic = ArrayField(models.CharField(), null=True)
     other = models.TextField(blank=True, null=True)
     internal_comment = models.TextField(blank=True, null=True)
-    fotographers = models.JSONField(null=True, editable=False)
+    photographers = models.JSONField(null=True, editable=False)
 
     class Meta:
         ordering = ["pk"]
