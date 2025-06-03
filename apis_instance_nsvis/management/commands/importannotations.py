@@ -36,14 +36,16 @@ def get_fixed_data(orig_str):
     agency = None
     photographer = None
     korr_str = orig_str
+    warreporter = False
     for row in author_data:
         if row["Author"].strip() == orig_str:
             korr_str = row.get("Korrektur") or orig_str
             agency = row["Agentur"]
             photographer = row["Fotograf:in"]
+            warreporter = row["Kriegsberichter"]
     if not photographer and not agency:
         photographer = korr_str
-    return korr_str, photographer, agency
+    return korr_str, photographer, agency, warreporter
 
 
 class Command(BaseCommand):
@@ -100,7 +102,7 @@ class Command(BaseCommand):
             authors = [get_fixed_data(author.strip()) for author in authors]
             ann.author = [author[0] for author in authors]
             photographers = []
-            for orig_author, photographer, agency in authors:
+            for orig_author, photographer, agency, warreporter in authors:
                 if photographer:
                     photographer = photographer.split("@")
                 else:
@@ -113,6 +115,7 @@ class Command(BaseCommand):
                 agency = [a.strip() if a else a for a in agency]
                 for comb in list(itertools.product(photographer, agency)):
                     photographers.append({"photographer": comb[0], "agency": comb[1]})
+            ann.warreporter = warreporter
             ann.photographers = photographers
 
             ann.caption = next(iter(ann.data.get("Caption", [])), None)
