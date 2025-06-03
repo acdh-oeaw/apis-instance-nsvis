@@ -189,7 +189,7 @@ class AnnotationFilterSet(AbstractEntityFilterSet):
 
     class Meta(AbstractEntityFilterSet.Meta):
         unknown_field_behavior = UnknownFieldBehavior.IGNORE
-        fields = {"caption": ["icontains"], "title": ["icontains", "exact"], "location": ["icontains"], "other": ["icontains"]}
+        fields = {"caption": ["icontains"], "title": ["icontains", "exact"], "location": ["icontains"], "other": ["icontains"], "warreporter": ["exact"]}
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
