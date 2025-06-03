@@ -34,16 +34,16 @@ def override(project, attribute):
 
 def get_fixed_data(orig_str):
     agency = None
-    fotographer = None
+    photographer = None
     korr_str = orig_str
     for row in author_data:
         if row["Author"].strip() == orig_str:
             korr_str = row.get("Korrektur") or orig_str
             agency = row["Agentur"]
-            fotographer = row["Fotograf:in"]
-    if not fotographer and not agency:
-        fotographer = korr_str
-    return korr_str, fotographer, agency
+            photographer = row["Fotograf:in"]
+    if not photographer and not agency:
+        photographer = korr_str
+    return korr_str, photographer, agency
 
 
 class Command(BaseCommand):
@@ -99,21 +99,21 @@ class Command(BaseCommand):
                 authors = ["unbekannt"]
             authors = [get_fixed_data(author.strip()) for author in authors]
             ann.author = [author[0] for author in authors]
-            fotographers = []
-            for orig_author, fotographer, agency in authors:
-                if fotographer:
-                    fotographer = fotographer.split("@")
+            photographers = []
+            for orig_author, photographer, agency in authors:
+                if photographer:
+                    photographer = photographer.split("@")
                 else:
-                    fotographer = [None]
+                    photographer = [None]
                 if agency:
                     agency = agency.split("@")
                 else:
                     agency = [None]
-                fotographer = [f.strip() if f else f for f in fotographer]
+                photographer = [f.strip() if f else f for f in photographer]
                 agency = [a.strip() if a else a for a in agency]
-                for comb in list(itertools.product(fotographer, agency)):
-                    fotographers.append({"fotographer": comb[0], "agency": comb[1]})
-            ann.fotographers = fotographers
+                for comb in list(itertools.product(photographer, agency)):
+                    photographers.append({"photographer": comb[0], "agency": comb[1]})
+            ann.photographers = photographers
 
             ann.caption = next(iter(ann.data.get("Caption", [])), None)
             ann.title = next(iter(ann.data.get("Title", [])), None)

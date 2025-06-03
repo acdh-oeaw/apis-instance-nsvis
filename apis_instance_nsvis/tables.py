@@ -12,7 +12,7 @@ class AnnotationTable(AbstractEntityTable):
     depicted = tables.TemplateColumn(template_code="{{ record.depicted|join:', ' }}")
     clip = tables.TemplateColumn(template_code="<img class='thumbnail' src={{ record.clip }}>", exclude_from_export=True)
     author = tables.TemplateColumn(template_name="columns/annotation_author.html")
-    fotographers = tables.TemplateColumn(template_name="columns/annotation_fotographers.html")
+    photographers = tables.TemplateColumn(template_name="columns/annotation_photographers.html")
     ranking = tables.TemplateColumn(template_code='<abbr title="{{ record.ranking }}">{{ record.ranking|floatformat:-3 }}</abbr>')
     caption = tables.Column(attrs={"td": {"class": "col-1"}})
 
@@ -100,12 +100,12 @@ class AnnotationReportsTable(tables.Table):
         return ", ".join(authors)
 
 
-class AnnotationFotographersTable(tables.Table):
-    fotographer = tables.TemplateColumn(template_code='<a href="{% url "apis_core:generic:list" "apis_instance_nsvis.annotation" %}?fotographer={{ record.fotographer|urlencode }}">{{ record.fotographer }}</a>')
+class AnnotationPhotographersTable(tables.Table):
+    photographer = tables.TemplateColumn(template_code='<a href="{% url "apis_core:generic:list" "apis_instance_nsvis.annotation" %}?photographer={{ record.photographer|urlencode }}">{{ record.photographer }}</a>')
     count = tables.Column()
     ranking = tables.Column()
 
-    def value_fotographer(self, value, record):
+    def value_photographer(self, value, record):
         return value
 
 
