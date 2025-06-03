@@ -67,7 +67,7 @@ class AnnotationFotographersView(AnnotationFilterView):
         return [{"fotographer": key, **value} for key, value in data.items()]
 
 
-class AnnotationAgenciesView(List):
+class AnnotationAgenciesView(AnnotationFilterView):
     table_class = AnnotationAgenciesTable
 
     def get_table_data(self, *args, **kwargs):
