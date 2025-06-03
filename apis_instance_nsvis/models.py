@@ -1,7 +1,6 @@
 import logging
 from urllib.parse import urlparse
 from pathlib import Path
-from PIL import Image
 import httpx
 
 from django.contrib.contenttypes.fields import GenericForeignKey, GenericRelation
