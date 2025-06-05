@@ -138,14 +138,9 @@ class Person(AbstractEntity, VersionMixin, MongoDbDataMixin, E21_Person):
     work_ns = models.CharField(max_length=9, choices=Choices, default=Choices.UNK, verbose_name=_("Worked during NS"))
     propaganda_membership = models.CharField(max_length=9, choices=Choices, default=Choices.UNK, verbose_name=_("Member in a propaganda company"))
 
-    def __str__(self):
-        return f"{self.forename} {self.surname}"
-
 
 class Place(E53_Place, AbstractEntity, VersionMixin, MongoDbDataMixin):
-    @classmethod
-    def create_from_string(cls, string):
-        return cls.objects.create(label=string)
+    pass
 
 
 class Institution(AbstractEntity, VersionMixin, MongoDbDataMixin, E74_Group):
@@ -153,10 +148,6 @@ class Institution(AbstractEntity, VersionMixin, MongoDbDataMixin, E74_Group):
     class Meta(E74_Group.Meta):
         verbose_name = _("Institution")
         verbose_name_plural = _("Institutions")
-
-    @classmethod
-    def create_from_string(cls, string):
-        return cls.objects.create(label=string)
 
 
 class EducationType(AbstractEntity, VersionMixin, MongoDbDataMixin, SimpleLabelModel):
