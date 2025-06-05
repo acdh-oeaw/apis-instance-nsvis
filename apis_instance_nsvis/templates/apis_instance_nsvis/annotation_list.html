@@ -3,6 +3,10 @@
 {% load export_url from django_tables2 %}
 {% load render_table from django_tables2 %}
 
+{% comment %}
+The only reason we override the template is so we can set the additional col to width -9
+{% endcomment %}
+
 {% block additionalcols %}
   <div class="col-9">
     <div class="card">
