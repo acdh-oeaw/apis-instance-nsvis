@@ -54,6 +54,9 @@ class TimespanTable(RelationsListTable):
 
 
 class PersonInventoryRelationsTable(TimespanTable):
+    extent = tables.Column()
+    contact = tables.Column()
+
     class Meta(TimespanTable.Meta):
         ...
 
