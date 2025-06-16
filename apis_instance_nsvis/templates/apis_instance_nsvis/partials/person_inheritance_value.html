@@ -1,0 +1,10 @@
+<ul>
+{% for v in value %}
+<li>{{ v.extent }}
+	<ul>
+		<li>Kommentar: {{ v.comment }}</li>
+		<li>Contact: {{ v.contact }}</li>
+	</ul>
+</li>
+{% endfor %}
+</ul>
