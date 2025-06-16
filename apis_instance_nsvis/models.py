@@ -265,6 +265,8 @@ class CollaboratesWith(NsvisRelationMixin, TimespanMixin, Relation):
     subj_model = Person
     obj_model = Person
 
+    details = models.TextField(null=True, blank=True, verbose_name=_("details"))
+
     @classmethod
     def name(self) -> str:
         return _("collaborates with")
