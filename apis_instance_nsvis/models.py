@@ -149,6 +149,8 @@ class Institution(AbstractEntity, VersionMixin, MongoDbDataMixin, E74_Group):
         verbose_name = _("Institution")
         verbose_name_plural = _("Institutions")
 
+    details = models.TextField(null=True, blank=True, verbose_name=_("details"))
+
 
 class EducationType(AbstractEntity, VersionMixin, MongoDbDataMixin, SimpleLabelModel):
     class Meta(SimpleLabelModel.Meta):
