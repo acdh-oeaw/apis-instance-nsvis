@@ -130,12 +130,14 @@ class AgencyFilter(MultipleChoiceFilter):
 
     def get_choices(self):
         photographers = Annotation.objects.values_list("photographers", flat=True)
-        agencies = sorted({entry["agency"] for agency in photographers for entry in agency if entry["agency"]})
+        agencies = sorted({entry["agency"] for agency in photographers for entry in agency if entry["agency"]}) + ["None"]
         return list(zip(agencies, agencies))
 
     def _json_list_contains_value(self, json_list, value):
         for item in json_list:
             for val in value:
+                if val == "None":
+                    val = None
                 if item["agency"] == val:
                     return True
         return False
