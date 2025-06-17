@@ -157,12 +157,14 @@ class PhotographerFilter(MultipleChoiceFilter):
 
     def get_choices(self):
         photographers = Annotation.objects.values_list("photographers", flat=True)
-        photographers = sorted({entry["photographer"] for photographer in photographers for entry in photographer if entry["photographer"]})
+        photographers = sorted({entry["photographer"] for photographer in photographers for entry in photographer if entry["photographer"]}) + ["None"]
         return list(zip(photographers, photographers))
 
     def _json_list_contains_value(self, json_list, value):
         for item in json_list:
             for val in value:
+                if val == "None":
+                    val = None
                 if item["photographer"] == val:
                     return True
         return False
