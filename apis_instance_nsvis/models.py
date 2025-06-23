@@ -461,6 +461,7 @@ class PersonEmployedAtInstitution(NsvisRelationMixin, Relation):
 
     start = FuzzyDateParserField(blank=True, null=True, parser=customdateparser)
     end = FuzzyDateParserField(blank=True, null=True, parser=customdateparser)
+    details = models.TextField(null=True, blank=True, verbose_name=_("details"))
 
     @classmethod
     def name(self) -> str:
