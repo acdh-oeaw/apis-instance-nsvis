@@ -471,6 +471,22 @@ class PersonEmployedAtInstitution(NsvisRelationMixin, Relation):
         return _("had as employee")
 
 
+class InstitutionLocatedInPlace(NsvisRelationMixin, Relation):
+    subj_model = Institution
+    obj_model = Place
+
+    start = FuzzyDateParserField(blank=True, null=True, parser=customdateparser)
+    end = FuzzyDateParserField(blank=True, null=True, parser=customdateparser)
+
+    @classmethod
+    def name(self) -> str:
+        return _("is located in")
+
+    @classmethod
+    def reverse_name(self) -> str:
+        return _("is location for")
+
+
 auditlog.register(CollaboratesWith)
 auditlog.register(IsMemberOf)
 auditlog.register(IsInventoriedIn)
@@ -485,3 +501,4 @@ auditlog.register(ExileIn)
 auditlog.register(ImprisonedIn)
 auditlog.register(IsInheritanceIn)
 auditlog.register(PersonFoundsInstitution)
+auditlog.register(InstitutionLocatedInPlace)
