@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-05-14 09:56+0000\n"
+"POT-Creation-Date: 2025-06-23 08:52+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -113,6 +113,10 @@ msgstr "Institution"
 #: apis_instance_nsvis/models.py
 msgid "Institutions"
 msgstr "Institutionen"
+
+#: apis_instance_nsvis/models.py
+msgid "details"
+msgstr "Details"
 
 #: apis_instance_nsvis/models.py
 msgid "Education Type"
@@ -257,6 +261,17 @@ msgstr "war Mitarbeiter:in bei"
 #: apis_instance_nsvis/models.py
 msgid "had as employee"
 msgstr "hatte als Mitarbeiter:in"
+
+#: apis_instance_nsvis/templates/apis_instance_nsvis/annotation_list.html
+#, python-format
+msgid "%(results)s result."
+msgid_plural "%(results)s results."
+msgstr[0] "%(results)s Ergebnis."
+msgstr[1] "%(results)s Ergebnisse."
+
+#: apis_instance_nsvis/templates/apis_instance_nsvis/annotation_list.html
+msgid "download"
+msgstr "herunterladen"
 
 #~ msgid "Place"
 #~ msgstr "Ort"
