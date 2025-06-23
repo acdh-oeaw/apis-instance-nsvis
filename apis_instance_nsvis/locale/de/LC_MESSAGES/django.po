@@ -242,6 +242,22 @@ msgstr "ist im Nachlass bei"
 msgid "contains inheritance of"
 msgstr "hat als Nachlass"
 
+#: apis_instance_nsvis/models.py
+msgid "founded"
+msgstr "gründete"
+
+#: apis_instance_nsvis/models.py
+msgid "was founded by"
+msgstr "wurde gegründet von"
+
+#: apis_instance_nsvis/models.py
+msgid "was employee at"
+msgstr "war Mitarbeiter:in bei"
+
+#: apis_instance_nsvis/models.py
+msgid "had as employee"
+msgstr "hatte als Mitarbeiter:in"
+
 #~ msgid "Place"
 #~ msgstr "Ort"
 

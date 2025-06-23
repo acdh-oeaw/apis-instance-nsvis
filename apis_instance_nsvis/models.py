@@ -440,6 +440,37 @@ class IsInheritanceIn(NsvisRelationMixin, Relation):
         return _("contains inheritance of")
 
 
+class PersonFoundsInstitution(NsvisRelationMixin, Relation):
+    subj_model = Person
+    obj_model = Institution
+
+    date = FuzzyDateParserField(blank=True, null=True, parser=customdateparser)
+
+    @classmethod
+    def name(self) -> str:
+        return _("founded")
+
+    @classmethod
+    def reverse_name(self) -> str:
+        return _("was founded by")
+
+
+class PersonEmployedAtInstitution(NsvisRelationMixin, Relation):
+    subj_model = Person
+    obj_model = Institution
+
+    start = FuzzyDateParserField(blank=True, null=True, parser=customdateparser)
+    end = FuzzyDateParserField(blank=True, null=True, parser=customdateparser)
+
+    @classmethod
+    def name(self) -> str:
+        return _("was employee at")
+
+    @classmethod
+    def reverse_name(self) -> str:
+        return _("had as employee")
+
+
 auditlog.register(CollaboratesWith)
 auditlog.register(IsMemberOf)
 auditlog.register(IsInventoriedIn)
@@ -453,3 +484,4 @@ auditlog.register(DiedIn)
 auditlog.register(ExileIn)
 auditlog.register(ImprisonedIn)
 auditlog.register(IsInheritanceIn)
+auditlog.register(PersonFoundsInstitution)
