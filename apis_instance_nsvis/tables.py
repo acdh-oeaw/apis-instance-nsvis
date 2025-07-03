@@ -62,6 +62,8 @@ class PersonInventoryRelationsTable(TimespanTable):
 
 
 class PersonOrganizationRelationsTable(TimespanTable):
+    details = tables.Column()
+
     class Meta(TimespanTable.Meta):
         ...
 
