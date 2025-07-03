@@ -53,7 +53,7 @@ class TimespanTable(RelationsListTable):
         super().paginate(*args, **kwargs)
 
 
-class PersonInventoryRelationsTable(TimespanTable):
+class AbstractEntityInventoryRelationsTable(TimespanTable):
     extent = tables.Column()
     contact = tables.Column()
 
@@ -61,21 +61,21 @@ class PersonInventoryRelationsTable(TimespanTable):
         ...
 
 
-class PersonOrganizationRelationsTable(TimespanTable):
+class AbstractEntityOrganizationRelationsTable(TimespanTable):
     details = tables.Column()
 
     class Meta(TimespanTable.Meta):
         ...
 
 
-class PersonCareerRelationsTable(TimespanTable):
+class AbstractEntityCareerRelationsTable(TimespanTable):
     details = tables.Column()
 
     class Meta(TimespanTable.Meta):
         sequence = (list(TimespanTable.Meta.sequence)[:-4] + ["details"] + list(TimespanTable.Meta.sequence)[-4:])
 
 
-class PersonPlacesRelationsTable(TimespanTable):
+class AbstractEntityPlacesRelationsTable(TimespanTable):
     class Meta(TimespanTable.Meta):
         ...
 
