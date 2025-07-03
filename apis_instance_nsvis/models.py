@@ -455,12 +455,10 @@ class PersonFoundsInstitution(NsvisRelationMixin, Relation):
         return _("was founded by")
 
 
-class PersonEmployedAtInstitution(NsvisRelationMixin, Relation):
+class PersonEmployedAtInstitution(NsvisRelationMixin, TimespanMixin, Relation):
     subj_model = Person
     obj_model = Institution
 
-    start = FuzzyDateParserField(blank=True, null=True, parser=customdateparser)
-    end = FuzzyDateParserField(blank=True, null=True, parser=customdateparser)
     details = models.TextField(null=True, blank=True, verbose_name=_("details"))
 
     @classmethod
