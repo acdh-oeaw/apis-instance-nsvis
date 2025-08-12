@@ -8,6 +8,7 @@ from apis_core.apis_entities.filtersets import AbstractEntityFilterSet
 from apis_instance_nsvis.models import Annotation
 from django_interval.fields import FuzzyDateParserField
 from django_interval.filters import YearIntervalRangeFilter
+from apis_instance_nsvis.forms import AnnotationFilterSetForm
 
 
 class TimespanMixinFilterSet(RelationFilterSet):
@@ -192,6 +193,7 @@ class AnnotationFilterSet(AbstractEntityFilterSet):
     author_contains = AuthorContainsFilter(field_name="author")
 
     class Meta(AbstractEntityFilterSet.Meta):
+        form = AnnotationFilterSetForm
         unknown_field_behavior = UnknownFieldBehavior.IGNORE
         fields = {"caption": ["icontains"], "title": ["icontains", "exact"], "location": ["icontains"], "other": ["icontains"], "warreporter": ["exact"]}
 
