@@ -17,6 +17,7 @@ STATIC_ROOT = "/images"
 MIDDLEWARE += [  # noqa: F405
     "auditlog.middleware.AuditlogMiddleware",
     "simple_history.middleware.HistoryRequestMiddleware",
+    "apis_core.generic.middleware.HtmxMessageMiddleware",
 ]
 
 ADDITIONAL_MODULE_LOOKUP_PATHS = ["apis_instance_nsvis", "apis_acdhch_default_settings"]
