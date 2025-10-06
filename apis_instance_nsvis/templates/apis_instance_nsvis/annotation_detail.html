@@ -4,19 +4,111 @@
 
 {% block scriptHeader %}
 {{ block.super }}
-<script src="{% static "js/nsvis.js" %}" defer></script>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+     integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+     crossorigin=""/>
+ <!-- Make sure you put this AFTER Leaflet's CSS -->
+ <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+     integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+     crossorigin=""></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/0.4.2/leaflet.draw.css"/>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/0.4.2/leaflet.draw.js"></script>
+
+<style>
+#map { 
+	width: 800px;
+	height: 1000px;
+}
+#formcontainer {
+	height: 800px;
+	width: 800px;
+	border: 1px solid black;
+	margin-left: 1em;
+}
+</style>
 {% endblock %}
 
 {% block card-body %}
+<div class="d-flex d-flex-column">
+<div id="map" style="background-image: url({{ object.local_image }}); background-size: contain;">
+</div>
+<div id="formcontainer"></div>
+</div>
 {% localize off %}
 <div class="overlay" data-x={{ object.data.x }} data-y={{ object.data.y }} data-height={{ object.data.height }} data-width={{ object.data.width }} data-target="image"></div>
 {% endlocalize %}
-<div class="d-flex flex-row">
-  <div>
-	  <img id="image" class="annotated-img" src="{{ object.local_image }}" referrerpolicy="origin">
-  </div>
-  <div class="ml-4">
-    {% include "apis_core/generic/genericmodel_card_table.html" %}
-  </div>
-</div>
+<script>
+	function triggered(event) {
+		console.log(event.target);
+		formcontainer = document.getElementById("formcontainer");
+		path = event.originalEvent.target;
+		console.log(path.getBoundingClientRect());
+		formcontainer.innerHTML = path;
+	}
+
+
+
+	var controls = { zoomControl: false, dragging: false, scrollWheelZoom: false};
+	var map = L.map('map', controls).setView([0, 0], 18);
+     // FeatureGroup is to store editable layers
+     var drawnItems = new L.FeatureGroup();
+     map.addLayer(drawnItems);
+     var drawControl = new L.Control.Draw({
+	     draw: {
+		     polyline: false,
+		     circle: false,
+		     circlemarker: false,
+		     marker: false,
+		     polygon: false,
+	     },
+	     edit: {
+		     featureGroup: drawnItems
+	     }
+     });
+     map.addControl(drawControl);
+
+     var getPopupContent = function(layer) {
+	     console.log(layer);
+	     var latlngs = layer._defaultShape ? layer._defaultShape() : layer.getLatLngs(),
+		  area = L.GeometryUtil.geodesicArea(latlngs);
+             return "Area: "+L.GeometryUtil.readableArea(area, true);
+     }
+
+    var overlays = document.getElementsByClassName("overlay");
+    for (var i = 0; i < overlays.length; i++) {
+	    var [x, y, width, height] = {{ object.percentages }};
+	    console.log({{ object.percentages }});
+	    
+	    var mapwidth = map.getPixelBounds().max.x - map.getPixelBounds().min.x;
+	    var mapheight = map.getPixelBounds().max.y - map.getPixelBounds().min.y;
+	    var mapx = map.latLngToContainerPoint(map.getBounds().getSouthEast()).x;
+	    var mapy = map.latLngToContainerPoint(map.getBounds().getSouthEast()).y;
+
+	    var points = [
+		    L.point(mapx * x, mapheight * y),
+		    L.point(mapx * x + mapx * width, mapheight * y + mapheight * height)]
+	    console.log(points);
+
+	    var bounds = [map.layerPointToLatLng(points[0]), map.containerPointToLatLng(points[1])];
+
+	    rect = L.rectangle(bounds, {color: "#ff7800", weight: 1});
+	    console.log(rect);
+
+	    drawnItems.addLayer(rect);
+    	    rect.on("click", function (event) {
+	    	triggered(event);
+	    });
+}
+
+
+    map.on(L.Draw.Event.CREATED, function (event) {
+        var layer = event.layer;
+        drawnItems.addLayer(layer);
+
+	layer.on("click", function (event) {
+		triggered(event);
+	});
+
+    });
+</script>
 {% endblock card-body %}

@@ -239,6 +239,10 @@ class Annotation(AbstractEntity):
         height = self.data["height"] / 100
         return myimgproxy.crop(self.pagepath, width, height, x, y)
 
+    @property
+    def percentages(self):
+        return [self.data["x"] / 100, self.data["y"] / 100, self.data["width"] / 100, self.data["height"] / 100]
+
 
 auditlog.register(SpecialArea, serialize_data=True)
 auditlog.register(Person, serialize_data=True)
