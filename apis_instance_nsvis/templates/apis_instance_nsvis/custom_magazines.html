@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+{% load nsvis %}
+
+{% block content %}
+<div class="container">
+
+{% if not title %}
+<ul>
+{% for magazine, items in magazines.items %}
+<li>{{ magazine }}
+  <ul>
+    {% for issue in items %}
+    <li><a href="/apis/custom/magazines/{{magazine|magazine_short}}_{{issue}}">{{ issue }}</a></li>
+    {% endfor %}
+  </ul>
+</li>
+{% endfor %}
+</ul>
+
+{% else %}
+<h1>{{ title }}</h1>
+{% if not page %}
+  {% for magazine, issues in magazines.items %}
+  {% for issue, pages in issues.items %}
+  {% with magazine|magazine_short|add:"_"|add:issue as mytitle %}
+  {% if title == mytitle %}
+  {% for page in pages %}
+  <a href="/apis/custom/page/?image={{ page }}">
+  <img src="{{ page|iiif_preview }}">
+  </a>
+  {% endfor %}
+  {% endif %}
+  {% endwith %}
+  {% endfor %}
+  {% endfor %}
+{% endif %}
+
+{% endif %}
+
+{% endblock %}

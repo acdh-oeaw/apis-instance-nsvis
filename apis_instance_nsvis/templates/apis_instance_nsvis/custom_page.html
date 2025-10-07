@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% load nsvis %}
+{% load static %}
+{% load crispy_forms_tags %}
+
+{% block scriptHeader %}
+{{ block.super }}
+<script src="{% static "js/nsvis_canvas.js" %}" defer></script>
+{% endblock %}
+
+
+{% block content %}
+{% if form %}
+<div id="form-template" class="d-none">
+{{ form|crispy }}
+</div>
+{% endif %}
+<div class="row m-5">
+  <div class="col">
+  <canvas id="canvas" style="background-image: url({{ image }}); background-size: 100% 100%; background-repeat: no-repeat;" width="800" height="1000">
+  </canvas>
+  </div>
+  <div class="col" id="form">
+  </div>
+</div>
+{% endblock content %}

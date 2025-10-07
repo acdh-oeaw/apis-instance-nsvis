@@ -1,11 +1,16 @@
 from collections import defaultdict
 from django.db.models import Count
+from django.conf import settings
 from django.contrib.postgres.aggregates import ArrayAgg
 
 from django.views.generic.base import TemplateView
 from apis_instance_nsvis.models import Annotation
 from apis_instance_nsvis.tables import AnnotationAuthorsTable, AnnotationReportsTable, AnnotationPhotographersTable, AnnotationAgenciesTable
 from apis_core.generic.views import List
+from pathlib import Path
+import json
+
+from apis_instance_nsvis.forms import NsvisImageAnnotationForm
 
 
 class WrongAnnotationNumber(TemplateView):
@@ -85,3 +90,30 @@ class AnnotationReportsView(List):
 
     def get_table_data(self, *args, **kwargs):
         return Annotation.objects.values("title").annotate(count=Count("title"), ids=ArrayAgg("id")).order_by().filter(count__gt=1)
+
+
+class MagazinesView(TemplateView):
+    template_name = "apis_instance_nsvis/custom_magazines.html"
+
+    def setup(self, *args, **kwargs):
+        super().setup(*args, **kwargs)
+        magazine_file = getattr(settings, "MAGAZINE_FILE", None)
+        self.magazines = {}
+        if magazine_file is not None:
+            self.magazines = json.loads(Path(magazine_file).read_text())
+
+    def get_context_data(self, title=None):
+        ctx = super().get_context_data()
+        ctx["magazines"] = self.magazines
+        ctx["title"] = title
+        return ctx
+
+
+class PageView(TemplateView):
+    template_name = "apis_instance_nsvis/custom_page.html"
+
+    def get_context_data(self, title=None):
+        ctx = super().get_context_data()
+        ctx["image"] = self.request.GET.get("image", None)
+        ctx["form"] = NsvisImageAnnotationForm()
+        return ctx
