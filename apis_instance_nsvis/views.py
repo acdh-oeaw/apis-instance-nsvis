@@ -1,11 +1,22 @@
 from collections import defaultdict
 from django.db.models import Count
+from django.conf import settings
 from django.contrib.postgres.aggregates import ArrayAgg
+from crispy_forms.helper import FormHelper
+from crispy_forms.layout import Submit, Layout, HTML, Div
 
 from django.views.generic.base import TemplateView
 from apis_instance_nsvis.models import Annotation
 from apis_instance_nsvis.tables import AnnotationAuthorsTable, AnnotationReportsTable, AnnotationPhotographersTable, AnnotationAgenciesTable
 from apis_core.generic.views import List
+from django.views.generic.edit import FormView
+from django.urls import reverse
+from django.shortcuts import redirect
+from django.forms import modelformset_factory
+from pathlib import Path
+import json
+
+from apis_instance_nsvis.forms import NsvisImageAnnotationForm
 
 
 class WrongAnnotationNumber(TemplateView):
@@ -85,3 +96,35 @@ class AnnotationReportsView(List):
 
     def get_table_data(self, *args, **kwargs):
         return Annotation.objects.values("title").annotate(count=Count("title"), ids=ArrayAgg("id")).order_by().filter(count__gt=1)
+
+
+class MagazinesView(TemplateView):
+    template_name = "apis_instance_nsvis/custom_magazines.html"
+
+    def get_context_data(self, title=None):
+        ctx = super().get_context_data()
+        ctx["title"] = title
+        return ctx
+
+
+class PageView(TemplateView):
+    template_name = "apis_instance_nsvis/custom_page.html"
+
+    def setup(self, *args, **kwargs):
+        super().setup(*args, **kwargs)
+        self.image = self.request.GET.get("image", None)
+        self.formset = modelformset_factory(Annotation, form=NsvisImageAnnotationForm, fields="__all__", can_delete=True)
+
+    def get_context_data(self, *args, **kwargs):
+        ctx = super().get_context_data(*args, **kwargs)
+        ctx["image"] = self.image
+        ctx["formset"] = kwargs.pop("formset", self.formset(queryset=Annotation.objects.filter(image=self.image), form_kwargs={"image": self.image}))
+        return ctx
+
+    def post(self, *args, **kwargs):
+        formset = self.formset(self.request.POST, form_kwargs={"image": self.image})
+        if formset.is_valid():
+            formset.save()
+        else:
+            return self.render_to_response(self.get_context_data(formset=formset))
+        return redirect(reverse("custom_page") + "?" + self.request.GET.urlencode())

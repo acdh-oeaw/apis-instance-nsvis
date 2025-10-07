@@ -190,8 +190,9 @@ class Annotation(AbstractEntity):
         verbose_name_plural = _("annotations")
 
     def __str__(self):
-        if label := self.data.get("iiif_label"):
-            return f"{self.issue} ({label}) [{self.lst_result_id}]"
+        if self.data:
+            if label := self.data.get("iiif_label"):
+                return f"{self.issue} ({label}) [{self.lst_result_id}]"
         return self.issue
 
     @property

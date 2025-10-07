@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+{% load nsvis %}
+{% load static %}
+{% load crispy_forms_tags %}
+{% load crispy_forms_utils %}
+
+{% block scriptHeader %}
+{{ block.super }}
+<script src="{% static "js/nsvis_canvas.js" %}" defer></script>
+{% endblock %}
+
+
+{% block content %}
+
+<div class="row m-5">
+  <div class="col" style="max-width: 850px">
+  <canvas id="canvas" style="background-image: url({{ image|get_real_url_for_labelled_url }}); background-size: 100% 100%; background-repeat: no-repeat;" width="800" height="1000">
+  </canvas>
+  <a href="{{ image|get_real_url_for_labelled_url }}" target="_blank">Bild in eigenem Fenster öffnen</a>
+  </div>
+  <div class="col accordion" id="form">
+    {% for error in formset.errors %}
+    {{ error }}
+    {% endfor %}
+    <form method="post">
+    {% csrf_token %}
+    {{ formset.management_form }}
+    {% for form in formset %}
+    {% if forloop.first %}
+      {{ form.media }}
+      {% endif %}
+      <details id="details-{{ form.prefix }}" class="accordion-item" {% if form.errors %}open{% endif %}>
+        <summary class="accordion-button collapsed">{% if forloop.last %}New{% else %}{{ form.author.value|default:"No author" }} / {{ form.title.value|default:"No title" }}{% endif %}</summary>
+      <div class="accordion-body form-group-sm">
+      {{ form|crispy }}
+      </div>
+    </details>
+    {% endfor %}
+    <button type="submit" class="btn btn-primary mt-2">Save</button>
+    </form>
+  </div>
+</div>
+{% endblock content %}

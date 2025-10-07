@@ -21,3 +21,7 @@ MIDDLEWARE += [  # noqa: F405
 ]
 
 ADDITIONAL_MODULE_LOOKUP_PATHS = ["apis_instance_nsvis", "apis_acdhch_default_settings"]
+
+CSP_IMG_SRC += ["*.acdh-dev.oeaw.ac.at"]
+
+MAGAZINE_FILE = Path(__file__).parent.parent / "magazines.json"

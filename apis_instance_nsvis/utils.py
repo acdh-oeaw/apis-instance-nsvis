@@ -73,22 +73,21 @@ class MyImgProxy:
         self.salt = os.getenv("IMGPROXY_SALT")
         self.proxy_host = "https://imgproxy.acdh.oeaw.ac.at"
 
+    def img_url(self, path):
+        path = f"s3://for-imgproxy/{path}"
+        print(path)
+        return ImgProxy(path, proxy_host=self.proxy_host, key=self.key, salt=self.salt)
+
     def calc(self, path):
-        img_url = ImgProxy(f"s3://for-imgproxy/{path}",
-                        proxy_host=self.proxy_host,
-                        key=self.key,
-                        salt=self.salt)
-        return img_url()
+        return self.img_url(path)
 
     def crop(self, path, width, height, x=0, y=0):
         gravity = f"nowe:{x}:{y}"
         crop = f"crop:{width}:{height}:{gravity}"
-        img_url = ImgProxy(f"s3://for-imgproxy/{path}",
-                        proxy_host=self.proxy_host,
-                        key=self.key,
-                        salt=self.salt)
-        return img_url(crop, width=800, height=800, resizing_type="fit")
+        return self.img_url(path)(crop, width=800, height=800, resizing_type="fit")
 
+    def resize(self, path, width=150, height=200):
+        return self.img_url(path)(width=width, height=height, resizing_type="fit")
 
 
 re_abseit = r"^(vor|ab|seit|um) (?P<year>\d{1,4})"
