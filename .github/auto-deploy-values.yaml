@@ -46,7 +46,7 @@ readinessProbe:
 cronjobs:
   import:
     schedule: "2 * * * *"
-    command: ["/bin/bash"]
+    command: ["/bin/sh"]
     args: ["-c", "./manage.py importannotations"]
     image:
       repository: $repository
