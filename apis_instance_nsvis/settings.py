@@ -12,7 +12,7 @@ ROOT_URLCONF = "apis_instance_nsvis.urls"
 
 LANGUAGE_CODE = "de"
 
-STATIC_ROOT = "/images"
+STATIC_ROOT = "/data"
 
 MIDDLEWARE += [  # noqa: F405
     "auditlog.middleware.AuditlogMiddleware",
