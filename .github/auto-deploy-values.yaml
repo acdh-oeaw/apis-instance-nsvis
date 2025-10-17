@@ -43,20 +43,6 @@ readinessProbe:
   probeType: "httpGet"
 
 
-cronjobs:
-  import:
-    schedule: "2 * * * *"
-    command: ["/bin/sh"]
-    args: ["-c", "./manage.py importannotations"]
-    image:
-      repository: $repository
-      tag: "$tag"
-      pullPolicy: IfNotPresent
-    livenessProbe:
-      probeType: "exec"
-      command: ["/bin/ls"]
-
-
 persistence:
   enabled: true
   volumes:
