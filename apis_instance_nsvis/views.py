@@ -113,7 +113,7 @@ class PageView(TemplateView):
     def setup(self, *args, **kwargs):
         super().setup(*args, **kwargs)
         self.image = self.request.GET.get("image", None)
-        self.formset = modelformset_factory(Annotation, form=NsvisImageAnnotationForm, fields="__all__", can_delete=True)
+        self.formset = modelformset_factory(Annotation, form=NsvisImageAnnotationForm, fields="__all__", can_delete=True, extra=0)
 
     def get_context_data(self, *args, **kwargs):
         ctx = super().get_context_data(*args, **kwargs)

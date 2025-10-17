@@ -13,6 +13,15 @@
 {% block content %}
 
 <div class="row m-5">
+  <div id="initial_form_count" data-count="{{ formset.initial_form_count }}"></div>
+  <div id="empty_form" hidden>
+      <details id="details-{{ formset.empty_form.prefix }}" class="accordion-item" open>
+        <summary class="accordion-button collapsed">Create annotation</summary>
+        <div class="accordion-body">
+        {{ formset.empty_form|crispy }}
+        </div>
+      </details>
+  </div>
   <div class="col" style="max-width: 850px">
   <canvas id="canvas" style="background-image: url({{ image|get_real_url_for_labelled_url }}); background-size: 100% 100%; background-repeat: no-repeat;" width="800" height="1000">
   </canvas>
@@ -30,13 +39,13 @@
       {{ form.media }}
       {% endif %}
       <details id="details-{{ form.prefix }}" class="accordion-item" {% if form.errors %}open{% endif %}>
-        <summary class="accordion-button collapsed">{% if forloop.last %}New{% else %}{{ form.author.value|default:"No author" }} / {{ form.title.value|default:"No title" }}{% endif %}</summary>
-      <div class="accordion-body form-group-sm">
-      {{ form|crispy }}
-      </div>
-    </details>
+        <summary class="accordion-button collapsed">{{ form.author.value|default:"No author" }} / {{ form.title.value|default:"No title" }}</summary>
+        <div class="accordion-body">
+          {{ form|crispy }}
+        </div>
+      </details>
     {% endfor %}
-    <button type="submit" class="btn btn-primary mt-2">Save</button>
+    <button id="submit" type="submit" class="btn btn-primary mt-2">Save</button>
     </form>
   </div>
 </div>
