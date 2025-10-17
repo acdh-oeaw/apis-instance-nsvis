@@ -164,7 +164,7 @@ class ProfessionType(AbstractEntity, VersionMixin, MongoDbDataMixin, SimpleLabel
         verbose_name_plural = _("Profession Types")
 
 
-class Annotation(AbstractEntity):
+class Annotation(AbstractEntity, VersionMixin):
     data = models.JSONField(null=True, editable=False)
     image = models.TextField(max_length=512, editable=False)
     issue = models.TextField(max_length=256, editable=False)
