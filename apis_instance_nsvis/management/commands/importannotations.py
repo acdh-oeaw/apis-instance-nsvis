@@ -2,6 +2,8 @@ from collections import defaultdict
 import itertools
 import httpx
 import os
+from django.utils.dateparse import parse_datetime
+from simple_history.utils import get_history_model_for_model
 
 from django.core.management.base import BaseCommand
 
@@ -15,7 +17,6 @@ baserow_db = os.getenv("BASEROW_DB", None)
 
 author_data = []
 
-
 def get_author_data():
     _next = f"https://baserow.acdh-dev.oeaw.ac.at/api/database/rows/table/{baserow_db}/?user_field_names=true&size=200"
     while _next:
@@ -23,14 +24,12 @@ def get_author_data():
         author_data.extend(data["results"])
         _next = data["next"]
 
-
 def override(project, attribute):
     match project:
         case 69:
             if attribute == "issue":
                 return "Wiener Illustrierte vom 23.11.1944"
     return None
-
 
 def get_fixed_data(orig_str):
     agency = None
@@ -52,13 +51,14 @@ class Command(BaseCommand):
     help = "Import data from LabelStudio Export"
 
     def handle(self, *args, **options):
-        get_author_data()
         first_batch_projects = [45, 48, 49, 50, 51, 52, 55, 56, 58, 63, 64, 65, 66, 69, 70, 71, 77, 78, 79, 80, 81, 82, 83, 99, 100]
         projects = []
         ann_ids = []
+        changed_annotations = []
+        VersionAnnotation = get_history_model_for_model(Annotation)
         if labelstudio_token:
             headers = {"Authorization": f"Token {labelstudio_token}"}
-            client = httpx.Client()
+            client = httpx.Client(timeout=10.0)
             for project in projects + first_batch_projects:
                 endpoint = f"{labelstudio_uri}/api/projects/{project}/export?exportType=JSON"
                 data = client.get(endpoint, headers=headers).json()
@@ -79,56 +79,98 @@ class Command(BaseCommand):
                             annotations[result["id"]]["annotation"] = annotation["id"]
                             annotations[result["id"]]["iiif_label"] = task["data"]["label"]
                             annotations[result["id"]]["project_id"] = project
+                            annotations[result["id"]]["updated_at"] = annotation["updated_at"]
                     for ann in annotations:
-                        annotation, created = Annotation.objects.get_or_create(lst_task_id=task_id, lst_annotation_id=annotations[ann]["annotation"], lst_result_id=ann)
+                        updated = parse_datetime(annotations[ann]["updated_at"])
+
+                        lst_attrs = {"lst_task_id": task_id, "lst_annotation_id": annotations[ann]["annotation"], "lst_result_id": ann}
+                        try:
+                            annotation = Annotation.objects.get(**lst_attrs)
+                        except Annotation.DoesNotExist:
+                            annotation = Annotation(**lst_attrs)
+                            annotation.data = annotations[ann]
+                            annotation.image = task["data"]["image"]
+                            annotation.issue = override(project, "issue") or task["data"]["issue"]
+                            annotation._history_date = updated
+                            annotation.save()
+                            changed_annotations.append(annotation.id)
+
                         ann_ids.append(annotation.id)
-                        annotation.data = annotations[ann]
-                        annotation.image = task["data"]["image"]
-                        annotation.issue = override(project, "issue") or task["data"]["issue"]
-                        annotation.save()
+
+                        last_db_update = None
+                        try:
+                            last_db_update = annotation.history.latest().history_date
+                        except VersionAnnotation.DoesNotExist:
+                            attributes = lst_attrs.copy()
+                            attributes["data"] = annotation.data
+                            attributes["image"] = annotation.image
+                            attributes["issue"] = annotation.issue
+                            attributes["history_date"] = updated
+                            attributes["history_user"] = None
+                            attributes["history_change_reason"] = ""
+                            attributes["history_type"] = "+"
+                            attributes["id"] = annotation.id
+                            attributes["rootobject_ptr_id"] = annotation.id
+                            VersionAnnotation.objects.create(**attributes)
+                            last_db_update = updated
+                            changed_annotations.append(annotation.id)
+
+                        if last_db_update < updated:
+                            annotation.data = annotations[ann]
+                            annotation._history_date = updated
+                            annotation.save()
             client.close()
-        # Annotation.objects.exclude(data__project_id__in=first_batch_projects).exclude(id__in=ann_ids).delete()
-        Annotation.objects.exclude().exclude(id__in=ann_ids).delete()
-        first_batch_collection, _ = SkosCollection.objects.get_or_create(name="Annotations: first batch")
-        first_analysis_collection, _ = SkosCollection.objects.get_or_create(name="Annotations: Erste Auswertung")
-        for ann in Annotation.objects.all():
-            if ann.data["project_id"] in first_batch_projects:
-                first_batch_collection.add(ann)
-                if any(title in ann.issue for title in ["Wiener Bilder", "Ostmarkwoche", "Wiener Illustrierte"]):
-                    first_analysis_collection.add(ann)
-            authors = next(iter(ann.data.get("Author", [])), "").splitlines()
-            if not authors:
-                authors = ["unbekannt"]
-            authors = [get_fixed_data(author.strip()) for author in authors]
-            ann.author = [author[0] for author in authors]
-            photographers = []
-            for orig_author, photographer, agency, warreporter in authors:
-                if photographer:
-                    photographer = photographer.split("@")
-                else:
-                    photographer = [None]
-                if agency:
-                    agency = agency.split("@")
-                else:
-                    agency = [None]
-                photographer = [f.strip() if f else f for f in photographer]
-                agency = [a.strip() if a else a for a in agency]
-                for comb in list(itertools.product(photographer, agency)):
-                    photographers.append({"photographer": comb[0], "agency": comb[1]})
-            ann.warreporter = warreporter
-            ann.photographers = photographers
+            # only print
+            deleted_annos = Annotation.objects.exclude(id__in=ann_ids).values_list("pk", flat=True)
+            print(f"The following annotation ids are not there anymore: {deleted_annos}")
 
-            ann.caption = next(iter(ann.data.get("Caption", [])), None)
-            ann.title = next(iter(ann.data.get("Title", [])), None)
+        # update the data of the annotations that have been created or changed
+        print(f"The following annotations are going to be udpated: {changed_annotations}")
+        if changed_annotations:
 
-            dargestelltes = ann.data.get("Dargestelltes", [])
-            ann.depicted = list(set([x for xs in dargestelltes for x in xs]))
-            ann.location = next(iter(ann.data.get("OrtInput", [])), None)
+            get_author_data()
+            first_batch_collection, _ = SkosCollection.objects.get_or_create(name="Annotations: first batch")
+            first_analysis_collection, _ = SkosCollection.objects.get_or_create(name="Annotations: Erste Auswertung")
 
-            thema = ann.data.get("Thema", [])
-            ann.topic = list(set([x for xs in thema for x in xs]))
-            ann.other = next(iter(ann.data.get("Sonstiges", [])), None)
-            ann.internal_comment = next(iter(ann.data.get("InternalComment", [])), None)
+            for ann in Annotation.objects.filter(id__in=changed_annotations):
+                if ann.data["project_id"] in first_batch_projects:
+                    first_batch_collection.add(ann)
+                    if any(title in ann.issue for title in ["Wiener Bilder", "Ostmarkwoche", "Wiener Illustrierte"]):
+                        first_analysis_collection.add(ann)
 
-            ann.save()
-            ann.fetch_and_upload()
+                authors = next(iter(ann.data.get("Author", [])), "").splitlines()
+                if not authors:
+                    authors = ["unbekannt"]
+                authors = [get_fixed_data(author.strip()) for author in authors]
+                ann.author = [author[0] for author in authors]
+                photographers = []
+                for orig_author, photographer, agency, warreporter in authors:
+                    if photographer:
+                        photographer = photographer.split("@")
+                    else:
+                        photographer = [None]
+                    if agency:
+                        agency = agency.split("@")
+                    else:
+                        agency = [None]
+                    photographer = [f.strip() if f else f for f in photographer]
+                    agency = [a.strip() if a else a for a in agency]
+                    for comb in list(itertools.product(photographer, agency)):
+                        photographers.append({"photographer": comb[0], "agency": comb[1]})
+                ann.warreporter = warreporter
+                ann.photographers = photographers
+
+                ann.caption = next(iter(ann.data.get("Caption", [])), None)
+                ann.title = next(iter(ann.data.get("Title", [])), None)
+
+                dargestelltes = ann.data.get("Dargestelltes", [])
+                ann.depicted = sorted(list(set([x for xs in dargestelltes for x in xs])))
+                ann.location = next(iter(ann.data.get("OrtInput", [])), None)
+
+                thema = ann.data.get("Thema", [])
+                ann.topic = sorted(list(set([x for xs in thema for x in xs])))
+                ann.other = next(iter(ann.data.get("Sonstiges", [])), None)
+                ann.internal_comment = next(iter(ann.data.get("InternalComment", [])), None)
+
+                ann.save()
+                #ann.fetch_and_upload()
