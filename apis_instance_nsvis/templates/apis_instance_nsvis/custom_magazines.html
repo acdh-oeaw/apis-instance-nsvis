@@ -3,36 +3,42 @@
 
 {% block content %}
 <div class="container">
+{% magazines_sorted as magazines_sorted %}
 
-{% magazines as magazines %}
-{% if not title %}
+{% if not magazine %}
 <ul>
-{% for magazine, items in magazines.items %}
-<li>{{ magazine }}
-  <ul>
-    {% for issue in items %}
-    <li><a href="/apis/custom/magazines/{{magazine|magazine_short}}_{{issue}}">{{ issue }}</a></li>
-    {% endfor %}
-  </ul>
-</li>
+{% for magazine, years in magazines_sorted.items %}
+<h1>{{ magazine }}</h1>
+{% for year, issues in years.items %}
+{% for issue, pages in issues.items %}
+<a href="/apis/custom/magazines/{{magazine}}/{{issue}}" class="text-decoration-none">
+<span class="border p-2 d-inline-block mb-2" style="width: 10em;">
+{{ issue }}
+</span>
+</a>
 {% endfor %}
-</ul>
+{% endfor %}
+{% endfor %}
 
 {% else %}
-<h1>{{ title }}</h1>
-  {% for magazine, issues in magazines.items %}
-  {% for issue, pages in issues.items %}
-  {% with magazine|magazine_short|add:"_"|add:issue as mytitle %}
-  {% if title == mytitle %}
+<h1>{{ magazine }} / {{ issue }}</h1>
+{% for m, years in magazines_sorted.items %}
+{% if m == magazine %}
+{% for year, issues in years.items %}
+{% for i, pages in issues.items %}
+{% if i == issue %}
   {% for page in pages %}
-  <a href="/apis/custom/page/?image={{ page.labelledurl }}">
-  <img src="{{ page.labelledurl|get_thumbnail_for_labelled_url }}">
+  <a href="/apis/custom/page/?image={{ page.labelledurl }}" class="text-decoration-none">
+  <span class="border p-2 d-inline-block mb-2" style="width: 10em;">
+    <img src="{{ page.iiifpath|get_thumbnail_for_imgproxy_url }}">
+  </span>
   </a>
   {% endfor %}
-  {% endif %}
-  {% endwith %}
-  {% endfor %}
-  {% endfor %}
+{% endif %}
+{% endfor %}
+{% endfor %}
+{% endif %}
+{% endfor %}
 
 {% endif %}
 

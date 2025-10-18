@@ -13,6 +13,6 @@ urlpatterns += [path("apis/<contenttype:contenttype>/authors", views.AnnotationA
 urlpatterns += [path("apis/<contenttype:contenttype>/reports", views.AnnotationReportsView.as_view(), name="annotationsreportsview")]
 urlpatterns += [path("apis/<contenttype:contenttype>/photographers", views.AnnotationPhotographersView.as_view(), name="annotationsphotographersview")]
 urlpatterns += [path("apis/<contenttype:contenttype>/agencies", views.AnnotationAgenciesView.as_view(), name="annotationsagenciesview")]
-urlpatterns += [path("apis/custom/magazines/<str:title>", views.MagazinesView.as_view())]
+urlpatterns += [path("apis/custom/magazines/<str:magazine>/<str:issue>", views.MagazinesView.as_view())]
 urlpatterns += [path("apis/custom/magazines/", views.MagazinesView.as_view())]
 urlpatterns += [path("apis/custom/page/", views.PageView.as_view(), name="custom_page")]

@@ -25,3 +25,4 @@ ADDITIONAL_MODULE_LOOKUP_PATHS = ["apis_instance_nsvis", "apis_acdhch_default_se
 CSP_IMG_SRC += ["*.acdh-dev.oeaw.ac.at"]
 
 MAGAZINE_FILE = Path(__file__).parent.parent / "magazines.json"
+MAGAZINES_SORTED = Path(__file__).parent.parent / "magazines-sorted.json"

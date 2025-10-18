@@ -38,11 +38,13 @@ def magazines():
 
 @register.filter
 def get_imgproxypath_for_labelled_url(url):
-    for magazine, issues in magazines().items():
-        for issue, pages in issues.items():
-            for page in pages:
-                if page["labelledurl"] == url:
-                    return page["iiifpath"]
+    for magazine, years in magazines_sorted().items():
+        for year, issues in years.items():
+            for issue, pages in issues.items():
+                for page in pages:
+                    print(page)
+                    if page["labelledurl"] == url:
+                        return page["iiifpath"]
     return None
 
 
@@ -62,3 +64,16 @@ def get_thumbnail_for_labelled_url(url):
     if path:
         return imgproxy.resize(f"23503/new/{path}.jpg")
     return None
+
+@register.filter
+def get_thumbnail_for_imgproxy_url(path):
+    imgproxy = MyImgProxy()
+    return imgproxy.resize(f"23503/new/{path}.jpg")
+
+
+@register.simple_tag
+def magazines_sorted():
+    magazines_sorted_file = getattr(settings, "MAGAZINES_SORTED", None)
+    if magazines_sorted_file is not None:
+        return json.loads(magazines_sorted_file.read_text())
+    return {}

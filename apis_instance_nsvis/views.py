@@ -101,9 +101,10 @@ class AnnotationReportsView(List):
 class MagazinesView(TemplateView):
     template_name = "apis_instance_nsvis/custom_magazines.html"
 
-    def get_context_data(self, title=None):
+    def get_context_data(self, magazine=None, issue=None):
         ctx = super().get_context_data()
-        ctx["title"] = title
+        ctx["magazine"] = magazine
+        ctx["issue"] = issue
         return ctx
 
 
