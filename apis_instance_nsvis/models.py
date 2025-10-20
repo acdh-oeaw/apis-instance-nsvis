@@ -16,7 +16,7 @@ from apis_core.generic.abc import GenericModel
 from django.contrib.postgres.fields import ArrayField
 from django_interval.fields import FuzzyDateParserField
 from django_json_editor_field.fields import JSONEditorField
-from apis_instance_nsvis.utils import S3, MyImgProxy, customdateparser
+from apis_instance_nsvis.utils import S3, MyImgProxy, customdateparser, Magazines
 
 from auditlog.registry import auditlog
 
@@ -220,25 +220,22 @@ class Annotation(AbstractEntity, VersionMixin):
                             f.write(data)
         return tmp
 
-    def fetch_and_upload(self):
-        if not s3.file_exists(self.pagepath):
-            logger.info("Downloading and uploading file to s3: %s", self.page)
-            s3.upload_file(self.page, self.pagepath)
-
     def local_image(self):
-        self.fetch_and_upload()
+        magazines = Magazines()
+        path = magazines.get_imgproxy_path_for_url(self.image)
         myimgproxy = MyImgProxy()
-        return myimgproxy.calc(self.pagepath)
+        return myimgproxy.calc(path)
 
     @property
     def clip(self):
-        self.fetch_and_upload()
+        magazines = Magazines()
+        path = magazines.get_imgproxy_path_for_url(self.image)
         myimgproxy = MyImgProxy()
         x = self.data["x"] / 100
         y = self.data["y"] / 100
         width = self.data["width"] / 100
         height = self.data["height"] / 100
-        return myimgproxy.crop(self.pagepath, width, height, x, y)
+        return myimgproxy.crop(path, width, height, x, y)
 
 
 auditlog.register(SpecialArea, serialize_data=True)
