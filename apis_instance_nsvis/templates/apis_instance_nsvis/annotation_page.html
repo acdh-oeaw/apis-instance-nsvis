@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+{% load nsvis %}
+{% load static %}
+{% load crispy_forms_tags %}
+{% load crispy_forms_utils %}
+{% block scriptHeader %}
+    {{ block.super }}
+    <script src="{% static "js/nsvis_canvas.js" %}" defer></script>
+{% endblock %}
+{% block content %}
+    <div class="row m-5">
+        <div id="initial_form_count" data-count="{{ formset.initial_form_count }}"></div>
+        <div id="empty_form" hidden>
+            <details id="details-{{ formset.empty_form.prefix }}"
+                     class="accordion-item"
+                     open>
+                <summary class="accordion-button collapsed">Create annotation</summary>
+                <div class="accordion-body">{{ formset.empty_form|crispy }}</div>
+            </details>
+        </div>
+        <div class="col" style="max-width: 850px">
+            <canvas id="canvas"
+                    style="background-image: url({{ image|get_imgproxy_url_for_labelled_url }});
+                           background-size: 100% 100%;
+                           background-repeat: no-repeat"
+                    width="800"
+                    height="1000">
+            </canvas>
+            <a href="{{ image|get_imgproxy_url_for_labelled_url }}" target="_blank">Bild in eigenem Fenster öffnen</a>
+        </div>
+        <div class="col accordion" id="form">
+            {% for error in formset.errors %}{{ error }}{% endfor %}
+            <form method="post">
+                {% csrf_token %}
+                {{ formset.management_form }}
+                {% for form in formset %}
+                    {% if forloop.first %}{{ form.media }}{% endif %}
+                    <details id="details-{{ form.prefix }}"
+                             class="accordion-item"
+                             {% if form.errors %}open{% endif %}>
+                        <summary class="accordion-button collapsed">
+                            {% if form.author %}
+                                {{ form.author.value|join:", " }}
+                            {% else %}
+                                "No author"
+                            {% endif %}
+                            / {{ form.title.value|default:"No title" }}
+                        </summary>
+                        <div class="accordion-body">{{ form|crispy }}</div>
+                    </details>
+                {% endfor %}
+                <button id="submit" type="submit" class="btn btn-primary mt-2">Save</button>
+            </form>
+        </div>
+    </div>
+{% endblock content %}

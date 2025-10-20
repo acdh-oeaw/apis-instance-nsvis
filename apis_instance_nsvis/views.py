@@ -6,6 +6,10 @@ from django.views.generic.base import TemplateView
 from apis_instance_nsvis.models import Annotation
 from apis_instance_nsvis.tables import AnnotationAuthorsTable, AnnotationReportsTable, AnnotationPhotographersTable, AnnotationAgenciesTable
 from apis_core.generic.views import List
+from django.urls import reverse
+from django.shortcuts import redirect
+from django.forms import modelformset_factory
+from apis_instance_nsvis.forms import AnnotationForm
 
 
 class WrongAnnotationNumber(TemplateView):
@@ -85,3 +89,38 @@ class AnnotationReportsView(List):
 
     def get_table_data(self, *args, **kwargs):
         return Annotation.objects.values("title").annotate(count=Count("title"), ids=ArrayAgg("id")).order_by().filter(count__gt=1)
+
+
+class AnnotationPageView(TemplateView):
+    template_name = "apis_instance_nsvis/annotation_page.html"
+
+    def setup(self, *args, **kwargs):
+        super().setup(*args, **kwargs)
+        self.image = self.request.GET.get("image", None)
+        self.formset = modelformset_factory(
+            Annotation,
+            form=AnnotationForm,
+            fields="__all__",
+            can_delete=True,
+            extra=0,
+        )
+
+    def get_context_data(self, *args, **kwargs):
+        ctx = super().get_context_data(*args, **kwargs)
+        ctx["image"] = self.image
+        ctx["formset"] = kwargs.pop(
+            "formset",
+            self.formset(
+                queryset=Annotation.objects.filter(image=self.image),
+                form_kwargs={"image": self.image},
+            ),
+        )
+        return ctx
+
+    def post(self, *args, **kwargs):
+        formset = self.formset(self.request.POST, form_kwargs={"image": self.image})
+        if formset.is_valid():
+            formset.save()
+        else:
+            return self.render_to_response(self.get_context_data(formset=formset))
+        return redirect(reverse("annotationpage") + "?" + self.request.GET.urlencode())
