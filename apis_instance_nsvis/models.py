@@ -16,13 +16,11 @@ from apis_core.generic.abc import GenericModel
 from django.contrib.postgres.fields import ArrayField
 from django_interval.fields import FuzzyDateParserField
 from django_json_editor_field.fields import JSONEditorField
-from apis_instance_nsvis.utils import S3, MyImgProxy, customdateparser, Magazines
+from apis_instance_nsvis.utils import MyImgProxy, customdateparser, Magazines
 
 from auditlog.registry import auditlog
 
 logger = logging.getLogger(__name__)
-
-s3 = S3()
 
 
 class NsvisMixin:
