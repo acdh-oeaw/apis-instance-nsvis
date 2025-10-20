@@ -9,8 +9,31 @@ from botocore.config import Config
 from datetime import datetime
 import re
 from django_interval.utils import defaultdateparser
+from django.conf import settings
 
 logger = logging.getLogger(__name__)
+
+
+class Magazines:
+    magazines_sorted: dict = {}
+
+    def __init__(self):
+        magazines_sorted_file = getattr(settings, "MAGAZINES_SORTED", None)
+        if magazines_sorted_file:
+            self.magazines_sorted = json.loads(magazines_sorted_file.read_text())
+
+    def get_path_for_url(self, url):
+        for magazine, years in self.magazines_sorted.items():
+            for year, issues in years.items():
+                for issue, pages in issues.items():
+                    for page in pages:
+                        if page["labelledurl"] == url:
+                            return page["iiifpath"]
+        return None
+
+    def get_imgproxy_path_for_url(self, url):
+        path = self.get_path_for_url(url)
+        return f"23503/new/{path}.jpg"
 
 
 class S3:
