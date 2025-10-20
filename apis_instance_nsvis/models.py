@@ -190,9 +190,10 @@ class Annotation(AbstractEntity, VersionMixin):
         verbose_name_plural = _("annotations")
 
     def __str__(self):
-        if label := self.data.get("iiif_label"):
-            return f"{self.issue} ({label}) [{self.lst_result_id}]"
-        return self.issue
+        if self.data is not None:
+            if label := self.data.get("iiif_label"):
+                return f"{self.issue} ({label}) [{self.lst_result_id}]"
+        return self.issue or f"Annotation: {self.id}"
 
     @property
     def ranking(self):
