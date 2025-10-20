@@ -10,6 +10,7 @@ from django.urls import reverse
 from django.shortcuts import redirect
 from django.forms import modelformset_factory
 from apis_instance_nsvis.forms import AnnotationForm
+from apis_instance_nsvis.utils import Magazines
 
 
 class WrongAnnotationNumber(TemplateView):
@@ -89,6 +90,17 @@ class AnnotationReportsView(List):
 
     def get_table_data(self, *args, **kwargs):
         return Annotation.objects.values("title").annotate(count=Count("title"), ids=ArrayAgg("id")).order_by().filter(count__gt=1)
+
+
+class AnnotationMagazinesView(TemplateView):
+    template_name = "apis_instance_nsvis/annotation_magazines.html"
+
+    def get_context_data(self, magazine=None, issue=None):
+        ctx = super().get_context_data()
+        ctx["magazines_container"] = Magazines()
+        ctx["magazine"] = magazine
+        ctx["issue"] = issue
+        return ctx
 
 
 class AnnotationPageView(TemplateView):

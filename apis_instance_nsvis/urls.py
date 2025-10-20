@@ -13,4 +13,6 @@ urlpatterns += [path("apis/<contenttype:contenttype>/authors", views.AnnotationA
 urlpatterns += [path("apis/<contenttype:contenttype>/reports", views.AnnotationReportsView.as_view(), name="annotationsreportsview")]
 urlpatterns += [path("apis/<contenttype:contenttype>/photographers", views.AnnotationPhotographersView.as_view(), name="annotationsphotographersview")]
 urlpatterns += [path("apis/<contenttype:contenttype>/agencies", views.AnnotationAgenciesView.as_view(), name="annotationsagenciesview")]
+urlpatterns += [path("apis/apis_instance_nsvis.annotation/magazines/", views.AnnotationMagazinesView.as_view())]
+urlpatterns += [path("apis/apis_instance_nsvis.annotation/magazines/<str:magazine>/<str:issue>", views.AnnotationMagazinesView.as_view(), name="annotationmagazines")]
 urlpatterns += [path("apis/apis_instance_nsvis.annotation/page/", views.AnnotationPageView.as_view(), name="annotationpage")]
