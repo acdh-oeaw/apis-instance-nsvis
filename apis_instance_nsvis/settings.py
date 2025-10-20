@@ -1,3 +1,4 @@
+import os
 from pathlib import Path
 from apis_acdhch_default_settings.settings import *
 
@@ -21,3 +22,5 @@ MIDDLEWARE += [  # noqa: F405
 ]
 
 ADDITIONAL_MODULE_LOOKUP_PATHS = ["apis_instance_nsvis", "apis_acdhch_default_settings"]
+
+MAGAZINES_SORTED = Path(os.getenv("MAGAZINES_SORTED"))
