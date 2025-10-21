@@ -1,0 +1,23 @@
+{% extends "apis_core/apis_entities/abstractentity.html" %}
+{% load crispy_forms_tags %}
+{% load static %}
+{% load l10n %}
+{% block scriptHeader %}
+    {{ block.super }}
+    <script src="{% static "js/nsvis.js" %}" defer></script>
+{% endblock %}
+{% block card-body %}
+    {% localize off %}
+    <div class="overlay" data-x={{ object.data.x }} data-y={{ object.data.y }} data-height={{ object.data.height }} data-width={{ object.data.width }} data-target="image">
+    </div>
+{% endlocalize %}
+<div class="row">
+    <div class="col-md-auto">
+        <img id="image"
+             class="annotated-img"
+             src="{{ object.local_image }}"
+             referrerpolicy="origin">
+    </div>
+    <div class="col">{% crispy form form.helper %}</div>
+</div>
+{% endblock card-body %}
