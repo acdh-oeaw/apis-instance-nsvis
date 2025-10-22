@@ -242,6 +242,7 @@ auditlog.register(Place, serialize_data=True)
 auditlog.register(Institution, serialize_data=True)
 auditlog.register(EducationType, serialize_data=True)
 auditlog.register(ProfessionType, serialize_data=True)
+auditlog.register(Annotation, serialize_data=True)
 
 
 class TimespanMixin(models.Model):
