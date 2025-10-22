@@ -180,6 +180,7 @@ class Annotation(AbstractEntity, VersionMixin):
     internal_comment = models.TextField(blank=True, null=True)
     photographers = models.JSONField(null=True, editable=False)
     warreporter = models.BooleanField(default=False)
+    ranking = models.FloatField(editable=False, null=True)
 
     class Meta:
         ordering = ["pk"]
@@ -193,10 +194,9 @@ class Annotation(AbstractEntity, VersionMixin):
                 return f"{self.issue} ({label}) [{self.lst_result_id}]"
         return self.issue or f"Annotation: {self.id}"
 
-    @property
-    def ranking(self):
-        rank = 1/len(self.author)
-        return rank
+    def save(self, *args, **kwargs):
+        self.ranking = 1/len(self.author)
+        super().save(*args, **kwargs)
 
     @property
     def pagepath(self):
