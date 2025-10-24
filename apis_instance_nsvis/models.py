@@ -1,3 +1,5 @@
+import json
+import base64
 import logging
 from urllib.parse import urlparse
 from pathlib import Path
@@ -137,8 +139,29 @@ class Person(AbstractEntity, VersionMixin, MongoDbDataMixin, E21_Person):
     propaganda_membership = models.CharField(max_length=9, choices=Choices, default=Choices.UNK, verbose_name=_("Member in a propaganda company"))
 
 
+def import_custom_osm(uri):
+    import_uri, b64_data = uri.split("&data=")
+    data = json.loads(base64.b64decode(b64_data))
+    latitude = data["latitude"]
+    longitude = data["longitude"]
+
+    ret = {"label": [data["label"]], "latitude": [latitude], "longitude": [longitude], "relations": {}, "uri": import_uri}
+
+    with httpx.Client() as client:
+        for zoom in [5, 8, 10, 12, 13]:
+            uri = f"https://nominatim.openstreetmap.org/reverse?lat={latitude}&lon={longitude}&extratags=1&format=json&zoom={zoom}"
+            response = client.get(uri).json()
+            city = response.get("address", {}).get("city") or response.get("address", {}).get("village")
+            if city and data["city"] in city:
+                if wikidata_id := response.get("extratags", {}).get("wikidata"):
+                    logging.debug("Found city %s with wikidata ID %s for instance %s", city, wikidata_id, data["label"])
+                    city_uri = f"http://wikidata.org/entity/{wikidata_id}"
+                    ret["relations"]["apis_instance_nsvis.locatedin"] = {"curies": [city_uri], "obj": "apis_instance_nsvis.place"}
+                break
+    return ret
+
 class Place(E53_Place, AbstractEntity, VersionMixin, MongoDbDataMixin):
-    pass
+    import_definitions = E53_Place.import_definitions | {"https://nominatim.openstreetmap.org/*": lambda x: import_custom_osm(x)}
 
 
 class Institution(AbstractEntity, VersionMixin, MongoDbDataMixin, E74_Group):
