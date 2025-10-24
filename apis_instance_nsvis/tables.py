@@ -1,11 +1,11 @@
 from datetime import date
 import django_tables2 as tables
-from apis_core.apis_entities.tables import AbstractEntityTable
+from apis_core.generic.tables import GenericTable
 from apis_core.relations.tables import RelationsListTable
 from apis_instance_nsvis.models import Annotation
 
 
-class AnnotationTable(AbstractEntityTable):
+class AnnotationTable(GenericTable):
     issue = tables.TemplateColumn(template_code="<a href={{ record.get_absolute_url }}>{{ record.issue }}</a>")
     labelstudio = tables.TemplateColumn(template_name="columns/labelstudio_link.html", exclude_from_export=True)
     topic = tables.TemplateColumn(template_code="{{ record.topic|join:', ' }}")
@@ -16,7 +16,7 @@ class AnnotationTable(AbstractEntityTable):
     ranking = tables.TemplateColumn(template_code='<abbr title="{{ record.ranking }}">{{ record.ranking|floatformat:-3 }}</abbr>')
     caption = tables.Column(attrs={"td": {"class": "col-1"}})
 
-    class Meta(AbstractEntityTable.Meta):
+    class Meta(GenericTable.Meta):
         exclude = ["desc", "id"]
         attrs = {"class": "table table-sm", "style": "font-size: 14px"}
 
