@@ -1,5 +1,22 @@
 {% extends "base.html" %}
 {% load nsvis %}
+{% block scriptHeader %}
+    {{ block.super }}
+    <script>
+    function imgError(image) {
+      if (!image.hasOwnProperty('retryCount')) {
+        image.retryCount = 0;
+      }
+
+      if (image.retryCount < 3) {
+        setTimeout(function () {
+            image.src += '?' + +new Date;
+            image.retryCount += 1;
+        }, 1000);
+      }
+    }
+    </script>
+{% endblock scriptHeader %}
 {% block content %}
     <div class="container">
         {% if not magazine %}
@@ -28,7 +45,8 @@
                                        class="text-decoration-none">
                                         <span class="border p-2 d-inline-block mb-2" style="width: 10em;">
                                             <img src="{{ page.labelledurl|get_imgproxy_thumbnail_for_labelled_url }}"
-                                                 loading="lazy">
+                                                 loading="lazy"
+                                                 onerror="imgError(this);">
                                         </span>
                                     </a>
                                 {% endfor %}
