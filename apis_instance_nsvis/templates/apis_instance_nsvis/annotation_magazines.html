@@ -15,25 +15,28 @@
                         {% endfor %}
                     {% endfor %}
                 {% endfor %}
-            {% else %}
-                <h1>{{ magazine }} / {{ issue }}</h1>
-                {% for m, years in magazines_container.magazines_sorted.items %}
-                    {% if m == magazine %}
-                        {% for year, issues in years.items %}
-                            {% for i, pages in issues.items %}
-                                {% if i == issue %}
-                                    {% for page in pages %}
-                                        <a href="{% url "annotationpage" %}?image={{ page.labelledurl }}"
-                                           class="text-decoration-none">
-                                            <span class="border p-2 d-inline-block mb-2" style="width: 10em;">
-                                                <img src="{{ page.labelledurl|get_imgproxy_thumbnail_for_labelled_url }}" loading="lazy">
-                                            </span>
-                                        </a>
-                                    {% endfor %}
-                                {% endif %}
-                            {% endfor %}
+            </ul>
+        {% else %}
+            <h1>{{ magazine }} / {{ issue }}</h1>
+            {% for m, years in magazines_container.magazines_sorted.items %}
+                {% if m == magazine %}
+                    {% for year, issues in years.items %}
+                        {% for i, pages in issues.items %}
+                            {% if i == issue %}
+                                {% for page in pages %}
+                                    <a href="{% url "annotationpage" %}?image={{ page.labelledurl }}"
+                                       class="text-decoration-none">
+                                        <span class="border p-2 d-inline-block mb-2" style="width: 10em;">
+                                            <img src="{{ page.labelledurl|get_imgproxy_thumbnail_for_labelled_url }}"
+                                                 loading="lazy">
+                                        </span>
+                                    </a>
+                                {% endfor %}
+                            {% endif %}
                         {% endfor %}
-                    {% endif %}
-                {% endfor %}
-            {% endif %}
-        {% endblock %}
+                    {% endfor %}
+                {% endif %}
+            {% endfor %}
+        {% endif %}
+    </div>
+{% endblock %}
