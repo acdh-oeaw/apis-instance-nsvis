@@ -41,12 +41,6 @@ class AnnotationFilterView(List):
     def get_table_class(self):
         return self.table_class
 
-    def get_table_data(self, *args, **kwargs):
-        filterset_class = self.get_filterset_class()
-        kwargs = self.get_filterset_kwargs(filterset_class)
-        filterset = filterset_class(**kwargs)
-        return filterset.qs
-
 
 class AnnotationAuthorsView(AnnotationFilterView):
     table_class = AnnotationAuthorsTable
