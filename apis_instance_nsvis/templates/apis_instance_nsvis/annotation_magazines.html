@@ -33,24 +33,26 @@
             {% endfor %}
         {% else %}
             <h1>{{ magazine }} / {{ issue }}</h1>
-            {% for m, issues in magazines_container.get_issues_per_magazine.items %}
-                {% if m == magazine %}
-                    {% for i, pages in issues.items %}
-                        {% if i == issue %}
-                            {% for page in pages %}
-                                <a href="{% url "annotationpage" %}?image={{ page.labelledurl }}"
-                                   class="text-decoration-none">
-                                    <span class="border p-2 d-inline-block mb-2" style="width: 10em;">
-                                        <img src="{{ page.labelledurl|get_imgproxy_thumbnail_for_labelled_url }}"
-                                             loading="lazy"
-                                             onerror="imgError(this);">
-                                    </span>
-                                </a>
-                            {% endfor %}
-                        {% endif %}
-                    {% endfor %}
-                {% endif %}
-            {% endfor %}
+            <div class="magazines-container">
+                {% for m, issues in magazines_container.get_issues_per_magazine.items %}
+                    {% if m == magazine %}
+                        {% for i, pages in issues.items %}
+                            {% if i == issue %}
+                                {% for page in pages %}
+                                    <a href="{% url "annotationpage" %}?image={{ page.labelledurl }}"
+                                       class="text-decoration-none magazine">
+                                        <div class="border p-2">
+                                            <img src="{{ page.labelledurl|get_imgproxy_thumbnail_for_labelled_url }}"
+                                                 loading="lazy"
+                                                 onerror="imgError(this);">
+                                        </div>
+                                    </a>
+                                {% endfor %}
+                            {% endif %}
+                        {% endfor %}
+                    {% endif %}
+                {% endfor %}
+            </div>
         {% endif %}
     </div>
 {% endblock %}
