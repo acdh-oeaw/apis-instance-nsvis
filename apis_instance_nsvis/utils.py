@@ -56,6 +56,14 @@ class Magazines:
         path = self.get_path_for_url(url)
         return f"23503/new/{path}.jpg"
 
+    def get_issues_per_magazine(self):
+        data = {}
+        for magazine, years in self.magazines_sorted.items():
+            data[magazine] = {}
+            for year, issues in years.items():
+                data[magazine] |= issues
+        return data
+
 
 class MyImgProxy:
     def __init__(self, *args, **kwargs):
