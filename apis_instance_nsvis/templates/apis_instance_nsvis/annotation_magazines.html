@@ -20,38 +20,34 @@
 {% block content %}
     <div class="container">
         {% if not magazine %}
-            {% for magazine, years in magazines_container.magazines_sorted.items %}
-                <h1>{{ magazine }}</h1>
+            {% for magazine, issues in magazines_container.get_issues_per_magazine.items %}
+                <h1>{{ magazine }} ({{ issues|length }})</h1>
                 <div class="magazines-container">
-                    {% for year, issues in years.items %}
-                        {% for issue, pages in issues.items %}
-                            <a href="{% url "annotationmagazines" magazine issue %}"
-                               class="text-decoration-none magazine">
-                                <div class="border p-2">{{ issue }}</div>
-                            </a>
-                        {% endfor %}
+                    {% for issue in issues %}
+                        <a href="{% url "annotationmagazines" magazine issue %}"
+                           class="text-decoration-none magazine">
+                            <div class="border p-2">{{ issue }}</div>
+                        </a>
                     {% endfor %}
                 </div>
             {% endfor %}
         {% else %}
             <h1>{{ magazine }} / {{ issue }}</h1>
-            {% for m, years in magazines_container.magazines_sorted.items %}
+            {% for m, issues in magazines_container.get_issues_per_magazine.items %}
                 {% if m == magazine %}
-                    {% for year, issues in years.items %}
-                        {% for i, pages in issues.items %}
-                            {% if i == issue %}
-                                {% for page in pages %}
-                                    <a href="{% url "annotationpage" %}?image={{ page.labelledurl }}"
-                                       class="text-decoration-none">
-                                        <span class="border p-2 d-inline-block mb-2" style="width: 10em;">
-                                            <img src="{{ page.labelledurl|get_imgproxy_thumbnail_for_labelled_url }}"
-                                                 loading="lazy"
-                                                 onerror="imgError(this);">
-                                        </span>
-                                    </a>
-                                {% endfor %}
-                            {% endif %}
-                        {% endfor %}
+                    {% for i, pages in issues.items %}
+                        {% if i == issue %}
+                            {% for page in pages %}
+                                <a href="{% url "annotationpage" %}?image={{ page.labelledurl }}"
+                                   class="text-decoration-none">
+                                    <span class="border p-2 d-inline-block mb-2" style="width: 10em;">
+                                        <img src="{{ page.labelledurl|get_imgproxy_thumbnail_for_labelled_url }}"
+                                             loading="lazy"
+                                             onerror="imgError(this);">
+                                    </span>
+                                </a>
+                            {% endfor %}
+                        {% endif %}
                     {% endfor %}
                 {% endif %}
             {% endfor %}
