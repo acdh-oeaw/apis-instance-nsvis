@@ -24,3 +24,18 @@
 .thumbnail {
 	width: 150px;
 }
+
+.magazines-container {
+    display: grid;
+    grid-template-columns: repeat(8, 1fr);
+    gap: 1em;
+}
+
+.magazine {
+    justify-self: stretch;
+    text-align: center;
+}
+
+.magazine:hover {
+    background: lightgrey;
+}

@@ -20,19 +20,19 @@
 {% block content %}
     <div class="container">
         {% if not magazine %}
-            <ul>
-                {% for magazine, years in magazines_container.magazines_sorted.items %}
-                    <h1>{{ magazine }}</h1>
+            {% for magazine, years in magazines_container.magazines_sorted.items %}
+                <h1>{{ magazine }}</h1>
+                <div class="magazines-container">
                     {% for year, issues in years.items %}
                         {% for issue, pages in issues.items %}
                             <a href="{% url "annotationmagazines" magazine issue %}"
-                               class="text-decoration-none">
-                                <span class="border p-2 d-inline-block mb-2" style="width: 10em;">{{ issue }}</span>
+                               class="text-decoration-none magazine">
+                                <div class="border p-2">{{ issue }}</div>
                             </a>
                         {% endfor %}
                     {% endfor %}
-                {% endfor %}
-            </ul>
+                </div>
+            {% endfor %}
         {% else %}
             <h1>{{ magazine }} / {{ issue }}</h1>
             {% for m, years in magazines_container.magazines_sorted.items %}
