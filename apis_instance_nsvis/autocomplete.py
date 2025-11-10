@@ -37,7 +37,10 @@ class NominatimAutocompleteAdapter(ExternalAutocompleteAdapter):
 
     def get_results(self, q, client=httpx.Client()):
         url = f"https://nominatim.openstreetmap.org/search?q={q}&addressdetails=1&format=json"
-        res = client.get(url)
-        if res:
-            return list(map(self.extract, filter(self.address_with_housenumber, res.json())))
+        try:
+            res = client.get(url)
+            if res:
+                return list(map(self.extract, filter(self.address_with_housenumber, res.json())))
+        except:
+            pass
         return []
