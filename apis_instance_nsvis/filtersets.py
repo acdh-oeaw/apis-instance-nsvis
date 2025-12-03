@@ -71,7 +71,8 @@ class IssueFilter(MultipleChoiceFilter):
         return (title, date)
 
     def get_choices(self):
-        issues = sorted(set(Annotation.objects.values_list(self.field_name, flat=True)), key = lambda x: self._sortissue(x))
+        issues = {issue for issue in Annotation.objects.values_list(self.field_name, flat=True) if issue}
+        issues = sorted(issues, key = lambda x: self._sortissue(x))
         return list(zip(issues, issues))
 
     def filter(self, qs, value):
@@ -129,7 +130,7 @@ class AgencyFilter(MultipleChoiceFilter):
         self.extra["choices"] = self.get_choices()
 
     def get_choices(self):
-        photographers = Annotation.objects.values_list("photographers", flat=True)
+        photographers = [ann for ann in Annotation.objects.values_list("photographers", flat=True) if ann]
         agencies = sorted({entry["agency"] for agency in photographers for entry in agency if entry["agency"]}) + ["None"]
         return list(zip(agencies, agencies))
 
@@ -156,7 +157,7 @@ class PhotographerFilter(MultipleChoiceFilter):
         self.extra["choices"] = self.get_choices()
 
     def get_choices(self):
-        photographers = Annotation.objects.values_list("photographers", flat=True)
+        photographers = [ann for ann in Annotation.objects.values_list("photographers", flat=True) if ann]
         photographers = sorted({entry["photographer"] for photographer in photographers for entry in photographer if entry["photographer"]}) + ["None"]
         return list(zip(photographers, photographers))
 
