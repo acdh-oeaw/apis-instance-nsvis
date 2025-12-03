@@ -4,8 +4,7 @@ from django.contrib.postgres.aggregates import ArrayAgg
 
 from django.views.generic.base import TemplateView
 from apis_instance_nsvis.models import Annotation
-from apis_instance_nsvis.tables import AnnotationAuthorsTable, AnnotationReportsTable, AnnotationPhotographersTable, AnnotationAgenciesTable
-from apis_instance_nsvis import tables
+from apis_instance_nsvis import annotation_tables
 from apis_core.generic.views import List
 from django.urls import reverse
 from django.shortcuts import redirect
@@ -44,7 +43,7 @@ class AnnotationFilterView(List):
 
 
 class AnnotationAuthorsView(AnnotationFilterView):
-    table_class = AnnotationAuthorsTable
+    table_class = annotation_tables.AnnotationAuthorsTable
 
     def get_table_data(self, *args, **kwargs):
         data = defaultdict(lambda: {"count": 0, "ranking": 0})
@@ -56,7 +55,7 @@ class AnnotationAuthorsView(AnnotationFilterView):
 
 
 class AnnotationPhotographersView(AnnotationFilterView):
-    table_class = AnnotationPhotographersTable
+    table_class = annotation_tables.AnnotationPhotographersTable
 
     def get_table_data(self, *args, **kwargs):
         data = defaultdict(lambda: {"count": 0, "ranking": 0})
@@ -68,7 +67,7 @@ class AnnotationPhotographersView(AnnotationFilterView):
 
 
 class AnnotationTopicsView(AnnotationFilterView):
-    table_class = tables.AnnotationTopicsTable
+    table_class = annotation_tables.AnnotationTopicsTable
 
     def get_table_data(self, *args, **kwargs):
         data = defaultdict(lambda: {"count": 0 })
@@ -80,7 +79,7 @@ class AnnotationTopicsView(AnnotationFilterView):
 
 
 class AnnotationDepictedView(AnnotationFilterView):
-    table_class = tables.AnnotationDepictedTable
+    table_class = annotation_tables.AnnotationDepictedTable
 
     def get_table_data(self, *args, **kwargs):
         data = defaultdict(lambda: {"count": 0 })
@@ -92,7 +91,7 @@ class AnnotationDepictedView(AnnotationFilterView):
 
 
 class AnnotationAgenciesView(AnnotationFilterView):
-    table_class = AnnotationAgenciesTable
+    table_class = annotation_tables.AnnotationAgenciesTable
 
     def get_table_data(self, *args, **kwargs):
         data = defaultdict(lambda: {"count": 0, "ranking": 0})
@@ -105,7 +104,7 @@ class AnnotationAgenciesView(AnnotationFilterView):
 
 class AnnotationReportsView(List):
     def get_table_class(self):
-        return AnnotationReportsTable
+        return annotation_tables.AnnotationReportsTable
 
     def get_table_data(self, *args, **kwargs):
         return Annotation.objects.values("title").annotate(count=Count("title"), ids=ArrayAgg("id")).order_by().filter(count__gt=1)
