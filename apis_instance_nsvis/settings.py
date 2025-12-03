@@ -7,7 +7,6 @@ INSTALLED_APPS += ["apis_core.documentation"]
 INSTALLED_APPS += ["apis_acdhch_django_invite"]
 INSTALLED_APPS += ["django_json_editor_field"]
 INSTALLED_APPS += ["django_interval"]
-INSTALLED_APPS += ["apis_core.uris"]
 INSTALLED_APPS += ["simple_history"]
 
 ROOT_URLCONF = "apis_instance_nsvis.urls"
