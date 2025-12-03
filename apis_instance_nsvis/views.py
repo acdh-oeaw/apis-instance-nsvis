@@ -5,6 +5,7 @@ from django.contrib.postgres.aggregates import ArrayAgg
 from django.views.generic.base import TemplateView
 from apis_instance_nsvis.models import Annotation
 from apis_instance_nsvis.tables import AnnotationAuthorsTable, AnnotationReportsTable, AnnotationPhotographersTable, AnnotationAgenciesTable
+from apis_instance_nsvis import tables
 from apis_core.generic.views import List
 from django.urls import reverse
 from django.shortcuts import redirect
@@ -64,6 +65,30 @@ class AnnotationPhotographersView(AnnotationFilterView):
                 data[photographer]["count"] += 1
                 data[photographer]["ranking"] += ann.ranking
         return [{"photographer": key, **value} for key, value in data.items()]
+
+
+class AnnotationTopicsView(AnnotationFilterView):
+    table_class = tables.AnnotationTopicsTable
+
+    def get_table_data(self, *args, **kwargs):
+        data = defaultdict(lambda: {"count": 0 })
+        for ann in super().get_table_data(*args, **kwargs):
+            for topic in ann.topic:
+                data[topic]["count"] += 1
+        data = [{"topic": key, **value} for key, value in data.items()]
+        return data
+
+
+class AnnotationDepictedView(AnnotationFilterView):
+    table_class = tables.AnnotationDepictedTable
+
+    def get_table_data(self, *args, **kwargs):
+        data = defaultdict(lambda: {"count": 0 })
+        for ann in super().get_table_data(*args, **kwargs):
+            for depicted in ann.depicted:
+                data[depicted]["count"] += 1
+        data = [{"depicted": key, **value} for key, value in data.items()]
+        return data
 
 
 class AnnotationAgenciesView(AnnotationFilterView):

@@ -121,3 +121,13 @@ class AnnotationAgenciesTable(tables.Table):
 
     def value_agency(self, value, record):
         return value
+
+
+class AnnotationTopicsTable(tables.Table):
+    topic = tables.Column()
+    count = tables.Column()
+
+
+class AnnotationDepictedTable(tables.Table):
+    depicted = tables.Column()
+    count = tables.Column()
