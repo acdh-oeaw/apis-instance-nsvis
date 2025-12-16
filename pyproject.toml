@@ -10,7 +10,7 @@ dependencies = [
     "apis-core-rdf==0.58.2",
     "apis-acdhch-default-settings==2.16.0",
     "psycopg2>=2.9,<3.0",
-    "django-auditlog==3.3.0",
+    "django-auditlog==3.4.0",
     "httpx==0.28.1",
     "apis-acdhch-django-invite==0.2.0",
     "django-interval==0.5.1",
