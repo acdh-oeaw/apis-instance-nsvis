@@ -218,7 +218,8 @@ class Annotation(AbstractEntity, VersionMixin):
         return self.issue or f"Annotation: {self.id}"
 
     def save(self, *args, **kwargs):
-        self.ranking = 1/len(self.author)
+        if self.author:
+            self.ranking = 1/len(self.author)
         super().save(*args, **kwargs)
 
     @property
