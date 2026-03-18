@@ -10,7 +10,7 @@ class AnnotationTable(GenericTable):
     labelstudio = tables.TemplateColumn(template_name="columns/labelstudio_link.html", exclude_from_export=True)
     topic = tables.TemplateColumn(template_code="{{ record.topic|join:', ' }}")
     depicted = tables.TemplateColumn(template_code="{{ record.depicted|join:', ' }}")
-    clip = tables.TemplateColumn(template_code="<img class='thumbnail' src={{ record.clip }}>", exclude_from_export=True)
+    clip = tables.TemplateColumn(template_code="<img class='thumbnail' src='{{ record.clip }}' loading='lazy' onerror='imgError(this);'>", exclude_from_export=True)
     author = tables.TemplateColumn(template_name="columns/annotation_author.html")
     photographers = tables.TemplateColumn(template_name="columns/annotation_photographers.html")
     ranking = tables.TemplateColumn(template_code='<abbr title="{{ record.ranking }}">{{ record.ranking|floatformat:-3 }}</abbr>')
