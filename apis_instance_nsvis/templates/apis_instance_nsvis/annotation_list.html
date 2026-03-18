@@ -1,0 +1,18 @@
+{% extends "generic/genericmodel_list.html" %}
+{% block scriptHeader %}
+    {{ block.super }}
+    <script>
+    function imgError(image) {
+      if (!image.hasOwnProperty('retryCount')) {
+        image.retryCount = 0;
+      }
+
+      if (image.retryCount < 3) {
+        setTimeout(function () {
+            image.src += '?' + +new Date;
+            image.retryCount += 1;
+        }, 1000);
+      }
+    }
+    </script>
+{% endblock scriptHeader %}
