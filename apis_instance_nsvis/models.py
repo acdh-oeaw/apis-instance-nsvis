@@ -25,6 +25,31 @@ from auditlog.registry import auditlog
 logger = logging.getLogger(__name__)
 
 
+class MagazineIssue(GenericModel):
+    magazine = models.CharField()
+    issue = models.CharField()
+    date = models.DateField()
+
+    def __str__(self):
+        return f"{self.magazine} - {self.issue}"
+
+
+class MagazinePage(GenericModel):
+    origurl = models.URLField()
+    path = models.CharField()
+    issue = models.ForeignKey(MagazineIssue, on_delete=models.PROTECT)
+
+    @property
+    def page(self):
+        path, page = self.path.split("/")
+        if "-" in page:
+            _, page = page.split("-")
+        return int(page)
+
+    def __str__(self):
+        return f"{self.issue}, page {self.page}"
+
+
 class NsvisMixin:
     pass
 
