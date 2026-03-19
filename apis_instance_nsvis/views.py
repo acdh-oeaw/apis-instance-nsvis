@@ -3,14 +3,13 @@ from django.db.models import Count
 from django.contrib.postgres.aggregates import ArrayAgg
 
 from django.views.generic.base import TemplateView
-from apis_instance_nsvis.models import Annotation
+from apis_instance_nsvis.models import Annotation, MagazineIssue
 from apis_instance_nsvis import annotation_tables
 from apis_core.generic.views import List
 from django.urls import reverse
 from django.shortcuts import redirect
 from django.forms import modelformset_factory
 from apis_instance_nsvis.forms import AnnotationForm
-from apis_instance_nsvis.utils import Magazines
 
 
 class WrongAnnotationNumber(TemplateView):
@@ -115,7 +114,7 @@ class AnnotationMagazinesView(TemplateView):
 
     def get_context_data(self, magazine=None, issue=None):
         ctx = super().get_context_data()
-        ctx["magazines_container"] = Magazines()
+        ctx["magazines_container"] = MagazineIssue.objects.all()
         ctx["magazine"] = magazine
         ctx["issue"] = issue
         return ctx
