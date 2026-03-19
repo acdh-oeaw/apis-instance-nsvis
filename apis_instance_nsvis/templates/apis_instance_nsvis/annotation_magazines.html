@@ -19,14 +19,15 @@
 {% endblock scriptHeader %}
 {% block content %}
     <div class="container">
+        {% regroup magazines_container by magazine as magazine_list %}
         {% if not magazine %}
-            {% for magazine, issues in magazines_container.get_issues_per_magazine.items %}
-                <h1>{{ magazine }} ({{ issues|length }})</h1>
+        {% for magazine in magazine_list %}
+                <h1>{{ magazine.grouper }} ({{ magazine.list|length }})</h1>
                 <div class="magazines-container">
-                    {% for issue in issues %}
-                        <a href="{% url "annotationmagazines" magazine issue %}"
+                    {% for issue in magazine.list %}
+                        <a href="{% url "annotationmagazines" magazine.grouper issue.issue %}"
                            class="text-decoration-none magazine">
-                            <div class="border p-2">{{ issue }}</div>
+                            <div class="border p-2">{{ issue.issue }}</div>
                         </a>
                     {% endfor %}
                 </div>
@@ -34,22 +35,22 @@
         {% else %}
             <h1>{{ magazine }} / {{ issue }}</h1>
             <div class="magazines-container">
-                {% for m, issues in magazines_container.get_issues_per_magazine.items %}
-                    {% if m == magazine %}
-                        {% for i, pages in issues.items %}
-                            {% if i == issue %}
-                                {% for page in pages %}
-                                    <a href="{% url "annotationpage" %}?image={{ page.labelledurl }}"
-                                       class="text-decoration-none magazine">
-                                        <div class="border p-2">
-                                            <img src="{{ page.labelledurl|get_imgproxy_thumbnail_for_labelled_url }}"
-                                                 loading="lazy"
-                                                 onerror="imgError(this);">
-                                        </div>
-                                    </a>
-                                {% endfor %}
-                            {% endif %}
-                        {% endfor %}
+                {% for m in magazine_list %}
+                    {% if m.grouper == magazine %}
+                    {% for i in m.list %}
+                    {% if i.issue == issue %}
+                    {% for page in i.magazinepage_set.all %}
+                    <a href="{% url "annotationpage" %}?image={{ page.origurl }}"
+                      class="text-decoration-none magazine">
+                      <div class="border p-2">
+                        <img src="{{ page.origurl|get_imgproxy_thumbnail_for_labelled_url }}"
+                             loading="lazy"
+                             onerror="imgError(this);">
+                      </div>
+                    </a>
+                    {% endfor %}
+                    {% endif %}
+                    {% endfor %}
                     {% endif %}
                 {% endfor %}
             </div>
