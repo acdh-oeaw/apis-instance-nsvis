@@ -2,13 +2,12 @@ from datetime import datetime
 import re
 from django.db.models import Q
 from django.forms.widgets import CheckboxInput
-from django_filters import UnknownFieldBehavior, FilterSet, MultipleChoiceFilter, BooleanFilter, CharFilter
+from django_filters import UnknownFieldBehavior, FilterSet, MultipleChoiceFilter, BooleanFilter, CharFilter, ModelMultipleChoiceFilter
 from apis_core.relations.filtersets import RelationFilterSet
 from apis_core.apis_entities.filtersets import AbstractEntityFilterSet
-from apis_instance_nsvis.models import Annotation
+from apis_instance_nsvis.models import Annotation, MagazineIssue
 from django_interval.fields import FuzzyDateParserField
 from django_interval.filters import YearIntervalRangeFilter
-from apis_instance_nsvis.utils import Magazines
 
 
 class TimespanMixinFilterSet(RelationFilterSet):
@@ -61,28 +60,15 @@ class CustomMultipleChoiceFilter(MultipleChoiceFilter):
         return qs.filter(q)
 
 
-class IssueFilter(MultipleChoiceFilter):
+class IssueFilter(ModelMultipleChoiceFilter):
     """
-    Filter annotations by the exact issue (= magazine name + time of publication)
-    We use the `Magazines` dict to look up the "labelledurl"s of the matching pages
-    and filter the annotations for these pages
+    Filter annotations by the issue they are part of
     """
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        ms = Magazines().magazines_sorted
-        choices = []
-        for magazine in ms:
-            for year in ms[magazine]:
-                for issue in ms[magazine][year]:
-                    choices.append(f"{magazine} / {issue}")
-        self.extra["choices"] = list(zip(choices, choices))
 
     def filter(self, qs, value):
         q = Q()
-        ms = Magazines().get_issues_per_magazine()
         for val in value:
-            magazine, issue = val.split(" / ")
-            images = [x["labelledurl"] for x in ms[magazine][issue]]
+            images = [x.origurl for x in val.magazinepage_set.all()]
             q |= Q(image__in=images)
         return qs.filter(q)
 
@@ -90,56 +76,34 @@ class IssueFilter(MultipleChoiceFilter):
 class IssueYearFilter(MultipleChoiceFilter):
     """
     Filter annotations by the year of publication
-    We use the `Magazines` dict to look up the "labelledurl"s of the matching pages
-    and filter the annotations for these pages
     """
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        ms = Magazines().magazines_sorted
-        choices = set()
-        for magazine in ms:
-            for year in ms[magazine]:
-                choices.add(year)
-        choices = sorted(choices)
+        choices = sorted(MagazineIssue.objects.all().values_list("date__year", flat=True).distinct())
         self.extra["choices"] = list(zip(choices, choices))
 
     def filter(self, qs, value):
         q = Q()
-        ms = Magazines().magazines_sorted
         for val in value:
-            images = []
-            for magazine in ms:
-                for year in ms[magazine]:
-                    if year == val:
-                        for issue in ms[magazine][year]:
-                            images.extend(ms[magazine][year][issue])
-            images = [image["labelledurl"] for image in images]
-            q |= Q(image__in=images)
+            for magazineissue in MagazineIssue.objects.filter(date__year=val):
+                images = [x.origurl for x in magazineissue.magazinepage_set.all()]
+                q |= Q(image__in=images)
         return qs.filter(q)
 
 
 class MagazineFilter(MultipleChoiceFilter):
     """
     Filter annotations by the name of magazine
-    We use the `Magazines` dict to look up the "labelledurl"s of the matching pages
-    and filter the annotations for these pages
     """
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        ms = Magazines().magazines_sorted
-        self.extra["choices"] = list(zip(ms.keys(), ms.keys()))
+        choices = sorted(MagazineIssue.objects.all().values_list("magazine", flat=True).distinct())
+        self.extra["choices"] = list(zip(choices, choices))
 
     def filter(self, qs, value):
         q = Q()
-        ms = Magazines().magazines_sorted
-        for val in value:
-            images = []
-            for magazine in ms:
-                if magazine == val:
-                    for year in ms[magazine]:
-                        for issue in ms[magazine][year]:
-                            images.extend(ms[magazine][year][issue])
-            images = [image["labelledurl"] for image in images]
+        for magazineissue in MagazineIssue.objects.filter(magazine__in=value):
+            images = [x.origurl for x in magazineissue.magazinepage_set.all()]
             q |= Q(image__in=images)
         return qs.filter(q)
 
@@ -233,7 +197,7 @@ class AnnotationFilterSet(AbstractEntityFilterSet):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.filters["years"] = IssueYearFilter(field_name="issue")
-        self.filters["issue"] = IssueFilter(field_name="issue")
+        self.filters["issue"] = IssueFilter(field_name="issue", queryset=MagazineIssue.objects.all())
         self.filters["magazine"] = MagazineFilter(field_name="issue")
         self.filters["author"] = CustomMultipleChoiceFilter(field_name="author")
         self.filters["topic"] = CustomMultipleChoiceFilter(field_name="topic")
