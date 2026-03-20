@@ -18,7 +18,7 @@ from apis_core.generic.abc import GenericModel
 from django.contrib.postgres.fields import ArrayField
 from django_interval.fields import FuzzyDateParserField
 from django_json_editor_field.fields import JSONEditorField
-from apis_instance_nsvis.utils import MyImgProxy, customdateparser, Magazines
+from apis_instance_nsvis.utils import MyImgProxy, customdateparser
 
 from auditlog.registry import auditlog
 
@@ -45,6 +45,10 @@ class MagazinePage(GenericModel):
         if "-" in page:
             _, page = page.split("-")
         return int(page)
+
+    @property
+    def imgproxypath(self):
+        return f"23503/new/{self.path}.jpg"
 
     def __str__(self):
         return f"{self.issue}, page {self.page}"
@@ -268,21 +272,19 @@ class Annotation(AbstractEntity, VersionMixin):
         return tmp
 
     def local_image(self):
-        magazines = Magazines()
-        path = magazines.get_imgproxy_path_for_url(self.image)
+        magazinepage = MagazinePage.objects.get(origurl=self.image)
         myimgproxy = MyImgProxy()
-        return myimgproxy.calc(path)
+        return myimgproxy.calc(magazinepage.imgproxypath)
 
     @property
     def clip(self):
-        magazines = Magazines()
-        path = magazines.get_imgproxy_path_for_url(self.image)
+        magazinepage = MagazinePage.objects.get(origurl=self.image)
         myimgproxy = MyImgProxy()
         x = self.data["x"] / 100
         y = self.data["y"] / 100
         width = self.data["width"] / 100
         height = self.data["height"] / 100
-        return myimgproxy.crop(path, width, height, x, y)
+        return myimgproxy.crop(magazinepage.imgproxypath, width, height, x, y)
 
 
 auditlog.register(SpecialArea, serialize_data=True)
