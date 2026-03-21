@@ -93,11 +93,18 @@ class AnnotationAgenciesView(AnnotationFilterView):
     table_class = annotation_tables.AnnotationAgenciesTable
 
     def get_table_data(self, *args, **kwargs):
-        data = defaultdict(lambda: {"count": 0, "ranking": 0})
+        data = defaultdict(lambda: {"count": 0, "ranking": 0, "images": 0})
         for ann in super().get_table_data(*args, **kwargs):
             for agency in set([entry["agency"] for entry in ann.photographers]):
                 data[agency]["count"] += 1
                 data[agency]["ranking"] += ann.ranking
+            for agency in [entry["agency"] for entry in ann.photographers]:
+                data[agency]["images"] += ann.ranking
+        for agency in data:
+            if data[agency]["images"] % 1 > 0.9:
+                data[agency]["images"] = int(data[agency]["images"]) + 1
+            if data[agency]["images"] % 1 < 0.1:
+                data[agency]["images"] = int(data[agency]["images"])
         return [{"agency": key, **value} for key, value in data.items()]
 
 

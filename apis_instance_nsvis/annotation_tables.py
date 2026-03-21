@@ -41,6 +41,7 @@ class AnnotationAgenciesTable(tables.Table):
     agency = tables.TemplateColumn(template_code='<a href="{% url "apis_core:generic:list" "apis_instance_nsvis.annotation" %}?agency={{ record.agency|urlencode }}">{{ record.agency }}</a>')
     count = tables.Column()
     ranking = tables.Column()
+    images = tables.Column()
 
     def value_agency(self, value, record):
         return value
