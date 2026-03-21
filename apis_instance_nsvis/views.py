@@ -57,11 +57,19 @@ class AnnotationPhotographersView(AnnotationFilterView):
     table_class = annotation_tables.AnnotationPhotographersTable
 
     def get_table_data(self, *args, **kwargs):
-        data = defaultdict(lambda: {"count": 0, "ranking": 0})
+        data = defaultdict(lambda: {"count": 0, "ranking": 0, "images": 0})
         for ann in super().get_table_data(*args, **kwargs):
-            for photographer in set([entry["photographer"] for entry in ann.photographers]):
+            photographers = [entry["photographer"] for entry in ann.photographers]
+            for photographer in set(photographers):
                 data[photographer]["count"] += 1
                 data[photographer]["ranking"] += ann.ranking
+            for photographer in photographers:
+                data[photographer]["images"] += ann.ranking
+        for photographer in data:
+            if data[photographer]["images"] % 1 > 0.9:
+                data[photographer]["images"] = int(data[photographer]["images"]) + 1
+            if data[photographer]["images"] % 1 < 0.1:
+                data[photographer]["images"] = int(data[photographer]["images"])
         return [{"photographer": key, **value} for key, value in data.items()]
 
 
@@ -93,11 +101,18 @@ class AnnotationAgenciesView(AnnotationFilterView):
     table_class = annotation_tables.AnnotationAgenciesTable
 
     def get_table_data(self, *args, **kwargs):
-        data = defaultdict(lambda: {"count": 0, "ranking": 0})
+        data = defaultdict(lambda: {"count": 0, "ranking": 0, "images": 0})
         for ann in super().get_table_data(*args, **kwargs):
             for agency in set([entry["agency"] for entry in ann.photographers]):
                 data[agency]["count"] += 1
                 data[agency]["ranking"] += ann.ranking
+            for agency in [entry["agency"] for entry in ann.photographers]:
+                data[agency]["images"] += ann.ranking
+        for agency in data:
+            if data[agency]["images"] % 1 > 0.9:
+                data[agency]["images"] = int(data[agency]["images"]) + 1
+            if data[agency]["images"] % 1 < 0.1:
+                data[agency]["images"] = int(data[agency]["images"])
         return [{"agency": key, **value} for key, value in data.items()]
 
 
