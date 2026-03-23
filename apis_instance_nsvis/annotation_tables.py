@@ -4,7 +4,7 @@ from apis_instance_nsvis.models import Annotation
 
 
 class AnnotationAuthorsTable(tables.Table):
-    author = tables.TemplateColumn(template_code='<a href="{% url "apis_core:generic:list" "apis_instance_nsvis.annotation" %}?author={{ record.author|urlencode }}">{{ record.author }}</a>')
+    author = tables.TemplateColumn(template_code='<a href="{% url "apis_core:generic:list" "apis_instance_nsvis.annotation" %}?filterset-author={{ record.author|urlencode }}">{{ record.author }}</a>')
     count = tables.Column()
     ranking = tables.Column()
 
@@ -13,7 +13,7 @@ class AnnotationAuthorsTable(tables.Table):
 
 
 class AnnotationReportsTable(tables.Table):
-    title = tables.TemplateColumn(template_code='<a href="{% url "apis_core:generic:list" "apis_instance_nsvis.annotation" %}?title={{ record.title }}">{{ record.title }}</a>')
+    title = tables.TemplateColumn(template_code='<a href="{% url "apis_core:generic:list" "apis_instance_nsvis.annotation" %}?filterset-title={{ record.title }}">{{ record.title }}</a>')
     count = tables.Column()
     authors = tables.Column(empty_values=())
 
@@ -29,7 +29,7 @@ class AnnotationReportsTable(tables.Table):
 
 
 class AnnotationPhotographersTable(tables.Table):
-    photographer = tables.TemplateColumn(template_code='<a href="{% url "apis_core:generic:list" "apis_instance_nsvis.annotation" %}?photographer={{ record.photographer|urlencode }}">{{ record.photographer }}</a>')
+    photographer = tables.TemplateColumn(template_code='<a href="{% url "apis_core:generic:list" "apis_instance_nsvis.annotation" %}?filterset-photographer={{ record.photographer|urlencode }}">{{ record.photographer }}</a>')
     count = tables.Column()
     ranking = tables.Column()
     images = tables.Column()
@@ -39,7 +39,7 @@ class AnnotationPhotographersTable(tables.Table):
 
 
 class AnnotationAgenciesTable(tables.Table):
-    agency = tables.TemplateColumn(template_code='<a href="{% url "apis_core:generic:list" "apis_instance_nsvis.annotation" %}?agency={{ record.agency|urlencode }}">{{ record.agency }}</a>')
+    agency = tables.TemplateColumn(template_code='<a href="{% url "apis_core:generic:list" "apis_instance_nsvis.annotation" %}?filterset-agency={{ record.agency|urlencode }}">{{ record.agency }}</a>')
     count = tables.Column()
     ranking = tables.Column()
     images = tables.Column()
