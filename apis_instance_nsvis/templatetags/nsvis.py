@@ -15,11 +15,11 @@ def pretty_json(value):
 def get_imgproxy_url_for_labelled_url(url):
     magazinepage = MagazinePage.objects.get(origurl=url)
     imgproxy = MyImgProxy()
-    return imgproxy.calc(f"23503/new/{magazinepage.path}.jpg")
+    return imgproxy.calc(magazinepage.imgproxypath)
 
 
 @register.filter
 def get_imgproxy_thumbnail_for_labelled_url(url):
     magazinepage = MagazinePage.objects.get(origurl=url)
     imgproxy = MyImgProxy()
-    return imgproxy.resize(f"23503/new/{magazinepage.path}.jpg")
+    return imgproxy.resize(magazinepage.imgproxypath)
