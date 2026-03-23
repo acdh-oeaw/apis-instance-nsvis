@@ -234,6 +234,8 @@ class Annotation(AbstractEntity, VersionMixin):
     warreporter = models.BooleanField(default=False)
     ranking = models.FloatField(editable=False, null=True)
 
+    magazine_page = models.ForeignKey(MagazinePage, null=True, on_delete=models.PROTECT, editable=False)
+
     class Meta:
         ordering = ["pk"]
         unique_together = (('lst_task_id', 'lst_annotation_id', "lst_result_id"),)
