@@ -81,7 +81,7 @@ class MyImgProxy:
     def crop(self, path, width, height, x=0, y=0):
         gravity = f"nowe:{x}:{y}"
         crop = f"crop:{width}:{height}:{gravity}"
-        return self.img_url(path)(crop, width=800, height=800, resizing_type="fit")
+        return self.img_url(path)(crop, width=150, height=300, resizing_type="fit")
 
     def resize(self, path, width=150, height=200):
         return self.img_url(path)(width=width, height=height, resizing_type="fit")
