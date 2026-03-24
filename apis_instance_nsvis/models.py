@@ -216,8 +216,8 @@ class ProfessionType(AbstractEntity, VersionMixin, MongoDbDataMixin, SimpleLabel
 
 class Annotation(AbstractEntity, VersionMixin):
     data = models.JSONField(null=True, editable=False)
-    image = models.TextField(max_length=512, editable=False)
-    issue = models.TextField(max_length=256, editable=False)
+    image = models.TextField(max_length=512, editable=False) #deprecated, use magazine_page
+    issue = models.TextField(max_length=256, editable=False) #deprecated, use magazine_page
     lst_task_id = models.IntegerField(editable=False)
     lst_annotation_id = models.IntegerField(editable=False)
     lst_result_id = models.TextField(max_length=128, editable=False)
@@ -274,19 +274,17 @@ class Annotation(AbstractEntity, VersionMixin):
         return tmp
 
     def local_image(self):
-        magazinepage = MagazinePage.objects.get(origurl=self.image)
         myimgproxy = MyImgProxy()
-        return myimgproxy.calc(magazinepage.imgproxypath)
+        return myimgproxy.calc(self.magazine_page.imgproxypath)
 
     @property
     def clip(self):
-        magazinepage = MagazinePage.objects.get(origurl=self.image)
         myimgproxy = MyImgProxy()
         x = self.data["x"] / 100
         y = self.data["y"] / 100
         width = self.data["width"] / 100
         height = self.data["height"] / 100
-        return myimgproxy.crop(magazinepage.imgproxypath, width, height, x, y)
+        return myimgproxy.crop(self.magazine_page.imgproxypath, width, height, x, y)
 
 
 auditlog.register(SpecialArea, serialize_data=True)
