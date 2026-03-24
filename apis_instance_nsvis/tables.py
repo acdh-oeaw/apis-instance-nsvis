@@ -6,7 +6,7 @@ from apis_instance_nsvis.models import Annotation
 
 
 class AnnotationTable(GenericTable):
-    issue = tables.TemplateColumn(template_code="<a href={{ record.get_absolute_url }}>{{ record.issue }}</a>")
+    issue = tables.TemplateColumn(template_code="<a href={{ record.get_absolute_url }}>{{ record.magazine_page.issue }}</a>")
     labelstudio = tables.TemplateColumn(template_name="columns/labelstudio_link.html", exclude_from_export=True)
     topic = tables.TemplateColumn(template_code="{{ record.topic|join:', ' }}")
     depicted = tables.TemplateColumn(template_code="{{ record.depicted|join:', ' }}")
