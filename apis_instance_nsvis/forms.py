@@ -152,7 +152,7 @@ class AnnotationForm(GenericModelForm):
 
     def save(self, *args, **kwargs):
         self.instance.image = self.instance.image or self.image
-        self.instance.magazine_page = MagazinePage.objects.get(origurl=self.image)
+        self.instance.magazine_page = MagazinePage.objects.get(origurl=self.instance.image)
         self.instance.lst_task_id = self.instance.lst_task_id or -1
         self.instance.lst_annotation_id = self.instance.lst_annotation_id or -1
         self.instance.lst_result_id = self.instance.lst_result_id or uuid.uuid4()
