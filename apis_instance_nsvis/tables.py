@@ -78,3 +78,30 @@ class AbstractEntityCareerRelationsTable(TimespanTable):
 class AbstractEntityPlacesRelationsTable(TimespanTable):
     class Meta(TimespanTable.Meta):
         ...
+
+
+class MagazineIssueTable(GenericTable):
+    pages = tables.TemplateColumn(template_code="{{ record.magazinepage_set.count }}", orderable=False)
+    annotations = tables.Column(empty_values=(), orderable=False)
+    topics = tables.Column(empty_values=(), orderable=False)
+    depicted = tables.Column(empty_values=(), orderable=False)
+
+    def render_annotations(self, record):
+        count = 0
+        for page in record.magazinepage_set.all():
+            count += page.annotation_set.count()
+        return count
+
+    def render_topics(self, record):
+        topics = set()
+        for page in record.magazinepage_set.all():
+            for annotation in page.annotation_set.all():
+                topics |= set(annotation.topic)
+        return ", ".join(topics)
+
+    def render_depicted(self, record):
+        depicted = set()
+        for page in record.magazinepage_set.all():
+            for annotation in page.annotation_set.all():
+                depicted |= set(annotation.depicted)
+        return ", ".join(depicted)
