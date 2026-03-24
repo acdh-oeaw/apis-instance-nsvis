@@ -253,26 +253,6 @@ class Annotation(AbstractEntity, VersionMixin):
             self.ranking = 1/len(self.author)
         super().save(*args, **kwargs)
 
-    @property
-    def pagepath(self):
-        suffix = Path(urlparse(self.image).path).suffix
-        issueslug = slugify(self.issue)
-        imagepath = f"23503/{issueslug}/{self.lst_result_id}{suffix}"
-        return imagepath
-
-    @property
-    def page(self):
-        headers = {'Origin': "https://label-studio.acdh-dev.oeaw.ac.at"}
-        tmp = Path("/tmp") / self.pagepath
-        if not tmp.exists():
-            tmp.parent.mkdir(parents=True, exist_ok=True)
-            with httpx.stream("GET", self.image, headers=headers) as r:
-                if r.status_code == httpx.codes.OK:
-                    for data in r.iter_bytes():
-                        with tmp.open("ab") as f:
-                            f.write(data)
-        return tmp
-
     def local_image(self):
         myimgproxy = MyImgProxy()
         return myimgproxy.calc(self.magazine_page.imgproxypath)
