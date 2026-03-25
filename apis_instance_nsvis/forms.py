@@ -26,6 +26,8 @@ class CommaSeparatedListWidget(Input):
         return json.dumps(ret)
 
     def format_value(self, value):
+        if isinstance(value, str):
+            return (json.loads(value))
         return value
 
 
@@ -157,5 +159,5 @@ class AnnotationForm(GenericModelForm):
         self.instance.lst_annotation_id = self.instance.lst_annotation_id or -1
         self.instance.lst_result_id = self.instance.lst_result_id or uuid.uuid4()
         self.instance.data = self.instance.data or self.cleaned_data["data"]
-        self.instance.photographers = json.loads(self.cleaned_data["photographers"])
+        self.instance.photographers = json.loads(self.cleaned_data["photographers"] or "[]")
         return super().save(*args, **kwargs)
