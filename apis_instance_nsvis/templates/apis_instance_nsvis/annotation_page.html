@@ -40,7 +40,7 @@
                              {% if form.errors %}open{% endif %}>
                         <summary class="accordion-button collapsed">
                             {% if form.author %}
-                                {{ form.author.value|join:", " }}
+                                {{ form.author.initial|join:", " }}
                             {% else %}
                                 "No author"
                             {% endif %}
