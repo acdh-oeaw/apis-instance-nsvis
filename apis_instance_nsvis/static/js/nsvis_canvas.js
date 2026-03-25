@@ -214,6 +214,12 @@ canvas.addEventListener('mouseup', () => {
             detailsToggleEventListener(emptyForm)
         });
         emptyForm.querySelector("#id_form-" + formCount + "-data").value = JSON.stringify(r.percentage(canvas));
+        emptyForm.querySelectorAll("select").forEach(select => {
+          select.parentElement.querySelectorAll("button").forEach(btngroup => {
+            btngroup.remove();
+          });
+          $(select).multiselect('rebuild');
+        });
         submitButton = document.getElementById("submit");
         submitButton.before(emptyForm);
         document.getElementById("id_form-TOTAL_FORMS").value++;
