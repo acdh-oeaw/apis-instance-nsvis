@@ -6,23 +6,38 @@ const defaultFillStyle = "rgba(255, 255, 255, 0.5)";
  * But we have the `percentage` method that calculates the position
  * in the canvas in relative numbers and that is whats saved.
  */
-function Rect(x, y, width, height, id, color = "rgba(255, 255, 255, 0.5)") {
+function Rect(x, y, width, height, id, rotation = 0, color = "rgba(255, 255, 255, 0.5)") {
     this.id = id;
     this.color = color;
     this.x = x;
     this.y = y;
     this.width = width;
     this.height = height;
+    this.rotation = rotation;
     this.selected = false;
     this.area = function() {
         return (Math.abs(this.width) * Math.abs(this.height));
     };
     this.contains = function(x, y, padding = 10) {
-        rx = this.x + padding;
-        rwidth = this.width - padding + rx;
-        ry = this.y + padding;
-        rheight = this.height - padding + ry;
-        if ((rx < x) && (x < rwidth) && (ry < y) && (y < rheight)) {
+        // Translate click coordinates to the rectangle's local coordinate system
+        // by reversing the rotation transformation
+
+        // Translate to rectangle's top-left corner
+        let localX = x - this.x;
+        let localY = y - this.y;
+
+        // Reverse the rotation
+        let angle = -this.rotation * Math.PI / 180;
+        let rotatedX = localX * Math.cos(angle) - localY * Math.sin(angle);
+        let rotatedY = localX * Math.sin(angle) + localY * Math.cos(angle);
+
+        // Now check if the rotated point is within the rectangle bounds
+        let rx = padding;
+        let rwidth = this.width - padding;
+        let ry = padding;
+        let rheight = this.height - padding;
+
+        if ((rx < rotatedX) && (rotatedX < rwidth) && (ry < rotatedY) && (rotatedY < rheight)) {
             return true;
         }
         return false;
@@ -46,7 +61,8 @@ function Rect(x, y, width, height, id, color = "rgba(255, 255, 255, 0.5)") {
             "x": x,
             "y": y,
             "height": height,
-            "width": width
+            "width": width,
+            "rotation": this.rotation,
         };
     };
 }
@@ -74,10 +90,15 @@ function drawRectTitle(ctx, rect, text) {
     textwidth = ctx.measureText(text).width;
     ctx.textAlign = "center";
     ctx.textBaseline = "top";
+
+    ctx.save();
+    ctx.translate(rect.x, rect.y);
+    ctx.rotate(rect.rotation * Math.PI / 180); // Convert degrees to radians
     ctx.fillStyle = "rgba(255, 255, 255)";
-    ctx.fillRect(rect.x + rect.width / 2 - textwidth / 2 - 5, rect.y + 5, textwidth + 10, fontsize + 10);
+    ctx.fillRect(rect.width / 2 - textwidth / 2 - 5, 5, textwidth + 10, fontsize + 10);
     ctx.fillStyle = "rgba(0, 0, 0)";
-    ctx.fillText(text, rect.x + rect.width / 2, rect.y + 10)
+    ctx.fillText(text, rect.width / 2, 10)
+    ctx.restore();
 }
 
 /*
@@ -91,7 +112,11 @@ function redrawrects(ctx, rects) {
         if (rect.selected) {
             ctx.fillStyle = "rgba(255, 0, 0, 0.5)";
         }
-        ctx.fillRect(rect.x, rect.y, rect.width, rect.height);
+        ctx.save()
+        ctx.translate(rect.x, rect.y);
+        ctx.rotate(rect.rotation * Math.PI / 180); // Convert degrees to radians
+        ctx.fillRect(0, 0, rect.width, rect.height);
+        ctx.restore();
         text = document.getElementById(`details-form-${rect.id}`).querySelector("summary").textContent;
         drawRectTitle(ctx, rect, text);
     }
@@ -119,7 +144,8 @@ document.querySelectorAll(".input-data").forEach(dataInput => {
         let y = data.y / 100 * rect.height;
         let width = data.width / 100 * rect.width;
         let height = data.height / 100 * rect.height;
-        r = new Rect(x, y, width, height, id);
+        let rotation = data.rotation;
+        r = new Rect(x, y, width, height, id, rotation);
         rects.push(r);
     }
 });
@@ -205,6 +231,7 @@ canvas.addEventListener('mouseup', () => {
         formCount = document.getElementById("id_form-TOTAL_FORMS").value;
         r.id = formCount;
         r.color = "rgba(255, 127, 0, 0.5)";
+        r.rotation = 0;
         console.log("Adding new rect: " + r.area());
         rects.push(r);
         emptyForm = document.querySelector('#details-form-__prefix__').cloneNode(true);
