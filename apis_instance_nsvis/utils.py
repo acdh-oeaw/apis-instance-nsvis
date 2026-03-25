@@ -1,68 +1,11 @@
-import json
 import logging
 import os
 from imgproxy import ImgProxy
 from datetime import datetime
 import re
 from django_interval.utils import defaultdateparser
-from django.conf import settings
 
 logger = logging.getLogger(__name__)
-
-
-class Magazines:
-    magazines_sorted: dict = {}
-
-    def _sortissues(self, issue):
-        if "Maerz " in issue:
-            year = issue.replace("Maerz ", "")
-            issue = f"01.03.{year}"
-        if "November " in issue:
-            year = issue.replace("November ", "")
-            issue = f"01.11.{year}"
-        try:
-            return datetime.strptime(issue, "%d.%m.%Y")
-        except ValueError:
-            logger.error("Could not parse %s", issue)
-            return datetime.now()
-
-    def __init__(self):
-        magazines_sorted_file = getattr(settings, "MAGAZINES_SORTED", None)
-        if magazines_sorted_file:
-            self.magazines_sorted = json.loads(magazines_sorted_file.read_text())
-        for magazine, years in self.magazines_sorted.items():
-            self.magazines_sorted[magazine] = {
-                k: v for k, v in sorted(self.magazines_sorted[magazine].items())
-            }
-            for year in years:
-                self.magazines_sorted[magazine][year] = {
-                    k: v
-                    for k, v in sorted(
-                        self.magazines_sorted[magazine][year].items(),
-                        key=lambda x: self._sortissues(x[0]),
-                    )
-                }
-
-    def get_path_for_url(self, url):
-        for magazine, years in self.magazines_sorted.items():
-            for year, issues in years.items():
-                for issue, pages in issues.items():
-                    for page in pages:
-                        if page["labelledurl"] == url:
-                            return page["iiifpath"]
-        return None
-
-    def get_imgproxy_path_for_url(self, url):
-        path = self.get_path_for_url(url)
-        return f"23503/new/{path}.jpg"
-
-    def get_issues_per_magazine(self):
-        data = {}
-        for magazine, years in self.magazines_sorted.items():
-            data[magazine] = {}
-            for year, issues in years.items():
-                data[magazine] |= issues
-        return data
 
 
 class MyImgProxy:
