@@ -1,7 +1,7 @@
 import json
 import base64
 import logging
-from urllib.parse import urlparse
+from urllib.parse import urlparse, unquote
 from pathlib import Path
 import httpx
 
@@ -170,7 +170,7 @@ class Person(AbstractEntity, VersionMixin, MongoDbDataMixin, E21_Person):
 
 def import_custom_osm(uri):
     import_uri, b64_data = uri.split("&data=")
-    data = json.loads(base64.b64decode(b64_data))
+    data = json.loads(base64.b64decode(unquote(b64_data)))
     latitude = data["latitude"]
     longitude = data["longitude"]
 
