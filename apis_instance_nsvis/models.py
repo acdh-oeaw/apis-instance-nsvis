@@ -3,6 +3,7 @@ import base64
 import logging
 from urllib.parse import urlparse, unquote
 from pathlib import Path
+from typing import Tuple
 import httpx
 
 from django.contrib.contenttypes.fields import GenericForeignKey, GenericRelation
@@ -169,12 +170,13 @@ class Person(AbstractEntity, VersionMixin, MongoDbDataMixin, E21_Person):
 
 
 def import_custom_osm(uri):
+    uri = unquote(uri)
     import_uri, b64_data = uri.split("&data=")
     data = json.loads(base64.b64decode(unquote(b64_data)))
     latitude = data["latitude"]
     longitude = data["longitude"]
 
-    ret = {"label": [data["label"]], "latitude": [latitude], "longitude": [longitude], "relations": {}, "uri": import_uri}
+    ret = {"label": [data["label"]], "latitude": [latitude], "longitude": [longitude], "relations": {}, "same_as": [import_uri]}
 
     with httpx.Client() as client:
         for zoom in [5, 8, 10, 12, 13]:
@@ -189,8 +191,18 @@ def import_custom_osm(uri):
                 break
     return ret
 
+
 class Place(E53_Place, AbstractEntity, VersionMixin, MongoDbDataMixin):
-    import_definitions = E53_Place.import_definitions | {"https://nominatim.openstreetmap.org/*": lambda x: import_custom_osm(x)}
+    import_definitions = E53_Place.import_definitions | {"https://nominatim.openstreetmap.org/*": lambda x: {}}
+
+    @classmethod
+    def get_data_and_normalized_uri(cls, uri: str) -> Tuple[dict, str]:
+        if uri.startswith("https://nominatim.openstreetmap.org/lookup?osm_ids="):
+            uri = unquote(uri)
+            import_uri, _ = uri.split("&data=")
+            data = import_custom_osm(uri)
+            return data, import_uri
+        return super().get_data_and_normalized_uri(uri)
 
 
 class Institution(AbstractEntity, VersionMixin, MongoDbDataMixin, E74_Group):
