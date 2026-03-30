@@ -21,7 +21,7 @@ class NominatimAutocompleteAdapter(ExternalAutocompleteAdapter):
         # using a URI parameter - this way the import step does not have to fetch
         # the data a second time.
         b64_data = base64.b64encode(json.dumps(result).encode()).decode("ascii")
-        id = f"{url}&data={b64_data}"
+        id = f"{url}%26data={b64_data}"
         return {
                 "id": id,
                 "text": self.get_result_label(result),

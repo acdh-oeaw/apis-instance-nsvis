@@ -169,12 +169,13 @@ class Person(AbstractEntity, VersionMixin, MongoDbDataMixin, E21_Person):
 
 
 def import_custom_osm(uri):
+    uri = unquote(uri)
     import_uri, b64_data = uri.split("&data=")
     data = json.loads(base64.b64decode(unquote(b64_data)))
     latitude = data["latitude"]
     longitude = data["longitude"]
 
-    ret = {"label": [data["label"]], "latitude": [latitude], "longitude": [longitude], "relations": {}, "uri": import_uri}
+    ret = {"label": [data["label"]], "latitude": [latitude], "longitude": [longitude], "relations": {}, "same_as": [import_uri]}
 
     with httpx.Client() as client:
         for zoom in [5, 8, 10, 12, 13]:
