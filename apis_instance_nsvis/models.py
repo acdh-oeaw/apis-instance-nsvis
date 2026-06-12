@@ -16,6 +16,7 @@ from apis_core.history.models import VersionMixin
 from apis_core.apis_entities.models import AbstractEntity
 from apis_core.relations.models import Relation
 from apis_core.generic.abc import GenericModel
+from apis_core.entities.abc import Entity
 from django.contrib.postgres.fields import ArrayField
 from django_interval.fields import FuzzyDateParserField
 from django_json_editor_field.fields import JSONEditorField
@@ -80,7 +81,7 @@ class SpecialArea(GenericModel, VersionMixin, MongoDbDataMixin, SimpleLabelModel
         verbose_name_plural = _("Special Areas")
 
 
-class Person(AbstractEntity, VersionMixin, MongoDbDataMixin, E21_Person):
+class Person(AbstractEntity, Entity, VersionMixin, MongoDbDataMixin, E21_Person):
     _default_search_fields = ["forename", "surname"]
 
     class Meta(E21_Person.Meta):
@@ -192,7 +193,7 @@ def import_custom_osm(uri):
     return ret
 
 
-class Place(E53_Place, AbstractEntity, VersionMixin, MongoDbDataMixin):
+class Place(E53_Place, AbstractEntity, Entity, VersionMixin, MongoDbDataMixin):
     import_definitions = E53_Place.import_definitions | {"https://nominatim.openstreetmap.org/*": lambda x: {}}
 
     @classmethod
@@ -205,7 +206,7 @@ class Place(E53_Place, AbstractEntity, VersionMixin, MongoDbDataMixin):
         return super().get_data_and_normalized_uri(uri)
 
 
-class Institution(AbstractEntity, VersionMixin, MongoDbDataMixin, E74_Group):
+class Institution(AbstractEntity, Entity, VersionMixin, MongoDbDataMixin, E74_Group):
     """ Zeitschriften, Verlage, Agenturen, Partei + Vorfeldorganisation """
     class Meta(E74_Group.Meta):
         verbose_name = _("Institution")
@@ -214,19 +215,19 @@ class Institution(AbstractEntity, VersionMixin, MongoDbDataMixin, E74_Group):
     details = models.TextField(null=True, blank=True, verbose_name=_("details"))
 
 
-class EducationType(AbstractEntity, VersionMixin, MongoDbDataMixin, SimpleLabelModel):
+class EducationType(AbstractEntity, Entity, VersionMixin, MongoDbDataMixin, SimpleLabelModel):
     class Meta(SimpleLabelModel.Meta):
         verbose_name = _("Education Type")
         verbose_name_plural = _("Education Types")
 
 
-class ProfessionType(AbstractEntity, VersionMixin, MongoDbDataMixin, SimpleLabelModel):
+class ProfessionType(AbstractEntity, Entity, VersionMixin, MongoDbDataMixin, SimpleLabelModel):
     class Meta(SimpleLabelModel.Meta):
         verbose_name = _("Profession Type")
         verbose_name_plural = _("Profession Types")
 
 
-class Annotation(AbstractEntity, VersionMixin):
+class Annotation(AbstractEntity, Entity, VersionMixin):
     data = models.JSONField(null=True, editable=False)
     image = models.TextField(max_length=512, editable=False) #deprecated, use magazine_page
     issue = models.TextField(max_length=256, editable=False) #deprecated, use magazine_page
