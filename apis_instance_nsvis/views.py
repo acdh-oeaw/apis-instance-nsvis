@@ -1,6 +1,7 @@
 from collections import defaultdict
 from django.db.models import Count
 from django.contrib.postgres.aggregates import ArrayAgg
+from django.contrib.auth.mixins import LoginRequiredMixin
 
 from django.views.generic.base import TemplateView
 from apis_instance_nsvis.models import Annotation, MagazineIssue
@@ -135,7 +136,7 @@ class AnnotationMagazinesView(TemplateView):
         return ctx
 
 
-class AnnotationPageView(TemplateView):
+class AnnotationPageView(LoginRequiredMixin, TemplateView):
     template_name = "apis_instance_nsvis/annotation_page.html"
 
     def setup(self, *args, **kwargs):
