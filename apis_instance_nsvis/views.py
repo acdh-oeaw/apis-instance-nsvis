@@ -125,7 +125,7 @@ class AnnotationReportsView(List):
         return Annotation.objects.values("title").annotate(count=Count("title"), ids=ArrayAgg("id")).order_by().filter(count__gt=1)
 
 
-class AnnotationMagazinesView(TemplateView):
+class AnnotationMagazinesView(LoginRequiredMixin, TemplateView):
     template_name = "apis_instance_nsvis/annotation_magazines.html"
 
     def get_context_data(self, magazine=None, issue=None):
