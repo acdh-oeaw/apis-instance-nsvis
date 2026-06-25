@@ -4,7 +4,7 @@ from django.db.models import Q
 from django.forms.widgets import CheckboxInput
 from django_filters import UnknownFieldBehavior, FilterSet, MultipleChoiceFilter, BooleanFilter, CharFilter, ModelMultipleChoiceFilter
 from apis_core.relations.filtersets import RelationFilterSet
-from apis_core.apis_entities.filtersets import AbstractEntityFilterSet
+from apis_core.entities.filtersets import EntityFilterSet
 from apis_instance_nsvis.models import Annotation, MagazineIssue
 from django_interval.fields import FuzzyDateParserField
 from django_interval.filters import YearIntervalRangeFilter
@@ -187,10 +187,10 @@ class AuthorContainsFilter(CharFilter):
         return qs.filter(q)
 
 
-class AnnotationFilterSet(AbstractEntityFilterSet):
+class AnnotationFilterSet(EntityFilterSet):
     author_contains = AuthorContainsFilter(field_name="author")
 
-    class Meta(AbstractEntityFilterSet.Meta):
+    class Meta(EntityFilterSet.Meta):
         unknown_field_behavior = UnknownFieldBehavior.IGNORE
         fields = {"caption": ["icontains"], "title": ["icontains", "exact"], "location": ["icontains"], "other": ["icontains"], "warreporter": ["exact"]}
 
