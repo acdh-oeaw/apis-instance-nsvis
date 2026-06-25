@@ -74,20 +74,20 @@ class TimespanTable(RelationsListTable):
         super().paginate(*args, **kwargs)
 
 
-class AbstractEntityInventoryRelationsTable(TimespanTable):
+class EntityInventoryRelationsTable(TimespanTable):
     extent = tables.Column()
     contact = tables.Column()
 
     class Meta(TimespanTable.Meta): ...
 
 
-class AbstractEntityOrganizationRelationsTable(TimespanTable):
+class EntityOrganizationRelationsTable(TimespanTable):
     details = tables.Column()
 
     class Meta(TimespanTable.Meta): ...
 
 
-class AbstractEntityCareerRelationsTable(TimespanTable):
+class EntityCareerRelationsTable(TimespanTable):
     details = tables.Column()
 
     #  class Meta(TimespanTable.Meta):
@@ -95,7 +95,7 @@ class AbstractEntityCareerRelationsTable(TimespanTable):
     class Meta(TimespanTable.Meta): ...
 
 
-class AbstractEntityPlacesRelationsTable(TimespanTable):
+class EntityPlacesRelationsTable(TimespanTable):
     class Meta(TimespanTable.Meta): ...
 
 

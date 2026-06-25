@@ -11,7 +11,7 @@ from django.contrib.contenttypes.models import ContentType
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 from django.template.defaultfilters import slugify
-from apis_core.apis_entities.abc import E53_Place, SimpleLabelModel, E21_Person, E74_Group
+from apis_core.entities.abc import E53_Place, E21_Person, E74_Group
 from apis_core.history.models import VersionMixin
 from apis_core.apis_entities.models import AbstractEntity
 from apis_core.relations.models import Relation
@@ -25,6 +25,23 @@ from apis_instance_nsvis.utils import MyImgProxy, customdateparser
 from auditlog.registry import auditlog
 
 logger = logging.getLogger(__name__)
+
+
+class SimpleLabelModel(models.Model):
+    label = models.CharField(
+        blank=True, default="", max_length=4096, verbose_name=_("label")
+    )
+
+    class Meta:
+        abstract = True
+        ordering = ["label"]
+
+    def __str__(self):
+        return self.label or force_str(_("No label"))
+
+    @classmethod
+    def create_from_string(cls, string):
+        return cls.objects.create(label=string)
 
 
 class MagazineIssue(GenericModel):
@@ -81,7 +98,7 @@ class SpecialArea(GenericModel, VersionMixin, MongoDbDataMixin, SimpleLabelModel
         verbose_name_plural = _("Special Areas")
 
 
-class Person(AbstractEntity, Entity, VersionMixin, MongoDbDataMixin, E21_Person):
+class Person(AbstractEntity, VersionMixin, MongoDbDataMixin, E21_Person):
     _default_search_fields = ["forename", "surname"]
 
     class Meta(E21_Person.Meta):
@@ -193,7 +210,7 @@ def import_custom_osm(uri):
     return ret
 
 
-class Place(E53_Place, AbstractEntity, Entity, VersionMixin, MongoDbDataMixin):
+class Place(E53_Place, AbstractEntity, VersionMixin, MongoDbDataMixin):
     import_definitions = E53_Place.import_definitions | {"https://nominatim.openstreetmap.org/*": lambda x: {}}
 
     @classmethod
@@ -206,7 +223,7 @@ class Place(E53_Place, AbstractEntity, Entity, VersionMixin, MongoDbDataMixin):
         return super().get_data_and_normalized_uri(uri)
 
 
-class Institution(AbstractEntity, Entity, VersionMixin, MongoDbDataMixin, E74_Group):
+class Institution(AbstractEntity, VersionMixin, MongoDbDataMixin, E74_Group):
     """ Zeitschriften, Verlage, Agenturen, Partei + Vorfeldorganisation """
     class Meta(E74_Group.Meta):
         verbose_name = _("Institution")
