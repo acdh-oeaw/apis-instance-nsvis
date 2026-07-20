@@ -11,11 +11,11 @@ from django.contrib.contenttypes.models import ContentType
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 from django.template.defaultfilters import slugify
-from apis_core.entities.abc import E53_Place, E21_Person, E74_Group
+from apis_core.entities.abc import E53_Place, E21_Person, E74_Group, SimpleLabelEntity
 from apis_core.history.models import VersionMixin
 from apis_core.apis_entities.models import AbstractEntity
 from apis_core.relations.models import Relation
-from apis_core.generic.abc import GenericModel
+from apis_core.generic.abc import GenericModel, SimpleLabelModel
 from apis_core.entities.abc import Entity
 from django.contrib.postgres.fields import ArrayField
 from django_interval.fields import FuzzyDateParserField
@@ -25,23 +25,6 @@ from apis_instance_nsvis.utils import MyImgProxy, customdateparser
 from auditlog.registry import auditlog
 
 logger = logging.getLogger(__name__)
-
-
-class SimpleLabelModel(models.Model):
-    label = models.CharField(
-        blank=True, default="", max_length=4096, verbose_name=_("label")
-    )
-
-    class Meta:
-        abstract = True
-        ordering = ["label"]
-
-    def __str__(self):
-        return self.label or force_str(_("No label"))
-
-    @classmethod
-    def create_from_string(cls, string):
-        return cls.objects.create(label=string)
 
 
 class MagazineIssue(GenericModel):
@@ -92,7 +75,7 @@ class MongoDbDataMixin(models.Model):
         abstract = True
 
 
-class SpecialArea(GenericModel, VersionMixin, MongoDbDataMixin, SimpleLabelModel):
+class SpecialArea(VersionMixin, MongoDbDataMixin, SimpleLabelModel):
     class Meta(SimpleLabelModel.Meta):
         verbose_name = _("Special Area")
         verbose_name_plural = _("Special Areas")
@@ -232,14 +215,14 @@ class Institution(AbstractEntity, VersionMixin, MongoDbDataMixin, E74_Group):
     details = models.TextField(null=True, blank=True, verbose_name=_("details"))
 
 
-class EducationType(AbstractEntity, Entity, VersionMixin, MongoDbDataMixin, SimpleLabelModel):
-    class Meta(SimpleLabelModel.Meta):
+class EducationType(AbstractEntity, SimpleLabelEntity, VersionMixin, MongoDbDataMixin):
+    class Meta(SimpleLabelEntity.Meta):
         verbose_name = _("Education Type")
         verbose_name_plural = _("Education Types")
 
 
-class ProfessionType(AbstractEntity, Entity, VersionMixin, MongoDbDataMixin, SimpleLabelModel):
-    class Meta(SimpleLabelModel.Meta):
+class ProfessionType(AbstractEntity, SimpleLabelEntity, VersionMixin, MongoDbDataMixin):
+    class Meta(SimpleLabelEntity.Meta):
         verbose_name = _("Profession Type")
         verbose_name_plural = _("Profession Types")
 
